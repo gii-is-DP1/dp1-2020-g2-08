@@ -12,7 +12,9 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.2.4.RELEASE</version>
     </parent>
-    <name>L1-G2-08</name>
+
+    <name>G2-08</name>
+
 
     <properties>
 
@@ -32,24 +34,48 @@
 
     </properties>
 	<developers>
-	 <developer>
-	 <id>Miguel</id>
-	 <name>Miguel</name>
-	 <email>migueldg1910@gmail.com</email>
-	 <url></url>
-	 <roles>
-	 <role>developer</role>
-	 </roles>
-	 <properties>
-	 <picUrl>
+		 <developer>
+		 <id>Miguel</id>
+		 <name>Miguel</name>
+		 <email>migueldg1910@gmail.com</email>
+		 <url></url>
+		 <roles>
+		 <role>developer</role>
+		 </roles>
+		 <properties>
+		 <picUrl>
+		 
+		 </picUrl>
+		 </properties>
+		 </developer>
 	 
-	 </picUrl>
-	 </properties>
-	 </developer>
-	 
-	 <!-- More developers ...-->
+		 <developer>
+		 <id>alvaro</id>
+		 <name>Alvaro</name>
+		 <email>alvgomper1@alum.us.es</email>
+		 <url></url>
+		 <roles>
+		 <role>developer</role>
+		 </roles>
+		 <properties>
+		 <picUrl>
+		
+		 </picUrl>
+		 </properties>
+		 </developer>
+ 
+		 <developer>
+		 <id>mangarmar17</id>
+		 <name>Manuel Garcia Marchena</name>
+		 <email>mangarmar17@alum.us.es</email>
+		 <roles>
+		 <role>student</role>
+		 </roles>
+		 </developer>
+
+ 		<!-- More developers ...-->
 	</developers>
-	
+
     <dependencies>
         <!-- Spring and Spring Boot dependencies -->
         <dependency>
