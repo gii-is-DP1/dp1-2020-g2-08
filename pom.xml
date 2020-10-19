@@ -46,6 +46,15 @@
 </picUrl>
  </properties>
  </developer>
+ 
+ <developer>
+			<id>mangarmar17</id>
+			<name>Manuel Garcia Marchena</name>
+			<email>mangarmar17@alum.us.es</email>
+			<roles>
+				<role>student</role>
+			</roles>
+		</developer>
 
  <!-- More developers ...-->
 </developers>
