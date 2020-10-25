@@ -23,6 +23,19 @@
 				<role>student</role>
 			</roles>
 		</developer>
+		<developer>
+			<id>pabmatang</id>
+			<name>Pablo Mateos</name>
+			<email>pablo-mateos@hotmail.es</email>
+			<url>http://www.tmht.com/donnie</url>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<properties>
+				<picUrl>
+				</picUrl>
+			</properties>
+		</developer>
 	</developers>
 
 		<properties>
