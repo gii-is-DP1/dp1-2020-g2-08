@@ -15,6 +15,10 @@ INSERT INTO authorities(id,username,authority) VALUES (4,'migdurgon','owner');
 INSERT INTO users(username,password,enabled) VALUES ('alvgomper1','alvgomper1',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (5,'alvgomper1','owner');
 
+-- One owner user, named isamunval with password isamunval
+INSERT INTO users(username,password,enabled) VALUES ('isamunval','isamunval',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (6,'isamunval','owner');
+
 INSERT INTO vets VALUES (1, 'James', 'Carter');
 INSERT INTO vets VALUES (2, 'Helen', 'Leary');
 INSERT INTO vets VALUES (3, 'Linda', 'Douglas');
