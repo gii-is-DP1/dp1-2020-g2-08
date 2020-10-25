@@ -36,6 +36,14 @@
 				</picUrl>
 			</properties>
 		</developer>
+		<developer>
+			<id>isamunval</id>
+			<name>Isaac Muñiz valverde</name>
+			<email>isamunval@alum.us.es</email>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
 	</developers>
 
 		<properties>
