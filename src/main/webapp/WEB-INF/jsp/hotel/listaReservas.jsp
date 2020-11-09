@@ -6,9 +6,9 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
 
 <petclinic:layout pageName="bookings">
-	<h2>Bookings</h2>
+	<h1>Bookings</h1>
 
-	<table id="ownersTable" class="table table-striped">
+	<table id="bookingsTable" class="table table-striped">
 		<thead>
 			<tr>
 				<th style="width: 150px;">Pet</th>
@@ -43,19 +43,59 @@
 
 
 				</tr>
-				
+
 			</c:forEach>
-			
+
 			<h3>Aforo máximo del hotel: ${aforo}</h3>
 			<h3>Ocupadas actualmente: ${ocupadas}</h3>
 			<%--  <h3>Hotel: ${hotel}</h3> --%>
-		
-		</tbody>
-			
-	</table><spring:url value="/bookings/new" var="bookings">
 
-			</spring:url>
-			<a class="btn btn-default" href="${fn:escapeXml(bookings)}">Crear
-				reserva</a>
+		</tbody>
+
+	</table>
+<h1>Reviews</h1>
+	<table id="reviewsTable" class="table table-striped">
+		<thead>
+			<tr>
+				<th style="width: 150px;">Tittle</th>
+
+				<th style="width: 120px">Description</th>
+				<th>Review date</th>
+				<th style="width: 200px;">Stars</th>
+				<th></th>
+
+			</tr>
+		</thead>
+		<tbody>
+
+
+			<c:forEach items="${reviews}" var="review">
+				<tr>
+					<td><c:out value="${review.tittle}" /></a></td>
+
+					<td><c:out value="${review.description}" /></a></td>
+					<td><c:out value="${review.reviewDate}" /></td>
+					<td><c:out value="${review.stars}" /></td>
+</tr>
+
+			</c:forEach>
+
+			
+
+		</tbody>
+
+	</table>
+	<spring:url value="/bookings/new" var="bookings">
+
+	</spring:url>
+	<a class="btn btn-default" href="${fn:escapeXml(bookings)}">Crear
+		reserva</a>
+
+
+	<spring:url value="/bookings/review" var="review">
+
+	</spring:url>
+	<a class="btn btn-default" href="${fn:escapeXml(review)}">Escribir
+		reseña </a>
 </petclinic:layout>
-	
+

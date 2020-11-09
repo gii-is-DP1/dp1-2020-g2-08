@@ -13,23 +13,28 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import lombok.Data;
+
 @Data
 @Entity
 @Table(name = "hotel")
-public class Hotel extends BaseEntity{
-	 @NotNull
-	 @Column(name = "aforo")
-	private Integer aforo;
-	 
-	 @NotNull
-	 @Column(name = "ocupadas")
-	private Integer ocupadas;
-	 
-	 
-	 // lista de reservas del hotel
+public class Hotel extends BaseEntity {
+
 	@NotNull
+	@Column(name = "aforo")
+	private Integer aforo;
+
+	@NotNull
+	@Column(name = "ocupadas")
+	private Integer ocupadas;
+
+	// lista de reservas del hotel
 	@OneToMany
-	 @JoinColumn(name = "booking_id")	 
+	@JoinColumn(name = "booking_id")
 	private Set<Booking> bookings;
+
+	// lista de reviews del hotel
+	@OneToMany
+	@JoinColumn(name = "review_id")
+	private Set<Review> reviews;
 
 }
