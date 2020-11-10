@@ -1,6 +1,8 @@
 package org.springframework.samples.petclinic.web;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -11,6 +13,7 @@ import org.springframework.samples.petclinic.model.Booking;
 import org.springframework.samples.petclinic.model.Hotel;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Review;
+import org.springframework.samples.petclinic.repository.PetRepository;
 import org.springframework.samples.petclinic.repository.ReviewRepository;
 import org.springframework.samples.petclinic.service.BookingService;
 import org.springframework.samples.petclinic.service.HotelService;
@@ -88,8 +91,12 @@ public class HotelController {
 	@GetMapping(path = "/{ownerId}/new")
 	public String crearBooking(@PathVariable("ownerId") Integer ownerId,ModelMap modelmap) {
 		String vista = "hotel/editBooking";
+		
+		List<Pet> pets = new ArrayList<Pet>();
+		pets=ownerService.findOwnerById(ownerId).getPets();
 		modelmap.addAttribute("booking", new Booking());
 		modelmap.addAttribute("ownerId",  ownerId);
+		modelmap.addAttribute("pets",  pets);
 		return vista;
 
 	}

@@ -34,15 +34,7 @@
 							var="bookingId">
 							<spring:param name="bookingId" value="${booking.id}" />
 						</spring:url> <a href="${fn:escapeXml(bookingId)}"> Eliminar</a></td>
-
-
-
-
-
-
-
-
-				</tr>
+</tr>
 
 			</c:forEach>
 
