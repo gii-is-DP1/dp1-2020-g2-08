@@ -1,6 +1,9 @@
 package org.springframework.samples.petclinic.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -34,6 +37,14 @@ public class BookingService {
 	 public Optional<Booking> findBookingById(int bookingId){
 		 return bookingRepo.findById(bookingId);
 	 }
+	 
+	 @Transactional
+	 public List<Booking> findBookingByOwnerId(int ownerId){
+		 List<Booking> lista =new ArrayList<Booking>();
+		 lista=(List<Booking>) bookingRepo.findAll();
+		return lista.stream().filter(x->x.getOwner().getId().equals(ownerId)).collect(Collectors.toList());
+	 }
+	 
 	 @Transactional
 	public void deleteById(int bookingId) {
 		bookingRepo.deleteById(bookingId);

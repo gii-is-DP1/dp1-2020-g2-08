@@ -9,6 +9,7 @@ import javax.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Booking;
 import org.springframework.samples.petclinic.model.Hotel;
+import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Review;
 import org.springframework.samples.petclinic.repository.ReviewRepository;
 import org.springframework.samples.petclinic.service.BookingService;
@@ -25,7 +26,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/bookings")
+@RequestMapping("/hotel")
 public class HotelController {
 
 	@Autowired
@@ -42,15 +43,15 @@ public class HotelController {
 
 	@Autowired
 	public HotelController(HotelService hotelService, PetService petService, OwnerService ownerService,
-			BookingService bookingService,ReviewService reviewService) {
+			BookingService bookingService, ReviewService reviewService) {
 		this.hotelService = hotelService;
 		this.ownerService = ownerService;
 		this.petService = petService;
 		this.bookingService = bookingService;
-		this.reviewService=reviewService;
+		this.reviewService = reviewService;
 
 	}
-
+	//LISTADO DE TODAS LAS RESERVAS
 	@GetMapping()
 	public String listadoReservas(ModelMap modelmap) {
 		String vista = "hotel/listaReservas";
@@ -67,38 +68,58 @@ public class HotelController {
 		return vista;
 
 	}
+	//LISTADO DE RESERVAS DEL OWNER
+	@GetMapping(path="/owner/{ownerId}")
+	public String listadoReservasPorOwner(@PathVariable("ownerId") int ownerId,ModelMap modelmap) {
+		String vista = "hotel/misReservas";
+		
+		Iterable<Booking> bookings = bookingService.findBookingByOwnerId(ownerId);
+		
+		
+		modelmap.addAttribute("bookings", bookings);
+		
+		
 
-	@GetMapping(path = "/new")
-	public String crearBooking(ModelMap modelmap) {
-		String vista = "hotel/editBooking";
-		modelmap.addAttribute("booking", new Booking());
 		return vista;
 
 	}
 
-	@PostMapping(path = "/save")
-	public String guardarBooking(@PathParam("pet") Integer pet, @PathParam("owner") Integer owner, ModelMap modelmap) {
+//CREAR UNA NUEVA RESERVA
+	@GetMapping(path = "/{ownerId}/new")
+	public String crearBooking(@PathVariable("ownerId") Integer ownerId,ModelMap modelmap) {
+		String vista = "hotel/editBooking";
+		modelmap.addAttribute("booking", new Booking());
+		modelmap.addAttribute("ownerId",  ownerId);
+		return vista;
+
+	}
+
+	// CREAR UNA NUEVA RESERVA
+	@PostMapping(path = "/save/{ownerId}")
+	public String guardarBooking(@PathParam("pet")Integer pet, @PathVariable("ownerId") Integer ownerId,ModelMap modelmap) {
 
 		Booking reservaAutogenerada = new Booking();
 		reservaAutogenerada.setEndDate(LocalDate.of(2020, 10, 30));
 		reservaAutogenerada.setStartDate(LocalDate.of(2020, 10, 30));
 
-		reservaAutogenerada.setOwner(ownerService.findOwnerById(owner));
-		reservaAutogenerada.setPet(petService.findPetById(owner));
-//		
+
+		
+		reservaAutogenerada.setOwner(ownerService.findOwnerById(ownerId));
+		reservaAutogenerada.setPet(petService.findPetById(pet));
+		
 		bookingService.save(reservaAutogenerada);
 		modelmap.addAttribute("message", "Booking creado con éxito!");
-//		}
 
-		// hotelService.addBooking(reservaAutogenerada);
-		String vista = listadoReservas(modelmap);
+
+		modelmap.clear();
+		String vista = listadoReservasPorOwner(ownerId, modelmap);
 		return vista;
 
 	}
 
-	// Terminado borrado
-	@GetMapping(path = "/delete/{bookingId}")
-	public String borrarBooking(@PathVariable("bookingId") int bookingId, ModelMap modelmap) {
+	// BORRAR UNA RESERVA
+	@GetMapping(path = "/delete/{bookingId}/{ownerId}")
+	public String borrarBooking(@PathVariable("bookingId") int bookingId,@PathVariable("ownerId") int ownerId, ModelMap modelmap) {
 		Optional<Booking> booking = bookingService.findBookingById(bookingId);
 
 		// Si el booking está lo borra, si no, te redirecciona a los bookings
@@ -109,7 +130,7 @@ public class HotelController {
 		} else {
 			modelmap.addAttribute("message", "Booking no encontrado");
 		}
-		String vista = listadoReservas(modelmap);
+		String vista = listadoReservasPorOwner(ownerId, modelmap);
 		return vista;
 	}
 
@@ -121,13 +142,12 @@ public class HotelController {
 		return vista;
 
 	}
-
+	// nueva reseña al hotel
 	@PostMapping(path = "/saveReview")
-	public String guardarReview(@Valid Review review,BindingResult result, ModelMap modelmap) {
-		
+	public String guardarReview(@Valid Review review, BindingResult result, ModelMap modelmap) {
+
 		reviewService.save(review);
 		modelmap.addAttribute("message", "Review creada con éxito!");
-
 
 		String vista = listadoReservas(modelmap);
 		return vista;

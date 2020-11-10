@@ -94,8 +94,8 @@
         </c:forEach>
     </table>
     
-    <spring:url value="/bookings" var="bookings">
+    <spring:url value="/hotel/owner/${owner.id}" var="bookings">
                                     
                                 </spring:url>
-	 <a class="btn btn-default" href="${fn:escapeXml(bookings)}">Ver reservas</a>
+	 <a class="btn btn-default" href="${fn:escapeXml(bookings)}">Ver mis reservas</a>
 </petclinic:layout>

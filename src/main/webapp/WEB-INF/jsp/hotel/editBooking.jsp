@@ -19,7 +19,7 @@
 
         
 
-        <form:form modelAttribute="booking" class="form-horizontal" action="save">
+        <form:form modelAttribute="booking" class="form-horizontal" action="../save/${ownerId}">
             <div class="form-group has-feedback">
                 <petclinic:inputField label="Start Date" name="startDate"/>
                 <petclinic:inputField label="End Date" name="endDate"/>
@@ -32,9 +32,7 @@
             </div>
 
             <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                   
-                    <input type="hidden" name="hotel_id" value="1"/>
+                <div class="col-sm-offset-2 col-sm-10">                   
                   
                     <button class="btn btn-default" type="submit">Save booking</button>
                 </div>
