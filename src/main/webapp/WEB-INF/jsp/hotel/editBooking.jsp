@@ -1,47 +1,56 @@
-<%@ page session="false" trimDirectiveWhitespaces="true" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@ page session="false" trimDirectiveWhitespaces="true"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
 
 
 <petclinic:layout pageName="Bookings">
-    <jsp:attribute name="customScript">
+	<jsp:attribute name="customScript">
         <script>
-            $(function () {
-                $("#startDate").datepicker({dateFormat: 'yy/MM/dd'});
-                $("#endDate").datepicker({dateFormat: 'yy/MM/dd'});
-            });
-        </script>
+									$(function() {
+										$("#startDate").datepicker({
+											dateFormat : 'yy/MM/dd'
+										});
+										$("#endDate").datepicker({
+											dateFormat : 'yy/MM/dd'
+										});
+									});
+								</script>
     </jsp:attribute>
-    <jsp:body>
+	<jsp:body>
         <h2>Booking</h2>
 
         
 
-        <form:form modelAttribute="booking" class="form-horizontal" action="save">
+        <form:form modelAttribute="booking" class="form-horizontal"
+			action="../save/${ownerId}">
             <div class="form-group has-feedback">
-                <petclinic:inputField label="Start Date" name="startDate"/>
-                <petclinic:inputField label="End Date" name="endDate"/>
+                <petclinic:inputField label="Start Date"
+					name="startDate" />
+                <petclinic:inputField label="End Date" name="endDate" />
              
-                    <petclinic:inputField label="Pet" name="pet"/>
-                        <petclinic:inputField label="Owner" name="owner"/>
-                        
-                        
+                 <%--    <petclinic:selectField label="Pet" name="pet" names="${pets}" size="2" /> --%>
+                 
+                 <label for="pet">Choose your pet:</label>
+                        <select name="pet" >
+   						 <c:forEach items="${pets}" var="pet">  
+   						 <option	value="${pet.id}">${pet.name} 
+							</c:forEach>  
+    </select>
+                     
                
             </div>
 
             <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                   
-                    <input type="hidden" name="hotel_id" value="1"/>
+                <div class="col-sm-offset-2 col-sm-10">                   
                   
                     <button class="btn btn-default" type="submit">Save booking</button>
                 </div>
             </div>
         </form:form>
 
-        <br/>
+        <br />
         
     </jsp:body>
 
