@@ -43,7 +43,7 @@
 	</table>
 
 
-	<spring:url value="/hotel/${ownerId}/new" var="bookings">
+	<spring:url value="/hotel/booking/new" var="bookings">
 
 	</spring:url>
 	<a class="btn btn-default" href="${fn:escapeXml(bookings)}">New

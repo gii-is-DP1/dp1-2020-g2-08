@@ -19,7 +19,7 @@
 								</script>
     </jsp:attribute>
 	<jsp:body>
-        <h2>Booking</h2>
+        <h2>New booking for <c:out value="${pets[0].owner.firstName} ${pets[0].owner.lastName}" /> </h2>
 
         
 

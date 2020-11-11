@@ -11,6 +11,7 @@ import javax.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Booking;
 import org.springframework.samples.petclinic.model.Hotel;
+import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Review;
 import org.springframework.samples.petclinic.service.BookingService;
@@ -69,25 +70,41 @@ public class HotelController {
 		String res = us.getUsername();
 
 		if (us.getAuthorities().iterator().next().getAuthority().equals("owner")) {
-			Integer id = (ownerService.findAllOwners().stream().filter(x -> x.getUser().getUsername().equals(res)))
-					.collect(Collectors.toList()).get(0).getId();
+
+			Owner o = (ownerService.findAllOwners().stream().filter(x -> x.getUser().getUsername().equals(res)))
+					.collect(Collectors.toList()).get(0);
+			Integer id = o.getId();
+			String name = o.getFirstName();
+			String lastname = o.getLastName();
 
 			modelmap.addAttribute("message", "Tu  username Id es: " + id);
 			modelmap.addAttribute("ownerId", id);
+			modelmap.addAttribute("ownerName", name);
+			modelmap.addAttribute("ownerLastname", lastname);
+			modelmap.addAttribute("logueado", "si");
 		} else {
 			modelmap.addAttribute("message", "No estas logueado como owner");
+			modelmap.addAttribute("logueado", "no");
 		}
 
 	}
+	
+	public Integer devolverOwnerId() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Object sesion = auth.getPrincipal();
+		UserDetails us = null;
+		if (sesion instanceof UserDetails) {
+			us = (UserDetails) sesion;
+		}
+		String res = us.getUsername();		
 
-	// SI NO ESTAS AUTENTICADO COMO OWNER, TE MANDA A TODAS LAS RESERVAS
-	@GetMapping(path = "/owner/null")
-	public String noEsOwner(ModelMap modelmap) {
-
-		modelmap.addAttribute("message", "Usted no está autenticado como owner");
-		return listadoReservas(modelmap);
+			Owner o = (ownerService.findAllOwners().stream().filter(x -> x.getUser().getUsername().equals(res)))
+					.collect(Collectors.toList()).get(0);
+			Integer ownerId = o.getId();
+		return ownerId;
 
 	}
+
 
 	// LISTADO DE TODAS LAS RESERVAS
 	@GetMapping()
@@ -114,10 +131,18 @@ public class HotelController {
 	// LISTA DE MIS RESERVAS
 	@GetMapping(path = "/myBookings")
 	public String listadoMisReservas(ModelMap modelmap) {
+		if (ownerService.esOwner()) {	//si es owner, muestra tus reservas, si no, vuelve a todas las reservas
+			
+			// Obtiene el id del owner para redirigir a la vista de reservas de ese owner
+			devolverOwner(modelmap);
+			
+			return "redirect:owner/" + modelmap.getAttribute("ownerId");
+			
+		} else {
+			modelmap.addAttribute("message", "Usted no está autenticado como owner");
+			return listadoReservas(modelmap);
 
-		// Obtiene el id del owner para redirigir a la vista de reservas de ese owner
-		devolverOwner(modelmap);
-		return "redirect:owner/" + modelmap.getAttribute("ownerId");
+		}
 
 	}
 
@@ -136,13 +161,16 @@ public class HotelController {
 	}
 
 	// CREAR UNA NUEVA RESERVA
-	@GetMapping(path = "/{ownerId}/new")
-	public String crearBooking(@PathVariable("ownerId") Integer ownerId, ModelMap modelmap) {
-
+	@GetMapping(path = "/booking/new")
+	public String crearBooking( ModelMap modelmap) {
+		if (ownerService.esOwner()) {
+	Integer ownerId=devolverOwnerId();
+	
 		// Crea una lista con las mascotas para que las muestre en el formulario de
 		// nueva reserva
 		List<Pet> pets = new ArrayList<Pet>();
 		pets = ownerService.findOwnerById(ownerId).getPets();
+		
 		// Tambien obtiene el id de la url, para poder crear una reserva con ese owner
 		// que recibe
 		modelmap.addAttribute("booking", new Booking());
@@ -151,6 +179,11 @@ public class HotelController {
 
 		// Redirige al formulario editBooking.jsp
 		return "hotel/editBooking";
+}
+else {
+	modelmap.addAttribute("message", "Para poder crear una reserva, tienes que estar logueado como owner");
+	return "welcome";
+}	
 
 	}
 
@@ -198,17 +231,32 @@ public class HotelController {
 	@GetMapping(path = "/review")
 	public String crearReviewHotel(ModelMap modelmap) {
 
-		// Manda una review vacia al formulario, para que se rellene y se mande al
-		// metodo "/save"
-		modelmap.addAttribute("review", new Review());
-		return "reviews/newReview";
+		String vista = listadoReservas(modelmap);
+
+		if (ownerService.esOwner()) {
+
+			// Manda una review vacia al formulario junto al owner, para que se rellene y se
+			// mande al metodo "/save"
+
+			devolverOwner(modelmap);
+			modelmap.addAttribute("review", new Review());
+			vista = "reviews/newReview";
+
+		} else {
+			modelmap.clear();
+			modelmap.addAttribute("message", "Solo los owners pueden hacer reviews del hotel");
+			vista = listadoReservas(modelmap);
+		}
+		return vista;
 
 	}
 
 	// nueva reseña al hotel
-	@PostMapping(path = "/saveReview")
-	public String guardarReview(@Valid Review review, BindingResult result, ModelMap modelmap) {
+	@PostMapping(path = "/saveReview/{ownerName}")
+	public String guardarReview(@Valid Review review, BindingResult result, ModelMap modelmap,
+			@PathVariable("ownerName") String ownerName) {
 
+		review.setOwnerName(ownerName);
 		// Obtiene la reseña del formulario y la guarda en la bd
 		reviewService.save(review);
 		modelmap.addAttribute("message", "Review creada con éxito!");

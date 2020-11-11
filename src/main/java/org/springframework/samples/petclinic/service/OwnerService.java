@@ -31,6 +31,9 @@ import org.springframework.samples.petclinic.repository.PetRepository;
 import org.springframework.samples.petclinic.repository.VetRepository;
 import org.springframework.samples.petclinic.repository.VisitRepository;
 import org.springframework.samples.petclinic.service.exceptions.DuplicatedPetNameException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -83,6 +86,21 @@ public class OwnerService {
 		userService.saveUser(owner.getUser());
 		//creating authorities
 		authoritiesService.saveAuthorities(owner.getUser().getUsername(), "owner");
-	}		
-
+	}	
+	@Transactional
+	public boolean esOwner() throws DataAccessException {
+	boolean res= false;
+		
+	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	Object sesion = auth.getPrincipal();
+	UserDetails us = null;
+	if (sesion instanceof UserDetails) {
+		us = (UserDetails) sesion;
 }
+	if (us.getAuthorities().iterator().next().getAuthority().equals("owner")) {
+		res=true;
+	}
+	return res;
+	
+	
+	}}
