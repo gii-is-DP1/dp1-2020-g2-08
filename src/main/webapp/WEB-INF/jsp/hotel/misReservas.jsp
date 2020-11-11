@@ -15,7 +15,7 @@
 				<th style="width: 200px;">StartDate</th>
 				<th>EndDate</th>
 				<th style="width: 120px">Owner</th>
-				<th>Acciones</th>
+				<th>Actions</th>
 
 			</tr>
 		</thead>
@@ -33,8 +33,8 @@
 					<td><spring:url value="/hotel/delete/{bookingId}/${ownerId}"
 							var="bookingId">
 							<spring:param name="bookingId" value="${booking.id}" />
-						</spring:url> <a href="${fn:escapeXml(bookingId)}"> Eliminar</a></td>
-</tr>
+						</spring:url> <a href="${fn:escapeXml(bookingId)}"> Delete</a></td>
+				</tr>
 
 			</c:forEach>
 
@@ -42,14 +42,14 @@
 
 	</table>
 
-	
+
 	<spring:url value="/hotel/${ownerId}/new" var="bookings">
 
 	</spring:url>
-	<a class="btn btn-default" href="${fn:escapeXml(bookings)}">Crear
-		reserva</a>
+	<a class="btn btn-default" href="${fn:escapeXml(bookings)}">New
+		booking</a>
 
 
-	
+
 </petclinic:layout>
 

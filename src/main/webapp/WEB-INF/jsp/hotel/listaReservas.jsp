@@ -46,7 +46,7 @@
 				<th style="width: 150px;">Tittle</th>
 				<th style="width: 120px">Description</th>
 				<th style="width: 200px;">Review date</th>
-				<th >Stars</th>
+				<th>Stars</th>
 				<th></th>
 			</tr>
 		</thead>
@@ -75,7 +75,7 @@
 	<spring:url value="/hotel/review" var="review">
 
 	</spring:url>
-	<a class="btn btn-default" href="${fn:escapeXml(review)}">Escribir
-		reseña </a>
+	<a class="btn btn-default" href="${fn:escapeXml(review)}">Write
+		review </a>
 </petclinic:layout>
 
