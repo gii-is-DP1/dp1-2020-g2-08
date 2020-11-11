@@ -16,6 +16,7 @@
 package org.springframework.samples.petclinic.service;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -65,6 +66,14 @@ public class OwnerService {
 	public Collection<Owner> findOwnerByLastName(String lastName) throws DataAccessException {
 		return ownerRepository.findByLastName(lastName);
 	}
+	
+	
+	@Transactional(readOnly = true)
+	public List<Owner> findAllOwners() throws DataAccessException {
+		return ownerRepository.findAllOwners();
+	}
+	
+	
 
 	@Transactional
 	public void saveOwner(Owner owner) throws DataAccessException {

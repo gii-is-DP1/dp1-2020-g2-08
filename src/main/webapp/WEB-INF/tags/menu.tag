@@ -1,3 +1,6 @@
+
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
@@ -40,11 +43,35 @@
 					<span>Veterinarians</span>
 				</petclinic:menuItem>
 
-				<petclinic:menuItem active="${name eq 'error'}" url="/oups"
+
+				<div class="nav navbar-nav navbar-right">
+
+
+					<li class="dropdown"><a href="/hotel" class="dropdown-toggle"
+						data-toggle="dropdown"> <span
+							class="glyphicon glyphicon glyphicon-calendar"></span> <span>Hotel</span>
+
+							<ul class="dropdown-menu">
+								<li><a href="/hotel/myBookings">My bookings</a></li>
+								<li><a href="/hotel/new">New booking</a></li>
+
+							</ul>
+				</div>
+
+				<petclinic:menuItem active="${name eq 'shop'}" url="/shop"
+					title="Shop">
+					<span class="glyphicon glyphicon glyphicon-shopping-cart"
+						aria-hidden="true"></span>
+					<span class="">Shop</span>
+				</petclinic:menuItem>
+
+
+
+				<%-- <petclinic:menuItem active="${name eq 'error'}" url="/oups"
 					title="trigger a RuntimeException to see how it is handled">
 					<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
 					<span>Error</span>
-				</petclinic:menuItem>
+				</petclinic:menuItem> --%>
 
 			</ul>
 
@@ -84,7 +111,7 @@
 								</div>
 							</li>
 							<li class="divider"></li>
-<!-- 							
+							<!-- 							
                             <li> 
 								<div class="navbar-login navbar-login-session">
 									<div class="row">

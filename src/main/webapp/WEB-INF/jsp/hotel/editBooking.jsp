@@ -33,10 +33,11 @@
                  <%--    <petclinic:selectField label="Pet" name="pet" names="${pets}" size="2" /> --%>
                  
                  <label for="pet">Choose your pet:</label>
-                        <select name="pet" >
+                        <select name="pet">
    						 <c:forEach items="${pets}" var="pet">  
-   						 <option	value="${pet.id}">${pet.name} 
-							</c:forEach>  
+   						 <option value="${pet.id}">${pet.name} 
+							
+					</c:forEach>  
     </select>
                      
                
