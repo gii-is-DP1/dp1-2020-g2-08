@@ -19,12 +19,12 @@
 								</script>
     </jsp:attribute>
 	<jsp:body>
-        <h2>Booking</h2>
+        <h2>New booking for <c:out value="${pets[0].owner.firstName} ${pets[0].owner.lastName}" /> </h2>
 
         
 
         <form:form modelAttribute="booking" class="form-horizontal"
-			action="../save/${ownerId}">
+			action="../booking/save/${ownerId}">
             <div class="form-group has-feedback">
                 <petclinic:inputField label="Start Date"
 					name="startDate" />

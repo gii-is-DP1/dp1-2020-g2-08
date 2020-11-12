@@ -35,5 +35,8 @@ public class Review extends BaseEntity {
     @Column(name = "review_date")
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
     private LocalDate reviewDate;
+	
+	@Column(name = "ownerName")
+	 private String ownerName;
 
 }

@@ -33,16 +33,28 @@
 				</tr>
 
 			</c:forEach>
+			
 			<h3>Aforo máximo del hotel: ${aforo}</h3>
 			<h3>Ocupadas actualmente: ${ocupadas}</h3>
 			<%--  <h3>Hotel: ${hotel}</h3> --%>
 		</tbody>
 
 	</table>
+	<spring:url value="/hotel/booking/new" var="booking">
+
+	</spring:url>
+	<a class="btn btn-default" href="${fn:escapeXml(booking)}">New booking </a> 	
+	
+	<spring:url value="/hotel/myBookings" var="mybookings">
+
+	</spring:url>
+	<a class="btn btn-default" href="${fn:escapeXml(mybookings)}">My bookings </a>
+	<br><br><br>
 	<h1>Reviews</h1>
 	<table id="reviewsTable" class="table table-striped">
 		<thead>
 			<tr>
+				<th>Owner</th>
 				<th style="width: 150px;">Tittle</th>
 				<th style="width: 120px">Description</th>
 				<th style="width: 200px;">Review date</th>
@@ -54,10 +66,12 @@
 
 			<c:forEach items="${reviews}" var="review">
 				<tr>
+				<td><c:out value="${review.ownerName}" /></a></td>
 					<td><c:out value="${review.tittle}" /></a></td>
 					<td><c:out value="${review.description}" /></a></td>
 					<td><c:out value="${review.reviewDate}" /></td>
 					<td><c:out value="${review.stars}" /></td>
+					<td></td>
 				</tr>
 
 			</c:forEach>

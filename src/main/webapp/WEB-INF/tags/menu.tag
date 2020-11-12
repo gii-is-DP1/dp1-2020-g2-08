@@ -52,8 +52,10 @@
 							class="glyphicon glyphicon glyphicon-calendar"></span> <span>Hotel</span>
 
 							<ul class="dropdown-menu">
+								<li><a href="/hotel">All bookings</a></li>
 								<li><a href="/hotel/myBookings">My bookings</a></li>
-								<li><a href="/hotel/new">New booking</a></li>
+								<li><a href="/hotel/booking/new">New booking</a></li>
+								
 
 							</ul>
 				</div>

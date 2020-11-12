@@ -17,7 +17,7 @@
             New Review
         </h2>
         <form:form modelAttribute="review"
-                   class="form-horizontal" action="saveReview">
+                   class="form-horizontal" action="saveReview/${ownerName}">
            <%--  <input type="hidden" name="id" value="${review.id}"/> --%>
             <div class="form-group has-feedback">
                 

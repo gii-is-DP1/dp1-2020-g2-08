@@ -6,7 +6,7 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
 
 <petclinic:layout pageName="bookings">
-	<h1>My bookings</h1>
+	<h1><c:out value="${owner.firstName} ${owner.lastName}'s" /> bookings</h1>
 
 	<table id="bookingsTable" class="table table-striped">
 		<thead>
@@ -30,7 +30,7 @@
 					<td><c:out value="${booking.endDate}" /></td>
 					<td><c:out value="${booking.owner.firstName}" /></td>
 
-					<td><spring:url value="/hotel/delete/{bookingId}/${ownerId}"
+					<td><spring:url value="/hotel/booking/delete/{bookingId}/${ownerId}"
 							var="bookingId">
 							<spring:param name="bookingId" value="${booking.id}" />
 						</spring:url> <a href="${fn:escapeXml(bookingId)}"> Delete</a></td>
@@ -43,7 +43,7 @@
 	</table>
 
 
-	<spring:url value="/hotel/${ownerId}/new" var="bookings">
+	<spring:url value="/hotel/booking/new" var="bookings">
 
 	</spring:url>
 	<a class="btn btn-default" href="${fn:escapeXml(bookings)}">New
