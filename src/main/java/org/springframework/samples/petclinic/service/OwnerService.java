@@ -17,6 +17,7 @@ package org.springframework.samples.petclinic.service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -103,4 +104,38 @@ public class OwnerService {
 	return res;
 	
 	
-	}}
+	}
+	
+	public boolean esAdmin() throws DataAccessException {
+		boolean res= false;
+			
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Object sesion = auth.getPrincipal();
+		UserDetails us = null;
+		if (sesion instanceof UserDetails) {
+			us = (UserDetails) sesion;
+	}
+		if (us.getAuthorities().iterator().next().getAuthority().equals("admin")) {
+			res=true;
+		}
+		return res;
+		
+		
+		}
+	
+	public Integer devolverOwnerId() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Object sesion = auth.getPrincipal();
+		UserDetails us = null;
+		if (sesion instanceof UserDetails) {
+			us = (UserDetails) sesion;
+		}
+		String res = us.getUsername();		
+
+			Owner o = (ownerRepository.findAllOwners().stream().filter(x -> x.getUser().getUsername().equals(res)))
+					.collect(Collectors.toList()).get(0);
+			Integer ownerId = o.getId();
+		return ownerId;
+
+	}
+}
