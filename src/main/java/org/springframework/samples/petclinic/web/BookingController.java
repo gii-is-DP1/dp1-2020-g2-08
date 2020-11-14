@@ -9,6 +9,7 @@ import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Booking;
+import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.service.BookingService;
 import org.springframework.samples.petclinic.service.HotelService;
@@ -17,7 +18,9 @@ import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.ReviewService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,19 +39,23 @@ public class BookingController {
 	private PetService petService;
 	@Autowired
 	private BookingService bookingService;
-
-	
+	@Autowired
+	HotelService hotelService;
 
 	@Autowired
 	public BookingController( PetService petService, OwnerService ownerService,
-			BookingService bookingService) {
+			BookingService bookingService,HotelService hotelService) {
 		
 		this.ownerService = ownerService;
 		this.petService = petService;
 		this.bookingService = bookingService;
+		this.hotelService =hotelService;
 		
 
 	}
+	@InitBinder
+	public void setAllowedFields(WebDataBinder dataBinder) {
+		dataBinder.setDisallowedFields("id");}
 	
 	// CREAR UNA NUEVA RESERVA
 		@GetMapping(path = "/new")
@@ -61,9 +68,13 @@ public class BookingController {
 			List<Pet> pets = new ArrayList<Pet>();
 			pets = ownerService.findOwnerById(ownerId).getPets();
 			
+			Owner owner = ownerService.findOwnerById(ownerId);
+			
 			// Tambien obtiene el id de la url, para poder crear una reserva con ese owner
 			// que recibe
-			modelmap.addAttribute("booking", new Booking());
+			Booking booking = new Booking();
+			modelmap.addAttribute("booking", booking);
+			modelmap.addAttribute("owner", owner);
 			modelmap.addAttribute("ownerId", ownerId);
 			modelmap.addAttribute("pets", pets);
 
@@ -79,17 +90,14 @@ public class BookingController {
 
 		// CREAR UNA NUEVA RESERVA Falta hacerlo bien
 		@PostMapping(path = "/save/{ownerId}")
-		public String guardarBooking(@PathParam("pet") Integer pet, @PathVariable("ownerId") Integer ownerId,
+		public String guardarBooking(Booking booking, @PathVariable("ownerId") Integer ownerId,
 				ModelMap modelmap) {
 
-			Booking reservaAutogenerada = new Booking();
-			reservaAutogenerada.setEndDate(LocalDate.of(2020, 10, 30));
-			reservaAutogenerada.setStartDate(LocalDate.of(2020, 10, 30));
+			
+			booking.setHotel(hotelService.findById(1));
+			booking.setOwner(ownerService.findOwnerById(ownerId));
 
-			reservaAutogenerada.setOwner(ownerService.findOwnerById(ownerId));
-			reservaAutogenerada.setPet(petService.findPetById(pet));
-
-			bookingService.save(reservaAutogenerada);
+			bookingService.save(booking);
 			modelmap.addAttribute("message", "Booking creado con éxito!");
 
 			modelmap.clear();
@@ -100,15 +108,15 @@ public class BookingController {
 
 		// BORRAR UNA RESERVA
 		@GetMapping(path = "/delete/{bookingId}/{ownerId}")
-		public String borrarBooking(@PathVariable("bookingId") int bookingId, @PathVariable("ownerId") int ownerId,
+		public String borrarBooking(@PathVariable("bookingId") Integer bookingId, @PathVariable("ownerId") Integer ownerId,
 				ModelMap modelmap) {
-			Optional<Booking> booking = bookingService.findBookingById(bookingId);
+			
 
 			if (ownerService.esOwner()) {
 				// Si la reserva está la borra, si no, te redirecciona a la lista de reservas
-				if (booking.isPresent() && (ownerService.devolverOwnerId().equals(ownerId))) {
+				if ( (ownerService.devolverOwnerId().equals(ownerId))) {
 					
-					bookingService.delete(booking.get());
+					bookingService.delete(bookingService.findBookingById(bookingId));
 					modelmap.addAttribute("message", "Booking borrado con éxito!");
 
 				} else {
@@ -119,7 +127,7 @@ public class BookingController {
 				
 			}
 			else if ( ownerService.esAdmin() ) {
-				bookingService.delete(booking.get());
+				bookingService.delete(bookingService.findBookingById(bookingId));
 				modelmap.addAttribute("message", "Booking borrado con éxito!");
 				
 			}

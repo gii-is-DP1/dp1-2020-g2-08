@@ -34,12 +34,12 @@ public class BookingService {
 	 }
 	 
 	 @Transactional
-	 public Optional<Booking> findBookingById(int bookingId){
-		 return bookingRepo.findById(bookingId);
+	 public Booking findBookingById(int bookingId){
+		 return bookingRepo.findById(bookingId).get();
 	 }
 	 
 	 @Transactional
-	 public List<Booking> findBookingByOwnerId(int ownerId){
+	 public List<Booking> findBookingsByOwnerId(int ownerId){
 		 List<Booking> lista =new ArrayList<Booking>();
 		 lista=(List<Booking>) bookingRepo.findAll();
 		return lista.stream().filter(x->x.getOwner().getId().equals(ownerId)).collect(Collectors.toList());

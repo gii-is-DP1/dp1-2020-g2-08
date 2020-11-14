@@ -10,21 +10,23 @@
         <script>
 									$(function() {
 										$("#startDate").datepicker({
-											dateFormat : 'yy/MM/dd'
+											dateFormat : 'yy/mm/dd'
 										});
 										$("#endDate").datepicker({
-											dateFormat : 'yy/MM/dd'
+											dateFormat : 'yy/mm/dd'
 										});
 									});
 								</script>
     </jsp:attribute>
 	<jsp:body>
-        <h2>New booking for <c:out value="${pets[0].owner.firstName} ${pets[0].owner.lastName}" /> </h2>
+        <h2><c:if test="${booking['new']}">New </c:if> Booking for <c:out value="${pets[0].owner.firstName} ${pets[0].owner.lastName}" /> </h2>
 
+<!--  Hay que enviar los datos de owner, pet, fehca inicio y fecha fin-->
         
 
         <form:form modelAttribute="booking" class="form-horizontal"
 			action="../booking/save/${ownerId}">
+			
             <div class="form-group has-feedback">
                 <petclinic:inputField label="Start Date"
 					name="startDate" />
