@@ -17,8 +17,8 @@
             New Review
         </h2>
         <form:form modelAttribute="review"
-                   class="form-horizontal" action="saveReview/${ownerName}">
-           <%--  <input type="hidden" name="id" value="${review.id}"/> --%>
+                   class="form-horizontal" action="review/saveReview/${ownerName}">
+             <input type="hidden" name="hotelId" value="1"/> 
             <div class="form-group has-feedback">
                 
                 <petclinic:inputField label="Rating" name="stars"/>

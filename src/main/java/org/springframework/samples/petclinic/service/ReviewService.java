@@ -1,6 +1,9 @@
 package org.springframework.samples.petclinic.service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -15,6 +18,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ReviewService {
+	@Autowired
+	HotelService hotelService;
 	
 	 @Autowired
 	 private HotelRepository hotelRepo;
@@ -52,9 +57,16 @@ public class ReviewService {
 		}
 @Transactional
 public void save(Review review) {
+
 	reviewRepo.save(review);
 	
 	
+}
+
+@Transactional
+public List<Review> findReviewByHotelId(Integer hotelId){
+	 List<Review> reviews = (List<Review>) reviewRepo.findAll();
+	 	return reviews.stream().filter(x->x.getHotel().getId().equals(hotelId)).collect(Collectors.toList());
 }
 	 
 

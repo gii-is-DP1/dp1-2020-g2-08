@@ -38,5 +38,9 @@ public class Review extends BaseEntity {
 	
 	@Column(name = "ownerName")
 	 private String ownerName;
+	
+	@ManyToOne
+	@JoinColumn(name = "hotel_id")
+	private Hotel hotel;
 
 }

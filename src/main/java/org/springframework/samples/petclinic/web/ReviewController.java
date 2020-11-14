@@ -1,9 +1,14 @@
 package org.springframework.samples.petclinic.web;
 
+import java.util.List;
+
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.model.Hotel;
 import org.springframework.samples.petclinic.model.Review;
+import org.springframework.samples.petclinic.service.HotelService;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.ReviewService;
 import org.springframework.stereotype.Controller;
@@ -19,20 +24,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ReviewController {
 	
 	@Autowired
-	HotelController hotelController;
+	private HotelController hotelController;
 	@Autowired
 	private OwnerService ownerService;
-	
+	@Autowired
+	private HotelService hotelService;
 
 	@Autowired
 	private ReviewService reviewService;
 
 	@Autowired
 	public ReviewController(  OwnerService ownerService,
-			 ReviewService reviewService) {
+			 ReviewService reviewService,HotelService hotelService) {
 
 		this.ownerService = ownerService;
 		this.reviewService = reviewService;
+		this.hotelService=hotelService;
 
 	}
 	
@@ -48,7 +55,10 @@ public class ReviewController {
 				// mande al metodo "/save"
 
 				hotelController.devolverOwner(modelmap);
-				modelmap.addAttribute("review", new Review());
+				
+				Review review = new Review();
+				
+				modelmap.addAttribute("review", review);
 				vista = "reviews/newReview";
 
 			} else {
@@ -61,14 +71,17 @@ public class ReviewController {
 		}
 
 		// nueva reseña al hotel
-		@PostMapping(path = "review/saveReview/{ownerName}")
+		@PostMapping(path = "saveReview/{ownerName}")
 		public String guardarReview(@Valid Review review, BindingResult result, ModelMap modelmap,
-				@PathVariable("ownerName") String ownerName) {
-
+				@PathVariable("ownerName") String ownerName, @PathParam("hotelId")Integer hotelId) { // pathparam coge el parametro del formulario hidden
+			
+			review.setHotel(hotelService.findById(hotelId));
 			review.setOwnerName(ownerName);
 			// Obtiene la reseña del formulario y la guarda en la bd
 			reviewService.save(review);
-			modelmap.addAttribute("message", "Review creada con éxito!");
+		
+			
+			modelmap.addAttribute("message", "Review creada con éxito en el hotel 1");
 
 			// Cuando acaba, redirecciona a la lista de reservas, donde esta la review
 			return hotelController.listadoReservas(modelmap);

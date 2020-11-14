@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.web;
 
+import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Booking;
@@ -127,7 +128,7 @@ public class HotelController {
 	public String listadoReservasPorOwner(@PathVariable("ownerId") int ownerId, ModelMap modelmap) {
 
 		// Obtiene todas las reservas del owner a partir de su id
-		Iterable<Booking> bookings = bookingService.findBookingByOwnerId(ownerId);
+		List<Booking> bookings = bookingService.findBookingsByOwnerId(ownerId);
 		// Pone las reservas en el modelmap para mandar a la vista
 		modelmap.addAttribute("bookings", bookings);
 		modelmap.addAttribute("owner", ownerService.findOwnerById(ownerId));

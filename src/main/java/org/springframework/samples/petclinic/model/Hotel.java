@@ -1,6 +1,9 @@
 package org.springframework.samples.petclinic.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -13,6 +16,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.beans.support.MutableSortDefinition;
+import org.springframework.beans.support.PropertyComparator;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
@@ -37,12 +42,38 @@ public class Hotel extends BaseEntity {
 
 	// lista de reservas del hotel
 	@OneToMany
-	@JoinColumn(name = "booking_id")
 	private Set<Booking> bookings;
 
 	// lista de reviews del hotel
-	@OneToMany
-	@JoinColumn(name = "review_id")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "hotel")
+	
 	private Set<Review> reviews;
+	
+	
+	protected Set<Review> getReviewsInternal() {
+		if (this.reviews == null) {
+			this.reviews = new HashSet<>();
+		}
+		return this.reviews;
+	}
+	
+	protected void setReviewsInternal(Set<Review> reviews) {
+		this.reviews = reviews;
+	}
 
+	
+	
+	public List<Review> getReviews2() {
+		List<Review> sortedReviews = new ArrayList<>(getReviewsInternal());
+		PropertyComparator.sort(sortedReviews, new MutableSortDefinition("stars", true, true));
+		return Collections.unmodifiableList(sortedReviews);
+	}
+	
+	public void addReview(Review review) {
+		getReviewsInternal().add(review);
+		review.setHotel(this);
+}
+	public boolean removeReview(Review review) {
+		return getReviewsInternal().remove(review);
+	}
 }
