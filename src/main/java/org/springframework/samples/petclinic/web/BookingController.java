@@ -9,6 +9,7 @@ import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Booking;
+import org.springframework.samples.petclinic.model.Hotel;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.service.BookingService;
@@ -73,10 +74,12 @@ public class BookingController {
 			// Tambien obtiene el id de la url, para poder crear una reserva con ese owner
 			// que recibe
 			Booking booking = new Booking();
+			List<Hotel> hoteles = (List<Hotel>) hotelService.findAll();
 			modelmap.addAttribute("booking", booking);
 			modelmap.addAttribute("owner", owner);
 			modelmap.addAttribute("ownerId", ownerId);
 			modelmap.addAttribute("pets", pets);
+			modelmap.addAttribute("hoteles", hoteles);
 
 			// Redirige al formulario editBooking.jsp
 			return "hotel/editBooking";
@@ -93,10 +96,7 @@ public class BookingController {
 		public String guardarBooking(Booking booking, @PathVariable("ownerId") Integer ownerId,
 				ModelMap modelmap) {
 
-			
-			booking.setHotel(hotelService.findById(1));
 			booking.setOwner(ownerService.findOwnerById(ownerId));
-
 			bookingService.save(booking);
 			modelmap.addAttribute("message", "Booking creado con éxito!");
 
@@ -127,7 +127,7 @@ public class BookingController {
 				
 			}
 			else if ( ownerService.esAdmin() ) {
-				bookingService.delete(bookingService.findBookingById(bookingId));
+				bookingService.deleteById(bookingId);
 				modelmap.addAttribute("message", "Booking borrado con éxito!");
 				
 			}

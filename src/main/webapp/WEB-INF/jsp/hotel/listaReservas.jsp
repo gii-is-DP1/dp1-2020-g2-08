@@ -15,6 +15,7 @@
 				<th style="width: 120px">Owner</th>
 				<th style="width: 200px;">StartDate</th>
 				<th>EndDate</th>
+				<th>City</th>
 
 
 
@@ -29,6 +30,7 @@
 					<td><c:out value="${booking.owner.firstName}" /></td>
 					<td><c:out value="${booking.startDate}" /></a></td>
 					<td><c:out value="${booking.endDate}" /></td>
+					<td><c:out value="${booking.hotel.city}" /></td>
 
 				</tr>
 
@@ -59,6 +61,8 @@
 				<th style="width: 120px">Description</th>
 				<th style="width: 200px;">Review date</th>
 				<th>Stars</th>
+				<th>Actions</th>
+				<th>Owner</th>
 				<th></th>
 			</tr>
 		</thead>
@@ -66,12 +70,17 @@
 
 			<c:forEach items="${reviews}" var="review">
 				<tr>
-				<td><c:out value="${review.ownerName}" /></a></td>
+				<td><c:out value="${review.owner.firstName}" /></a></td>
 					<td><c:out value="${review.tittle}" /></a></td>
 					<td><c:out value="${review.description}" /></a></td>
 					<td><c:out value="${review.reviewDate}" /></td>
 					<td><c:out value="${review.stars}" /></td>
+					<td><c:out value="${review.hotel.city}" /></td>
+					<td>
+					<spring:url value="/hotel/review/delete/${review.id}" var="eliminarReview"></spring:url>
+	<a class="btn btn-default" href="${fn:escapeXml(eliminarReview)}">Delete </a></td>
 					<td></td>
+					
 				</tr>
 
 			</c:forEach>
