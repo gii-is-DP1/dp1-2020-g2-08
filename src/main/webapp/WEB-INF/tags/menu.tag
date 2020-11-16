@@ -56,6 +56,10 @@
 								<li><a href="/hotel/myBookings">My bookings</a></li>
 								<li><a href="/hotel/booking/new">New booking</a></li>
 								
+								<sec:authorize access="hasAuthority('admin')">
+		<li><a href="/hotel/new">New Hotel</a></li>
+	</sec:authorize>
+								
 
 							</ul>
 				</div>
@@ -66,6 +70,8 @@
 						aria-hidden="true"></span>
 					<span class="">Shop</span>
 				</petclinic:menuItem>
+				
+				
 
 
 

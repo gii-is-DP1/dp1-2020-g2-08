@@ -45,4 +45,11 @@ public class HotelService {
 	 @Transactional
 	 public List<Review> getReviewsByHotelId(Integer hotelId){
 		 return reviewService.findReviewByHotelId(hotelId);}	 
+
+
+@Transactional
+public void save(Hotel hotel) {
+	hotelRepo.save(hotel);
+	
+}
 }
