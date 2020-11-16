@@ -91,4 +91,18 @@ public void eliminarReviewsPorHotel(Integer hotelId) {
 	
 }
 
+@Transactional
+public boolean puedeReseñar(Review review, Integer ownerId) {
+	Hotel hotel = review.getHotel();
+	List<Review> reviews  = findReviewByHotelId(hotel.getId());
+	if (reviews.stream().anyMatch(x->x.getOwner().getId().equals(ownerId))) {
+		return false;
+	}
+	
+	else {
+		return true;
+	}
+	
+}
+
 }

@@ -140,7 +140,7 @@ public class BookingController {
 			else if ( ownerService.esAdmin() ) {
 				bookingService.deleteById(bookingId);
 				modelmap.addAttribute("message", "Booking borrado con éxito!");
-				
+				return hotelController.listadoReservas(modelmap);
 			}
 				
 			return hotelController.listadoReservasPorOwner(ownerId, modelmap);

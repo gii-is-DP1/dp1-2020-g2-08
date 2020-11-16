@@ -68,17 +68,16 @@ public class HotelController {
 			Owner o = (ownerService.findAllOwners().stream().filter(x -> x.getUser().getUsername().equals(res)))
 					.collect(Collectors.toList()).get(0);
 			Integer id = o.getId();
-			String name = o.getFirstName();
-			String lastname = o.getLastName();
+		
 
-			modelmap.addAttribute("message", "Tu  username Id es: " + id);
+			
 			modelmap.addAttribute("ownerId", id);
-			modelmap.addAttribute("ownerName", name);
-			modelmap.addAttribute("ownerLastname", lastname);
-			modelmap.addAttribute("logueado", "si");
+			modelmap.addAttribute("owner", o);
+			
+			
 		} else {
 			modelmap.addAttribute("message", "No estas logueado como owner");
-			modelmap.addAttribute("logueado", "no");
+			
 		}
 
 	}
