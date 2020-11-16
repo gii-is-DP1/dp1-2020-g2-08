@@ -55,6 +55,12 @@ public class ReviewService {
 		 reviewRepo.delete(review);
 			
 		}
+	 
+	 @Transactional
+		public void deleteById(Integer reviewId) {
+		 reviewRepo.deleteById(reviewId);
+			
+		}
 @Transactional
 public void save(Review review) {
 

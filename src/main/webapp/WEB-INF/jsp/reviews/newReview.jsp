@@ -17,14 +17,21 @@
             New Review
         </h2>
         <form:form modelAttribute="review"
-                   class="form-horizontal" action="review/saveReview/${ownerName}">
-             <input type="hidden" name="hotelId" value="1"/> 
+                   class="form-horizontal" action="review/saveReview/${ownerId}">
+             
             <div class="form-group has-feedback">
                 
                 <petclinic:inputField label="Rating" name="stars"/>
                 <petclinic:inputField label="Tittle" name="tittle"/>
                 <petclinic:inputField label="Description" name="description"/>
                 <petclinic:inputField label="Fecha " name="reviewDate"/>
+                <label for="hotel">Choose your Hotel:</label>
+                        <select name="hotel">
+   						 <c:forEach items="${hoteles}" var="hotel">  
+   						 <option value="${hotel.id}">${hotel.city} 
+							
+					</c:forEach>  
+    </select>
                 <div class="control-group">
                    
                 </div>

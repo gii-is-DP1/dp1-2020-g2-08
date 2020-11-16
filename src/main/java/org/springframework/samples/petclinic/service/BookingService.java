@@ -56,6 +56,12 @@ public class BookingService {
 			bookingRepo.delete(booking);
 			
 		}
+	 
+	 @Transactional
+		public void delete(Integer bookingId) {
+			bookingRepo.deleteById(bookingId);
+			
+		}
 @Transactional
 public void save(Booking booking) {
 	bookingRepo.save(booking);

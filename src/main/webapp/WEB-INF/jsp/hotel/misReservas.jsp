@@ -15,6 +15,7 @@
 				<th style="width: 200px;">StartDate</th>
 				<th>EndDate</th>
 				<th style="width: 120px">Owner</th>
+				<th>City</th>
 				<th>Actions</th>
 
 			</tr>
@@ -29,10 +30,11 @@
 					<td><c:out value="${booking.startDate}" /></a></td>
 					<td><c:out value="${booking.endDate}" /></td>
 					<td><c:out value="${booking.owner.firstName}" /></td>
+					<td><c:out value="${booking.hotel.city}" /></td>
 
 					<td><spring:url value="/hotel/booking/delete/${booking.id}/${ownerId}"
 							var="bookingId">
-							<%-- <spring:param name="bookingId" value="${booking.id}" /> --%>
+							
 						</spring:url> <a href="${fn:escapeXml(bookingId)}"> Delete</a></td>
 				</tr>
 

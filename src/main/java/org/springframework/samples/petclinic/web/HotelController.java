@@ -91,7 +91,7 @@ public class HotelController {
 		Iterable<Hotel> hotel = hotelService.findAll();
 		Iterable<Booking> bookings = bookingService.findAll();
 		Iterable<Review> reviews = reviewService.findAll();
-
+		
 		// Mete todos los datos en el modelmap para mostrarlos en la vista
 		int ocupadas = bookingService.bookingCount();
 		modelmap.addAttribute("reviews", reviews);
@@ -99,6 +99,7 @@ public class HotelController {
 		modelmap.addAttribute("hotel", hotel);
 		modelmap.addAttribute("aforo", hotel.iterator().next().getAforo());
 		modelmap.addAttribute("ocupadas", ocupadas);
+
 
 		// Manda todos los atributos a la vista listaReservas.jsp
 		return "hotel/listaReservas";

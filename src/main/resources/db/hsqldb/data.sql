@@ -84,9 +84,16 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (2, 8, '2013-01-02',
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03', 'neutered');
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04', 'spayed');
 
-INSERT INTO hotel(id,aforo,ocupadas) VALUES (1, 50, 0);
+INSERT INTO hotel(id,aforo,ocupadas,city) VALUES (1, 50, 0, 'Sevilla');
+INSERT INTO hotel(id,aforo,ocupadas,city) VALUES (2, 50, 0, 'Cordoba');
+INSERT INTO hotel(id,aforo,ocupadas,city) VALUES (3, 50, 0, 'Malaga');
+
 INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (1, '2020-02-10', '2020-02-15',1,1,1);
 INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (2, '2020-02-10', '2020-02-16',1,2,2);
 INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (3, '2020-02-10', '2020-02-17',1,3,3);
+
+INSERT INTO reviews(id,description,review_date,stars,tittle,hotel_id,owner_id) VALUES (1, 'prueba descripcion 1','2020-02-10',5,'prueba de titulo 1',1,12);
+INSERT INTO reviews(id,description,review_date,stars,tittle,hotel_id,owner_id) VALUES (2, 'prueba descripcion 2','2020-03-10',4,'prueba de titulo 2',2,13);
+INSERT INTO reviews(id,description,review_date,stars,tittle,hotel_id,owner_id) VALUES (3, 'prueba descripcion 3','2020-04-10',1,'prueba de titulo 3',3,11);
 
 

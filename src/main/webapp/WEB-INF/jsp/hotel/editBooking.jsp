@@ -21,7 +21,7 @@
 	<jsp:body>
         <h2><c:if test="${booking['new']}">New </c:if> Booking for <c:out value="${pets[0].owner.firstName} ${pets[0].owner.lastName}" /> </h2>
 
-<!--  Hay que enviar los datos de owner, pet, fehca inicio y fecha fin-->
+<!--  Hay que enviar los datos de owner, pet, fecha inicio y fecha fin-->
         
 
         <form:form modelAttribute="booking" class="form-horizontal"
@@ -39,9 +39,15 @@
    						 <c:forEach items="${pets}" var="pet">  
    						 <option value="${pet.id}">${pet.name} 
 							
+					</c:forEach>
+    </select> <br><br><br>
+                     <label for="hotel">Choose your Hotel:</label>
+                        <select name="hotel">
+   						 <c:forEach items="${hoteles}" var="hotel">  
+   						 <option value="${hotel.id}">${hotel.city} 
+							
 					</c:forEach>  
-    </select>
-                     
+    </select><br>
                
             </div>
 
