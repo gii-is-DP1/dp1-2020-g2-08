@@ -96,18 +96,24 @@ public class BookingController {
 
 		}
 
-		// CREAR UNA NUEVA RESERVA Falta hacerlo bien
+		// CREAR UNA NUEVA RESERVA 
 		@PostMapping(path = "/save/{ownerId}")
 		public String guardarBooking(Booking booking, @PathVariable("ownerId") Integer ownerId,
 				ModelMap modelmap) {
 
 			booking.setOwner(ownerService.findOwnerById(ownerId));
-			bookingService.save(booking);
+			if (bookingService.fechaValida(booking) && bookingService.numeroDiasValido(booking)) {
+				bookingService.save(booking);
 			modelmap.addAttribute("message", "Booking creado con éxito!");
 
 			modelmap.clear();
 			String vista = hotelController.listadoReservasPorOwner(ownerId, modelmap);
 			return vista;
+			}
+			else {
+				modelmap.addAttribute("message", "La reserva tiene que ser de mas de 1 dia y como maximo de 7");
+				return crearBooking(modelmap);
+			}
 
 		}
 

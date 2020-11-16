@@ -72,10 +72,8 @@ public void delete(Hotel hotel) {
 }
 
 @Transactional
-public void deleteById(Integer hotelId) {	
-	
-	
-		hotelRepo.deleteById(hotelId);
+public void deleteById(Integer hotelId) {
+	hotelRepo.deleteById(hotelId);
 	
 }
 }

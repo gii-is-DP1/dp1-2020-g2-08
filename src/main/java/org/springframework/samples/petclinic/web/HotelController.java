@@ -33,8 +33,7 @@ public class HotelController {
 	private HotelService hotelService;
 	@Autowired
 	private OwnerService ownerService;
-	@Autowired
-	private PetService petService;
+	
 	@Autowired
 	private BookingService bookingService;
 
@@ -42,11 +41,11 @@ public class HotelController {
 	private ReviewService reviewService;
 
 	@Autowired
-	public HotelController(HotelService hotelService, PetService petService, OwnerService ownerService,
+	public HotelController(HotelService hotelService, OwnerService ownerService,
 			BookingService bookingService, ReviewService reviewService) {
 		this.hotelService = hotelService;
 		this.ownerService = ownerService;
-		this.petService = petService;
+		
 		this.bookingService = bookingService;
 		this.reviewService = reviewService;
 
@@ -84,32 +83,6 @@ public class HotelController {
 
 	}
 
-	// CREAR UN NUEVO HOTEL
-	@GetMapping(path = "/new")
-	public String crearHotel(ModelMap modelmap) {
-
-		// Tambien obtiene el id de la url, para poder crear una reserva con ese owner
-		// que recibe
-		Hotel hotel = new Hotel();
-
-		modelmap.addAttribute("hotel", hotel);
-
-		// Redirige al formulario editBooking.jsp
-		return "hotel/newHotel";
-
-	}
-
-	@PostMapping(path = "/new")
-	public String guardarBooking(Hotel hotel, ModelMap modelmap) {
-
-		modelmap.addAttribute("message", "Booking creado con éxito!");
-		hotelService.save(hotel);
-		modelmap.clear();
-		String vista = listadoReservas(modelmap);
-		return vista;
-
-	}
-
 	// LISTADO DE TODAS LAS RESERVAS
 	@GetMapping()
 	public String listadoReservas(ModelMap modelmap) {
@@ -130,13 +103,12 @@ public class HotelController {
 
 			// Manda todos los atributos a la vista listaReservas.jsp
 			return "hotel/listaReservas";
-	
-		}
-		else {
+
+		} else {
 			modelmap.addAttribute("message", "No hay hoteles disponibles en este momento");
 			return "welcome";
 		}
-		
+
 	}
 
 	// LISTA DE MIS RESERVAS
@@ -172,31 +144,42 @@ public class HotelController {
 
 	}
 
+	// CREAR UN NUEVO HOTEL
+	@GetMapping(path = "/new")
+	public String crearHotel(ModelMap modelmap) {
+
+		// Tambien obtiene el id de la url, para poder crear una reserva con ese owner
+		// que recibe
+		Hotel hotel = new Hotel();
+
+		modelmap.addAttribute("hotel", hotel);
+
+		// Redirige al formulario editBooking.jsp
+		return "hotel/newHotel";
+
+	}
+
+	@PostMapping(path = "/new")
+	public String guardarBooking(Hotel hotel, ModelMap modelmap) {
+
+		modelmap.addAttribute("message", "Booking creado con éxito!");
+		hotelService.save(hotel);
+		modelmap.clear();
+		String vista = listadoReservas(modelmap);
+		return vista;
+
+	}
+
 	// BORRAR UN HOTEL
 	@GetMapping(path = "/delete/{hotelId}")
 	public String borrarHotel(@PathVariable("hotelId") Integer hotelId, ModelMap modelmap) {
 
-		List<Booking> bookings = (List<Booking>) bookingService.findAll();
-		List<Integer> idBooking = bookings.stream().filter(x -> x.getHotel().getId().equals(hotelId))
-				.map(x -> x.getId()).collect(Collectors.toList()); // Lista con los id de los bookings a borrar
-
-		if (idBooking.size() > 0) {
-			//Borrado de todos los bookings asociados al hotel seleccionado
-			for (int i = 0; i < idBooking.size(); i++) {
-				bookingService.deleteById(idBooking.get(i));
-			}
-		}
-		List<Review> reviews = (List<Review>) reviewService.findAll();
-		List<Integer> idReview = reviews.stream().filter(x -> x.getHotel().getId().equals(hotelId)).map(x -> x.getId())
-				.collect(Collectors.toList()); // Lista con los id de las reviews a borrar
-		if (idReview.size() > 0) {
-			//Borrado de todas las reviews asociados al hotel seleccionado
-			for (int i = 0; i < idReview.size(); i++) {
-				reviewService.deleteById(idReview.get(i));
-			}
-		}
-		
-		//Llegados a este punto, para el hotel seleccionado se han borrado todas las reviews y bookings, por lo que procedemos a borrarlo
+		// Con estos metodos borramos reviews y bookings en caso de que los haya, para
+		// poder borrar el hotel
+		bookingService.eliminarBookingsPorHotel(hotelId);
+		reviewService.eliminarReviewsPorHotel(hotelId);
+		// Llegados a este punto, para el hotel seleccionado se han borrado todas las
+		// reviews y bookings, por lo que procedemos a borrarlo
 		hotelService.deleteById(hotelId);
 		modelmap.addAttribute("message", "Hotel borrado con éxito!");
 

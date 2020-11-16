@@ -96,22 +96,24 @@ public class ReviewController {
 		
 		// BORRAR UNA RESERVA
 				@GetMapping(path = "/delete/{reviewId}")
-				public String borrarReview(@PathVariable("reviewId") Integer reviewId, @PathParam("ownerId") Integer ownerId,
+				public String borrarReview(@PathVariable("reviewId") Integer reviewId,
 						ModelMap modelmap) {
 					
 					
 
 					if (ownerService.esOwner()) {
 						Integer ownerActual=ownerService.devolverOwnerId();
+						
+						Review review = reviewService.findReviewById(reviewId).get();
 						// Si la review está la borra, si no, te redirecciona a la lista de reviews
-						if ( (ownerService.devolverOwnerId().equals(ownerId))) {
+						if ( (ownerService.devolverOwnerId().equals(review.getOwner().getId()))) {
 							
 							reviewService.deleteById(reviewId);
 							
 							modelmap.addAttribute("message", "Review borrada con éxito!! ");
 
 						} else {
-							modelmap.addAttribute("message", "No puedes borrar reviews de otros owners "+modelmap.getAttribute("ownerId")+" asdcsdc");
+							modelmap.addAttribute("message", "No puedes borrar reviews de otros owners");
 						}
 
 						// Cuando acaba el metodo, te redirecciona a la lista de reservas del owner
