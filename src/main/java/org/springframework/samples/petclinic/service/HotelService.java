@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.transaction.Transactional;
 
@@ -44,5 +46,36 @@ public class HotelService {
 	 
 	 @Transactional
 	 public List<Review> getReviewsByHotelId(Integer hotelId){
-		 return reviewService.findReviewByHotelId(hotelId);}	 
+		 return reviewService.findReviewByHotelId(hotelId);}	
+	 
+	 @Transactional
+	 public boolean tieneReviews(Integer hotelId){
+		 boolean res =(hotelRepo.findById(hotelId).get().getReviews().size())>0;
+		 return res;
+		 }	
+	 @Transactional
+	 public boolean tieneBookings(Integer hotelId){
+		 boolean res =(hotelRepo.findById(hotelId).get().getBookings().size())>0;
+		 return res;
+		 }	
+
+
+@Transactional
+public void save(Hotel hotel) {
+	hotelRepo.save(hotel);
+	
+}
+
+@Transactional
+public void delete(Hotel hotel) {	
+		hotelRepo.delete(hotel);	
+}
+
+@Transactional
+public void deleteById(Integer hotelId) {	
+	
+	
+		hotelRepo.deleteById(hotelId);
+	
+}
 }

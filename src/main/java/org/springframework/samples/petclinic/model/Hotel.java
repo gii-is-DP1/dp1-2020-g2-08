@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -36,11 +37,11 @@ public class Hotel extends BaseEntity {
 	
 	
 
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "hotel", fetch = FetchType.LAZY)	
 	private Set<Booking> bookings;
 
 	// lista de reviews del hotel
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "hotel")	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "hotel", fetch = FetchType.LAZY)	
 	private Set<Review> reviews;
 	
 	
