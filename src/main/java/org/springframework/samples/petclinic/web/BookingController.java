@@ -61,6 +61,7 @@ public class BookingController {
 	// CREAR UNA NUEVA RESERVA
 		@GetMapping(path = "/new")
 		public String crearBooking( ModelMap modelmap) {
+			if (hotelService.findAll().iterator().hasNext()) {
 			if (ownerService.esOwner()) {
 		Integer ownerId=ownerService.devolverOwnerId();
 		
@@ -87,7 +88,11 @@ public class BookingController {
 	else {
 		modelmap.addAttribute("message", "Para poder crear una reserva, tienes que estar logueado como owner");
 		return "welcome";
-	}	
+	}	}
+			else {
+				modelmap.addAttribute("message", "No puedes crear una nueva reserva hasta que no haya un hotel disponible");
+				return "welcome";
+			}
 
 		}
 
@@ -133,4 +138,5 @@ public class BookingController {
 			}
 				
 			return hotelController.listadoReservasPorOwner(ownerId, modelmap);
-}}
+}
+		}

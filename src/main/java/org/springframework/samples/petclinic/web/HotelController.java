@@ -98,10 +98,10 @@ public class HotelController {
 		return "hotel/newHotel";
 
 	}
-	@PostMapping(path = "/new")
-	public String guardarBooking(Hotel hotel,ModelMap modelmap) {
 
-		
+	@PostMapping(path = "/new")
+	public String guardarBooking(Hotel hotel, ModelMap modelmap) {
+
 		modelmap.addAttribute("message", "Booking creado con éxito!");
 		hotelService.save(hotel);
 		modelmap.clear();
@@ -119,17 +119,24 @@ public class HotelController {
 		Iterable<Booking> bookings = bookingService.findAll();
 		Iterable<Review> reviews = reviewService.findAll();
 
-		// Mete todos los datos en el modelmap para mostrarlos en la vista
-		int ocupadas = bookingService.bookingCount();
-		modelmap.addAttribute("reviews", reviews);
-		modelmap.addAttribute("bookings", bookings);
-		modelmap.addAttribute("hotel", hotel);
-		modelmap.addAttribute("aforo", hotel.iterator().next().getAforo());
-		modelmap.addAttribute("ocupadas", ocupadas);
+		if (hotel.iterator().hasNext()) {
+			// Mete todos los datos en el modelmap para mostrarlos en la vista
+			int ocupadas = bookingService.bookingCount();
+			modelmap.addAttribute("reviews", reviews);
+			modelmap.addAttribute("bookings", bookings);
+			modelmap.addAttribute("hotel", hotel);
+			modelmap.addAttribute("aforo", hotel.iterator().next().getAforo());
+			modelmap.addAttribute("ocupadas", ocupadas);
 
-		// Manda todos los atributos a la vista listaReservas.jsp
-		return "hotel/listaReservas";
-
+			// Manda todos los atributos a la vista listaReservas.jsp
+			return "hotel/listaReservas";
+	
+		}
+		else {
+			modelmap.addAttribute("message", "No hay hoteles disponibles en este momento");
+			return "welcome";
+		}
+		
 	}
 
 	// LISTA DE MIS RESERVAS
@@ -163,6 +170,37 @@ public class HotelController {
 		// Redirige a misReservas.jsp
 		return "hotel/misReservas";
 
+	}
+
+	// BORRAR UN HOTEL
+	@GetMapping(path = "/delete/{hotelId}")
+	public String borrarHotel(@PathVariable("hotelId") Integer hotelId, ModelMap modelmap) {
+
+		List<Booking> bookings = (List<Booking>) bookingService.findAll();
+		List<Integer> idBooking = bookings.stream().filter(x -> x.getHotel().getId().equals(hotelId))
+				.map(x -> x.getId()).collect(Collectors.toList()); // Lista con los id de los bookings a borrar
+
+		if (idBooking.size() > 0) {
+			//Borrado de todos los bookings asociados al hotel seleccionado
+			for (int i = 0; i < idBooking.size(); i++) {
+				bookingService.deleteById(idBooking.get(i));
+			}
+		}
+		List<Review> reviews = (List<Review>) reviewService.findAll();
+		List<Integer> idReview = reviews.stream().filter(x -> x.getHotel().getId().equals(hotelId)).map(x -> x.getId())
+				.collect(Collectors.toList()); // Lista con los id de las reviews a borrar
+		if (idReview.size() > 0) {
+			//Borrado de todas las reviews asociados al hotel seleccionado
+			for (int i = 0; i < idReview.size(); i++) {
+				reviewService.deleteById(idReview.get(i));
+			}
+		}
+		
+		//Llegados a este punto, para el hotel seleccionado se han borrado todas las reviews y bookings, por lo que procedemos a borrarlo
+		hotelService.deleteById(hotelId);
+		modelmap.addAttribute("message", "Hotel borrado con éxito!");
+
+		return listadoReservas(modelmap);
 	}
 
 }
