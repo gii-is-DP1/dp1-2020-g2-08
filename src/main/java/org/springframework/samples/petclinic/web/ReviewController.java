@@ -49,7 +49,7 @@ public class ReviewController {
 		@GetMapping()
 		public String crearReviewHotel(ModelMap modelmap) {
 
-			String vista = hotelController.listadoReservas(modelmap);
+			
 
 			if (ownerService.esOwner()) {
 		
@@ -62,14 +62,13 @@ public class ReviewController {
 				List<Hotel> hoteles = (List<Hotel>) hotelService.findAll();
 				modelmap.addAttribute("review", review);
 				modelmap.addAttribute("hoteles", hoteles);
-				vista = "reviews/newReview";
+				return "reviews/newReview";
 
 			} else {
 				modelmap.clear();
 				modelmap.addAttribute("message", "Solo los owners pueden hacer reviews del hotel");
-				vista = hotelController.listadoReservas(modelmap);
+				return hotelController.listadoReservas(modelmap);
 			}
-			return vista;
 
 		}
 
@@ -83,35 +82,45 @@ public class ReviewController {
 			Integer ownerActual=ownerService.devolverOwnerId();
 			modelmap.addAttribute("ownerId", ownerActual);
 			// Obtiene la reseña del formulario y la guarda en la bd
-			reviewService.save(review);
-		
 			
-			modelmap.addAttribute("message", "Review creada con éxito en el hotel 1");
+			if (reviewService.puedeReseñar(review, ownerId)) {
+				reviewService.save(review);
+				
+				
+				modelmap.addAttribute("message", "Review creada con éxito en el hotel de "+review.getHotel().getCity());
 
-			// Cuando acaba, redirecciona a la lista de reservas, donde esta la review
-			return hotelController.listadoReservas(modelmap);
+				// Cuando acaba, redirecciona a la lista de reservas, donde esta la review
+				return hotelController.listadoReservas(modelmap);
+			}
+			else {
+				modelmap.addAttribute("message", "No puedes crear otra reserva para el hotel de "+review.getHotel().getCity());
+				return crearReviewHotel(modelmap); 
+			}
+			
 
 		}
 		
 		
 		// BORRAR UNA RESERVA
 				@GetMapping(path = "/delete/{reviewId}")
-				public String borrarReview(@PathVariable("reviewId") Integer reviewId, @PathParam("ownerId") Integer ownerId,
+				public String borrarReview(@PathVariable("reviewId") Integer reviewId,
 						ModelMap modelmap) {
 					
 					
 
 					if (ownerService.esOwner()) {
 						Integer ownerActual=ownerService.devolverOwnerId();
+						
+						Review review = reviewService.findReviewById(reviewId).get();
 						// Si la review está la borra, si no, te redirecciona a la lista de reviews
-						if ( (ownerService.devolverOwnerId().equals(ownerId))) {
+						if ( (ownerService.devolverOwnerId().equals(review.getOwner().getId()))) {
 							
 							reviewService.deleteById(reviewId);
 							
 							modelmap.addAttribute("message", "Review borrada con éxito!! ");
 
 						} else {
-							modelmap.addAttribute("message", "No puedes borrar reviews de otros owners "+modelmap.getAttribute("ownerId")+" asdcsdc");
+							modelmap.addAttribute("message", "No puedes borrar reviews de otros owners");
 						}
 
 						// Cuando acaba el metodo, te redirecciona a la lista de reservas del owner

@@ -25,7 +25,7 @@
         
 
         <form:form modelAttribute="booking" class="form-horizontal"
-			action="../booking/save/${ownerId}">
+			action="/hotel/booking/save/${ownerId}">
 			
             <div class="form-group has-feedback">
                 <petclinic:inputField label="Start Date"
