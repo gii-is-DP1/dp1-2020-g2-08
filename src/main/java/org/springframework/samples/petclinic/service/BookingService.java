@@ -44,6 +44,13 @@ public class BookingService {
 		lista = (List<Booking>) bookingRepo.findAll();
 		return lista.stream().filter(x -> x.getOwner().getId().equals(ownerId)).collect(Collectors.toList());
 	}
+	
+	@Transactional
+	public List<Booking> findBookingsByHotelId(int hotelId) {
+		List<Booking> lista = new ArrayList<Booking>();
+		lista = (List<Booking>) bookingRepo.findAll();
+		return lista.stream().filter(x -> x.getHotel().getId().equals(hotelId)).collect(Collectors.toList());
+	}
 
 	@Transactional
 	public void deleteById(int bookingId) {

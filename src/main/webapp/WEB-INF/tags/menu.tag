@@ -57,6 +57,7 @@
 								<li><a href="/hotel/booking/new">New booking</a></li>
 								
 								<sec:authorize access="hasAuthority('admin')">
+								<li><a href="/hotel/listadoHoteles">All Hotels</a></li>
 		<li><a href="/hotel/new">New Hotel</a></li>
 	</sec:authorize>
 								

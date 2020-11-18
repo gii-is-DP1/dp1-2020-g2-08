@@ -44,8 +44,7 @@
 
 			</c:forEach>
 
-			<h3>Aforo máximo del hotel: ${aforo}</h3>
-			<h3>Ocupadas actualmente: ${ocupadas}</h3>
+			
 			<%--  <h3>Hotel: ${hotel}</h3> --%>
 		</tbody>
 
