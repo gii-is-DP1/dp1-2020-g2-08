@@ -14,7 +14,7 @@
 <!--  Hay que enviar los datos de aforo,ocupadas, city-->
         
 
-        <form:form modelAttribute="hotel" class="form-horizontal">
+        <form:form modelAttribute="hotel" class="form-horizontal" action="/hotel/save">
 			
             <div class="form-group has-feedback">
                 <petclinic:inputField label="Aforo" name="aforo" />
