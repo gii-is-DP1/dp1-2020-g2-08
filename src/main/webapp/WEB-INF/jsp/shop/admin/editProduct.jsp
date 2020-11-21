@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 
 
 <petclinic:layout pageName="Products">
@@ -35,6 +37,9 @@
                     <input type="hidden" name="shop_id" value="1"/>
                   
                     <button class="btn btn-default" type="submit">Update product</button>
+                    <spring:url value="/shop/admin/products" var="back">
+					</spring:url>
+					<a class="btn btn-default" href="${fn:escapeXml(back)}">Return</a>
                 </div>
             </div>
         </form:form>

@@ -6,7 +6,7 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
 
 <petclinic:layout pageName="products">
-	<h2>Products List</h2>
+	<h2>Accessories List</h2>
 
 	<table id="productTable" class="table table-striped">
 		<thead>
@@ -52,7 +52,7 @@
 			</c:forEach>
 			
 			<h3>Number of products: ${productsNumber}</h3>
-			<%--  <h3>Hotel: ${hotel}</h3> --%>
+			
 		
 		</tbody>
 			
@@ -67,18 +67,23 @@
 	</spring:url>
 	<spring:url value="/shop/admin/products/accessories" var="accessories">
 	</spring:url>
-	
+	<spring:url value="/shop/admin/products" var="back">
+	</spring:url>
 			
 	
 	<a class="btn btn-default" href="${fn:escapeXml(pets)}">Pets </a>
+			
+
 
 	<a class="btn btn-default" href="${fn:escapeXml(toys)}">Toys </a>
-
+			
 	<a class="btn btn-default" href="${fn:escapeXml(food)}">Food </a>
-
+		
 	<a class="btn btn-default" href="${fn:escapeXml(accessories)}">Accessories</a>
-	
+		
 	<a class="btn btn-default" href="${fn:escapeXml(products)}">Add product</a>
 	
-</petclinic:layout>
+	<a class="btn btn-default" href="${fn:escapeXml(back)}">Return</a>
 	
+	
+</petclinic:layout>
