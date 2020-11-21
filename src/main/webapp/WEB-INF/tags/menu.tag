@@ -65,7 +65,7 @@
 							</ul>
 				</div>
 
-				<petclinic:menuItem active="${name eq 'shop'}" url="/shop/home" 
+				<petclinic:menuItem active="${name eq 'shop'}" url="/shop" 
 					title="Shop">
 					<span class="glyphicon glyphicon glyphicon-shopping-cart"
 						aria-hidden="true"></span>
