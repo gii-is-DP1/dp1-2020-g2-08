@@ -1,5 +1,7 @@
 package org.springframework.samples.petclinic.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -36,6 +38,8 @@ public class ProductService {
 	public Optional<Product> findProductById(int productId) {
 		return productRepo.findById(productId);
 	}
+	
+
 
 	@Transactional
 	public void deleteById(int productId) {

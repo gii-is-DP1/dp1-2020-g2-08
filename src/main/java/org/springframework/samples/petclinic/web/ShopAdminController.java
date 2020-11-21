@@ -139,5 +139,72 @@ public class ShopAdminController {
 		return view;
 
 	}
+	
+	@GetMapping(path = "/pets" )
+	public String petList(ModelMap modelmap) {
+		String view = "shop/admin/Pets";
+		List<Product> products = (List<Product>) productService.findAll();
+		List<Product> productsByCategory = products.stream().filter(x->x.getCategory().equals("Pets")).collect(Collectors.toList());
+		int productsNumber = productsByCategory.size();
+		
+		
+		modelmap.addAttribute("product", productsByCategory);
+		modelmap.addAttribute("productsNumber", productsNumber);
+
+
+		return view;
+
+	}
+	
+	@GetMapping(path = "/food" )
+	public String foodList(ModelMap modelmap) {
+		String view = "shop/admin/Food";
+		List<Product> products = (List<Product>) productService.findAll();
+		List<Product> productsByCategory = products.stream().filter(x->x.getCategory().equals("Food")).collect(Collectors.toList());
+		int productsNumber = productsByCategory.size();
+
+		modelmap.addAttribute("product", productsByCategory);
+		modelmap.addAttribute("productsNumber", productsNumber);
+
+
+		return view;
+
+	}
+	
+	@GetMapping(path = "/toys" )
+	public String toysList(ModelMap modelmap) {
+		String view = "shop/admin/Toys";
+		List<Product> products = (List<Product>) productService.findAll();
+		List<Product> productsByCategory = products.stream().filter(x->x.getCategory().equals("Toys")).collect(Collectors.toList());
+		int productsNumber = productsByCategory.size();
+
+		
+		modelmap.addAttribute("product", productsByCategory);
+		modelmap.addAttribute("productsNumber", productsNumber);
+
+
+
+		return view;
+
+	}
+	
+	@GetMapping(path = "/accessories" )
+	public String accessoriesList(ModelMap modelmap) {
+		String view = "shop/admin/Accessories";
+		List<Product> products = (List<Product>) productService.findAll();
+		List<Product> productsByCategory = products.stream().filter(x->x.getCategory().equals("Accessories")).collect(Collectors.toList());
+		int productsNumber = productsByCategory.size();
+
+		
+		
+		modelmap.addAttribute("product", productsByCategory);
+		modelmap.addAttribute("productsNumber", productsNumber);
+
+
+
+		return view;
+
+	}
+
 
 }

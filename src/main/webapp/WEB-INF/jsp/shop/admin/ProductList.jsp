@@ -56,27 +56,29 @@
 		
 		</tbody>
 			
-	</table><spring:url value="/shop/admin/products/add" var="products">
-
-			</spring:url>
+	</table>
+	<spring:url value="/shop/admin/products/add" var="products">
+	</spring:url>
+	<spring:url value="/shop/admin/products/pets" var="pets">
+	</spring:url>
+	<spring:url value="/shop/admin/products/food" var="food">
+	</spring:url>
+	<spring:url value="/shop/admin/products/toys" var="toys">
+	</spring:url>
+	<spring:url value="/shop/admin/products/accessories" var="accessories">
+	</spring:url>
+	
 			
-				<spring:url value="/hotel/review" var="review">
+	
+	<a class="btn btn-default" href="${fn:escapeXml(pets)}">Pets </a>
 
-	</spring:url>
-	<a class="btn btn-default" href="${fn:escapeXml(productsByCategory)}">Pets </a>
-			<spring:url value="/shop/admin/ProductList/Pets" var="pets">
+	<a class="btn btn-default" href="${fn:escapeXml(toys)}">Toys </a>
 
-	</spring:url>
-	<a class="btn btn-default" href="${fn:escapeXml(products)}">Toys </a>
-			<spring:url value="/hotel/review" var="review">
+	<a class="btn btn-default" href="${fn:escapeXml(food)}">Food </a>
 
-	</spring:url>
-	<a class="btn btn-default" href="${fn:escapeXml(products)}">Food </a>
-			<spring:url value="/hotel/review" var="review">
-
-	</spring:url>
-	<a class="btn btn-default" href="${fn:escapeXml(productListByCategory)}">Accessories</a>
-			
-			<a class="btn btn-default" href="${fn:escapeXml(products)}">Add product</a>
+	<a class="btn btn-default" href="${fn:escapeXml(accessories)}">Accessories</a>
+	
+	<a class="btn btn-default" href="${fn:escapeXml(products)}">Add product</a>
+	
 </petclinic:layout>
 	
