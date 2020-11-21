@@ -89,4 +89,17 @@ INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (1,
 INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (2, '2020-02-10', '2020-02-16',1,2,2);
 INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (3, '2020-02-10', '2020-02-17',1,3,3);
 
+INSERT INTO shop(id, category) VALUES (1, 'Pets');
+INSERT INTO shop(id, category) VALUES (2, 'Toys');
+INSERT INTO shop(id, category) VALUES (3, 'Food');
+INSERT INTO shop(id, category) VALUES (4, 'Accessories');
+
+
+INSERT INTO products(id, category, in_offer, name, price, product_id) VALUES (1, 'Pets', 'No', 'Clown Fish', '6.0', 1);
+INSERT INTO products(id, category, in_offer, name, price, product_id) VALUES (2, 'Toys', 'Yes', 'Dog´s Ball', '8.75', null);
+INSERT INTO products(id, category, in_offer, name, price, product_id) VALUES (3, 'Food', 'Yes', 'Pipes for birds', '5.0', null);
+INSERT INTO products(id, category, in_offer, name, price, product_id) VALUES (4, 'Accessories', 'No', 'Dog´s belt', '12.0', null);
+
+
+
 
