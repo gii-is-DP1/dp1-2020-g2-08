@@ -1,6 +1,5 @@
 package org.springframework.samples.petclinic.model;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -11,15 +10,12 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import lombok.Data;
 
 @Data
@@ -35,18 +31,17 @@ public class Hotel extends BaseEntity {
 	@Column(name = "ocupadas")
 	private Integer ocupadas;
 	
+	@NotNull
+	@Column(name = "city")
+	private String city;
 	
-//	@Column(name = "dias_llenos")
-//	@DateTimeFormat(pattern = "yyyy/MM/dd")
-//	private LocalDate diasLlenos;
+	
 
-	// lista de reservas del hotel
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "hotel", fetch = FetchType.LAZY)	
 	private Set<Booking> bookings;
 
 	// lista de reviews del hotel
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "hotel")
-	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "hotel", fetch = FetchType.LAZY)	
 	private Set<Review> reviews;
 	
 	

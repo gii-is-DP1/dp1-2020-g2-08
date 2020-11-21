@@ -1,12 +1,17 @@
 package org.springframework.samples.petclinic.web;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Booking;
 import org.springframework.samples.petclinic.model.Hotel;
 import org.springframework.samples.petclinic.model.Owner;
+import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Review;
+import org.springframework.samples.petclinic.repository.HotelRepository;
 import org.springframework.samples.petclinic.service.BookingService;
 import org.springframework.samples.petclinic.service.HotelService;
 import org.springframework.samples.petclinic.service.OwnerService;
@@ -19,6 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -29,8 +35,7 @@ public class HotelController {
 	private HotelService hotelService;
 	@Autowired
 	private OwnerService ownerService;
-	@Autowired
-	private PetService petService;
+
 	@Autowired
 	private BookingService bookingService;
 
@@ -38,11 +43,11 @@ public class HotelController {
 	private ReviewService reviewService;
 
 	@Autowired
-	public HotelController(HotelService hotelService, PetService petService, OwnerService ownerService,
-			BookingService bookingService, ReviewService reviewService) {
+	public HotelController(HotelService hotelService, OwnerService ownerService, BookingService bookingService,
+			ReviewService reviewService) {
 		this.hotelService = hotelService;
 		this.ownerService = ownerService;
-		this.petService = petService;
+
 		this.bookingService = bookingService;
 		this.reviewService = reviewService;
 
@@ -65,23 +70,16 @@ public class HotelController {
 			Owner o = (ownerService.findAllOwners().stream().filter(x -> x.getUser().getUsername().equals(res)))
 					.collect(Collectors.toList()).get(0);
 			Integer id = o.getId();
-			String name = o.getFirstName();
-			String lastname = o.getLastName();
 
-			modelmap.addAttribute("message", "Tu  username Id es: " + id);
 			modelmap.addAttribute("ownerId", id);
-			modelmap.addAttribute("ownerName", name);
-			modelmap.addAttribute("ownerLastname", lastname);
-			modelmap.addAttribute("logueado", "si");
+			modelmap.addAttribute("owner", o);
+
 		} else {
 			modelmap.addAttribute("message", "No estas logueado como owner");
-			modelmap.addAttribute("logueado", "no");
+
 		}
 
 	}
-	
-	
-
 
 	// LISTADO DE TODAS LAS RESERVAS
 	@GetMapping()
@@ -92,29 +90,62 @@ public class HotelController {
 		Iterable<Booking> bookings = bookingService.findAll();
 		Iterable<Review> reviews = reviewService.findAll();
 
-		// Mete todos los datos en el modelmap para mostrarlos en la vista
-		int ocupadas = bookingService.bookingCount();
-		modelmap.addAttribute("reviews", reviews);
-		modelmap.addAttribute("bookings", bookings);
-		modelmap.addAttribute("hotel", hotel);
-		modelmap.addAttribute("aforo", hotel.iterator().next().getAforo());
-		modelmap.addAttribute("ocupadas", ocupadas);
+		if (hotel.iterator().hasNext()) {
+			// Mete todos los datos en el modelmap para mostrarlos en la vista
+			
+			modelmap.addAttribute("reviews", reviews);
+			modelmap.addAttribute("bookings", bookings);
+			modelmap.addAttribute("hotel", hotel);
+		
+			
 
-		// Manda todos los atributos a la vista listaReservas.jsp
-		return "hotel/listaReservas";
+			// Manda todos los atributos a la vista listaReservas.jsp
+			return "hotel/listaReservas";
+
+		} else {
+			modelmap.addAttribute("message", "No hay hoteles disponibles en este momento");
+			return "welcome";
+		}
+
+	}
+
+	// LISTADO DE TODOS LOS HOTELES
+	@GetMapping(path = "/listadoHoteles")
+	public String listadoHoteles(ModelMap modelmap) {
+
+		// Trae todas las reservas y reseñas
+		Iterable<Hotel> hoteles = hotelService.findAll();
+//		List<Hotel> hoteles = (List<Hotel>) hotels;
+//		Map<Hotel,List<Booking>> mapa = new TreeMap<Hotel, List<Booking>>();
+//		
+//		for (int i = 0; i < hoteles.size(); i++) {
+//			mapa.put(hoteles.get(i), bookingService.findBookingsByHotelId(hoteles.get(i).getId()));
+//			}
+		
+		
+
+		if (hoteles.iterator().hasNext()) {
+			modelmap.addAttribute("hoteles", hoteles);
+			return "hotel/listadoHoteles";
+
+		} else {
+			modelmap.addAttribute("message",
+					"No hay hoteles disponibles en este momento, crea uno para acceder al listado");
+			return crearHotel(modelmap);
+		}
 
 	}
 
 	// LISTA DE MIS RESERVAS
 	@GetMapping(path = "/myBookings")
 	public String listadoMisReservas(ModelMap modelmap) {
-		if (ownerService.esOwner()) {	//si es owner, muestra tus reservas, si no, vuelve a todas las reservas
-			
+		if (ownerService.esOwner()) { // si es owner, muestra tus reservas, si no, vuelve a todas las reservas
+
 			// Obtiene el id del owner para redirigir a la vista de reservas de ese owner
 			devolverOwner(modelmap);
-			
+
 			return "redirect:owner/" + modelmap.getAttribute("ownerId");
-			
+
 		} else {
 			modelmap.addAttribute("message", "Usted no está autenticado como owner");
 			return listadoReservas(modelmap);
@@ -132,15 +163,52 @@ public class HotelController {
 		// Pone las reservas en el modelmap para mandar a la vista
 		modelmap.addAttribute("bookings", bookings);
 		modelmap.addAttribute("owner", ownerService.findOwnerById(ownerId));
-		
 
 		// Redirige a misReservas.jsp
 		return "hotel/misReservas";
 
 	}
 
-	
+	// CREAR UN NUEVO HOTEL
+	@GetMapping(path = "/new")
+	public String crearHotel(ModelMap modelmap) {
 
-	
+		// Tambien obtiene el id de la url, para poder crear una reserva con ese owner
+		// que recibe
+		Hotel hotel = new Hotel();
+
+		modelmap.addAttribute("hotel", hotel);
+
+		// Redirige al formulario editBooking.jsp
+		return "hotel/newHotel";
+
+	}
+
+	@PostMapping(path = "/save")
+	public String guardarBooking(Hotel hotel, ModelMap modelmap) {
+
+		modelmap.addAttribute("message", "Booking creado con éxito!");
+		hotelService.save(hotel);
+		modelmap.clear();
+		String vista = listadoHoteles(modelmap);
+		return vista;
+
+	}
+
+	// BORRAR UN HOTEL
+	@GetMapping(path = "/delete/{hotelId}")
+	public String borrarHotel(@PathVariable("hotelId") Integer hotelId, ModelMap modelmap) {
+
+		// Con estos metodos borramos reviews y bookings en caso de que los haya, para
+		// poder borrar el hotel
+		bookingService.eliminarBookingsPorHotel(hotelId);
+		reviewService.eliminarReviewsPorHotel(hotelId);
+		// Llegados a este punto, para el hotel seleccionado se han borrado todas las
+		// reviews y bookings, por lo que procedemos a borrarlo
+		hotelService.deleteById(hotelId);
+		modelmap.addAttribute("message", "Hotel borrado con éxito!");
+
+		return listadoHoteles(modelmap);
+	}
 
 }
