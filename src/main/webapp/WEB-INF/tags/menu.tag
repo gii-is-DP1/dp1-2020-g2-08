@@ -1,4 +1,4 @@
-
+		
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -56,6 +56,11 @@
 								<li><a href="/hotel/myBookings">My bookings</a></li>
 								<li><a href="/hotel/booking/new">New booking</a></li>
 								
+								<sec:authorize access="hasAuthority('admin')">
+								<li><a href="/hotel/listadoHoteles">All Hotels</a></li>
+		<li><a href="/hotel/new">New Hotel</a></li>
+	</sec:authorize>
+								
 
 							</ul>
 				</div>
@@ -66,6 +71,8 @@
 						aria-hidden="true"></span>
 					<span class="">Shop</span>
 				</petclinic:menuItem>
+				
+				
 
 
 

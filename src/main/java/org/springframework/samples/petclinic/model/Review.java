@@ -36,8 +36,9 @@ public class Review extends BaseEntity {
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
     private LocalDate reviewDate;
 	
-	@Column(name = "ownerName")
-	 private String ownerName;
+	@ManyToOne
+	@JoinColumn(name = "owner_id")
+	 private Owner owner;
 	
 	@ManyToOne
 	@JoinColumn(name = "hotel_id")

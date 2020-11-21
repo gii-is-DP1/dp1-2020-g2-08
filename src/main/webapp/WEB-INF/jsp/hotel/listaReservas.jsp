@@ -15,6 +15,10 @@
 				<th style="width: 120px">Owner</th>
 				<th style="width: 200px;">StartDate</th>
 				<th>EndDate</th>
+				<th>City</th>
+				<sec:authorize access="hasAuthority('admin')">
+					<th>Actions</th>
+				</sec:authorize>
 
 
 
@@ -29,13 +33,18 @@
 					<td><c:out value="${booking.owner.firstName}" /></td>
 					<td><c:out value="${booking.startDate}" /></a></td>
 					<td><c:out value="${booking.endDate}" /></td>
+					<td><c:out value="${booking.hotel.city}" /></td>
+					<sec:authorize access="hasAuthority('admin')">
+						<td><spring:url value="/hotel/booking/delete/${booking.id}/1"
+								var="bookingId">
 
+							</spring:url> <a href="${fn:escapeXml(bookingId)}"> Delete</a></td>
+					</sec:authorize>
 				</tr>
 
 			</c:forEach>
+
 			
-			<h3>Aforo máximo del hotel: ${aforo}</h3>
-			<h3>Ocupadas actualmente: ${ocupadas}</h3>
 			<%--  <h3>Hotel: ${hotel}</h3> --%>
 		</tbody>
 
@@ -43,13 +52,17 @@
 	<spring:url value="/hotel/booking/new" var="booking">
 
 	</spring:url>
-	<a class="btn btn-default" href="${fn:escapeXml(booking)}">New booking </a> 	
-	
+	<a class="btn btn-default" href="${fn:escapeXml(booking)}">New
+		booking </a>
+
 	<spring:url value="/hotel/myBookings" var="mybookings">
 
 	</spring:url>
-	<a class="btn btn-default" href="${fn:escapeXml(mybookings)}">My bookings </a>
-	<br><br><br>
+	<a class="btn btn-default" href="${fn:escapeXml(mybookings)}">My
+		bookings </a>
+	<br>
+	<br>
+	<br>
 	<h1>Reviews</h1>
 	<table id="reviewsTable" class="table table-striped">
 		<thead>
@@ -59,6 +72,8 @@
 				<th style="width: 120px">Description</th>
 				<th style="width: 200px;">Review date</th>
 				<th>Stars</th>
+				<th>Actions</th>
+				<th>Owner</th>
 				<th></th>
 			</tr>
 		</thead>
@@ -66,12 +81,17 @@
 
 			<c:forEach items="${reviews}" var="review">
 				<tr>
-				<td><c:out value="${review.ownerName}" /></a></td>
+					<td><c:out value="${review.owner.firstName}" /></a></td>
 					<td><c:out value="${review.tittle}" /></a></td>
 					<td><c:out value="${review.description}" /></a></td>
 					<td><c:out value="${review.reviewDate}" /></td>
 					<td><c:out value="${review.stars}" /></td>
+					<td><c:out value="${review.hotel.city}" /></td>
+					<td><spring:url value="/hotel/review/delete/${review.id}"
+							var="eliminarReview"></spring:url> <a class="btn btn-default"
+						href="${fn:escapeXml(eliminarReview)}">Delete </a></td>
 					<td></td>
+
 				</tr>
 
 			</c:forEach>

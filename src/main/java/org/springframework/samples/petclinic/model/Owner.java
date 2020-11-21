@@ -67,6 +67,9 @@ public class Owner extends Person {
 	@OneToMany
 	private Set<Booking> bookings;
 	
+	@OneToMany
+	private Set<Review> reviews;
+	
 	
 
 	//

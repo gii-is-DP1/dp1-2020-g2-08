@@ -55,6 +55,12 @@ public class ReviewService {
 		 reviewRepo.delete(review);
 			
 		}
+	 
+	 @Transactional
+		public void deleteById(Integer reviewId) {
+		 reviewRepo.deleteById(reviewId);
+			
+		}
 @Transactional
 public void save(Review review) {
 
@@ -69,5 +75,34 @@ public List<Review> findReviewByHotelId(Integer hotelId){
 	 	return reviews.stream().filter(x->x.getHotel().getId().equals(hotelId)).collect(Collectors.toList());
 }
 	 
+@Transactional
+public void eliminarReviewsPorHotel(Integer hotelId) {
+	List<Review> reviews = (List<Review>) findAll();
+	List<Integer> idReview = reviews.stream().filter(x -> x.getHotel().getId().equals(hotelId)).map(x -> x.getId())
+			.collect(Collectors.toList()); // Lista con los id de las reviews a borrar
+	if (idReview.size() > 0) {
+		//Borrado de todas las reviews asociados al hotel seleccionado
+		for (int i = 0; i < idReview.size(); i++) {
+			deleteById(idReview.get(i));
+		}
+	}
+	
+	
+	
+}
+
+@Transactional
+public boolean puedeReseñar(Review review, Integer ownerId) {
+	Hotel hotel = review.getHotel();
+	List<Review> reviews  = findReviewByHotelId(hotel.getId());
+	if (reviews.stream().anyMatch(x->x.getOwner().getId().equals(ownerId))) {
+		return false;
+	}
+	
+	else {
+		return true;
+	}
+	
+}
 
 }
