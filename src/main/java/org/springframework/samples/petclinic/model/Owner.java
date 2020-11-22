@@ -24,6 +24,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -63,6 +64,14 @@ public class Owner extends Person {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
 	private Set<Pet> pets;
 	
+	@OneToMany
+	private Set<Booking> bookings;
+	
+	@OneToMany
+	private Set<Review> reviews;
+	
+	
+
 	//
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "username", referencedColumnName = "username")
@@ -125,6 +134,14 @@ public class Owner extends Person {
 	
 	public boolean removePet(Pet pet) {
 		return getPetsInternal().remove(pet);
+	}
+	
+	public Set<Booking> getBookings() {
+		return bookings;
+	}
+
+	public void setBookings(Set<Booking> bookings) {
+		this.bookings = bookings;
 	}
 
 	/**

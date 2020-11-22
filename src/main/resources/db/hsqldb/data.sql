@@ -19,6 +19,11 @@ INSERT INTO authorities(id,username,authority) VALUES (5,'alvgomper1','owner');
 INSERT INTO users(username,password,enabled) VALUES ('isamunval','isamunval',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (6,'isamunval','owner');
 
+
+-- One owner user, named mangarmar17 with password mangarmar17
+INSERT INTO users(username,password,enabled) VALUES ('mangarmar17','mangarmar17',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (7,'mangarmar17','owner');
+
 INSERT INTO vets VALUES (1, 'James', 'Carter');
 INSERT INTO vets VALUES (2, 'Helen', 'Leary');
 INSERT INTO vets VALUES (3, 'Linda', 'Douglas');
@@ -55,6 +60,7 @@ INSERT INTO owners VALUES (9, 'David', 'Schroeder', '2749 Blackhawk Trail', 'Mad
 INSERT INTO owners VALUES (10, 'Carlos', 'Estaban', '2335 Independence La.', 'Waunakee', '6085555487', 'owner1');
 INSERT INTO owners VALUES (11, 'Juan', 'Casa', '265 Valparaiso', 'Waunakee', '6663332222', 'migdurgon');
 INSERT INTO owners VALUES (12, 'Alvaro', 'Gomez', ' Plaza España', 'Sevilla', '654321098', 'alvgomper1');
+INSERT INTO owners VALUES (13, 'Manuel', 'Garcia', 'Domingo Molina', 'Sevilla', '654321022', 'mangarmar17');
 
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (1, 'Leo', '2010-09-07', 1, 1);
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (2, 'Basil', '2012-08-06', 6, 2);
@@ -71,9 +77,36 @@ INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (12, 'Lucky', '2010
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (13, 'Sly', '2012-06-08', 1, 10);
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (14, 'Paco', '2011-02-10', 2, 11);
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (15, 'Pepe', '2013-02-10', 2, 12);
+INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (16, 'Lolito', '2013-02-11', 2, 13);
 
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (1, 7, '2013-01-01', 'rabies shot');
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (2, 8, '2013-01-02', 'rabies shot');
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03', 'neutered');
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04', 'spayed');
+
+INSERT INTO hotel(id,aforo,ocupadas,city) VALUES (1, 50, 0, 'Sevilla');
+INSERT INTO hotel(id,aforo,ocupadas,city) VALUES (2, 50, 0, 'Cordoba');
+INSERT INTO hotel(id,aforo,ocupadas,city) VALUES (3, 50, 0, 'Malaga');
+
+INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (1, '2020-02-10', '2020-02-15',1,1,1);
+INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (2, '2020-02-10', '2020-02-16',1,2,2);
+INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (3, '2020-02-10', '2020-02-17',1,3,3);
+
+INSERT INTO shop(id, category) VALUES (1, 'Pets');
+INSERT INTO shop(id, category) VALUES (2, 'Toys');
+INSERT INTO shop(id, category) VALUES (3, 'Food');
+INSERT INTO shop(id, category) VALUES (4, 'Accessories');
+
+
+INSERT INTO products(id, category, in_offer, name, price, product_id) VALUES (1, 'Pets', 'No', 'Clown Fish', '6.0', 1);
+INSERT INTO products(id, category, in_offer, name, price, product_id) VALUES (2, 'Toys', 'Yes', 'Dog´s Ball', '8.75', null);
+INSERT INTO products(id, category, in_offer, name, price, product_id) VALUES (3, 'Food', 'Yes', 'Pipes for birds', '5.0', null);
+INSERT INTO products(id, category, in_offer, name, price, product_id) VALUES (4, 'Accessories', 'No', 'Dog´s belt', '12.0', null);
+
+
+
+INSERT INTO reviews(id,description,review_date,stars,tittle,hotel_id,owner_id) VALUES (1, 'prueba descripcion 1','2020-02-10',5,'prueba de titulo 1',1,12);
+INSERT INTO reviews(id,description,review_date,stars,tittle,hotel_id,owner_id) VALUES (2, 'prueba descripcion 2','2020-03-10',4,'prueba de titulo 2',2,13);
+INSERT INTO reviews(id,description,review_date,stars,tittle,hotel_id,owner_id) VALUES (3, 'prueba descripcion 3','2020-04-10',1,'prueba de titulo 3',3,11);
+
 
