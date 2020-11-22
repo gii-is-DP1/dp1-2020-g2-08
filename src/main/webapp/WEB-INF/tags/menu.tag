@@ -12,16 +12,6 @@
 
 <nav class="navbar navbar-default" role="navigation">
 	<div class="container">
-		<div class="navbar-header">
-			<a class="navbar-brand"
-				href="<spring:url value="/" htmlEscape="true" />"><span></span></a>
-			<button type="button" class="navbar-toggle" data-toggle="collapse"
-				data-target="#main-navbar">
-				<span class="sr-only"><os-p>Toggle navigation</os-p></span> <span
-					class="icon-bar"></span> <span class="icon-bar"></span> <span
-					class="icon-bar"></span>
-			</button>
-		</div>
 		<div class="navbar-collapse collapse" id="main-navbar">
 			<ul class="nav navbar-nav">
 
@@ -65,14 +55,29 @@
 							</ul>
 				</div>
 
-				<petclinic:menuItem active="${name eq 'shop'}" url="/shop" 
-					title="Shop">
-					<span class="glyphicon glyphicon glyphicon-shopping-cart"
-						aria-hidden="true"></span>
-					<span class="">Shop</span>
-				</petclinic:menuItem>
+				
+						
+						<div class="nav navbar-nav navbar-right">
+
+
+							<li class="dropdown"><a href="/shop" class="dropdown-toggle"
+								data-toggle="dropdown"> <span
+									class="glyphicon glyphicon glyphicon-shopping-cart"></span> <span>Shop</span>
+
+									<ul class="dropdown-menu">
+										<li><a href="/shop">Shop</a></li>
+										<sec:authorize access="hasAuthority('admin')">
+										<li><a href="/shop/admin/products">Product list</a></li>
+										<li><a href="/shop/admin/sales">Sales</a></li>
+										<li><a href="/shop/admin/clients">Client list</a></li>
+										</sec:authorize>
+									</ul>
+						</div>
+								
 				
 				
+				
+
 
 
 

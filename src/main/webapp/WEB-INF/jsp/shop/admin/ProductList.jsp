@@ -30,6 +30,8 @@
 					<td><c:out value="${product.price}" /></td>
 					<td><c:out value="${product.inOffer}" /></td>
 
+					<sec:authorize access="hasAuthority('admin')">
+					
 					<td><spring:url value="/shop/admin/products/delete/{productId}"
 							var="productId">
 							<spring:param name="productId" value="${product.id}" />
@@ -38,6 +40,8 @@
 							var="productId">
 							<spring:param name="productId" value="${product.id}" />
 						</spring:url> <a href="${fn:escapeXml(productId)}"> Edit</a></td>
+						
+					</sec:authorize>	
 						
 
 
