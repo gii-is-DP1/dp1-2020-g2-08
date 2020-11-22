@@ -8,13 +8,13 @@
 <petclinic:layout pageName="products">
 
 
-	<spring:url value="/shop/admin/products/pets" var="pets">
+	<spring:url value="/shop/products/pets" var="pets">
 	</spring:url>
-	<spring:url value="/shop/admin/products/food" var="food">
+	<spring:url value="/shop/products/food" var="food">
 	</spring:url>
-	<spring:url value="/shop/admin/products/toys" var="toys">
+	<spring:url value="/shop/products/toys" var="toys">
 	</spring:url>
-	<spring:url value="/shop/admin/products/accessories" var="accessories">
+	<spring:url value="/shop/products/accessories" var="accessories">
 	</spring:url>
 	
 			

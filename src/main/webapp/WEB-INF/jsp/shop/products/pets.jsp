@@ -34,16 +34,12 @@
 					<td><c:out value="${product.price}" /></td>
 					<td><c:out value="${product.inOffer}" /></td>
 
-					<sec:authorize access="hasAuthority('admin')">
-						<td><spring:url value="/shop/admin/products/delete/{productId}"
+						<td><spring:url value=""
 								var="productId">
 								<spring:param name="productId" value="${product.id}" />
-							</spring:url> <a href="${fn:escapeXml(productId)}"> Delete</a><a> / <a/>
-						<spring:url value="/shop/admin/products/edit/{productId}"
-								var="productId">
-								<spring:param name="productId" value="${product.id}" />
-							</spring:url> <a href="${fn:escapeXml(productId)}"> Edit</a></td>			
-					</sec:authorize>
+							</spring:url> <a href="${fn:escapeXml(productId)}"> Add to cart</a>
+						</td>			
+					
 						
 
 
@@ -63,17 +59,15 @@
 		</tbody>
 			
 	</table>
-	<spring:url value="/shop/admin/products/add" var="products">
+	<spring:url value="/shop/products/pets" var="pets">
 	</spring:url>
-	<spring:url value="/shop/admin/products/pets" var="pets">
+	<spring:url value="/shop/products/food" var="food">
 	</spring:url>
-	<spring:url value="/shop/admin/products/food" var="food">
+	<spring:url value="/shop/products/toys" var="toys">
 	</spring:url>
-	<spring:url value="/shop/admin/products/toys" var="toys">
+	<spring:url value="/shop/products/accessories" var="accessories">
 	</spring:url>
-	<spring:url value="/shop/admin/products/accessories" var="accessories">
-	</spring:url>
-	<spring:url value="/shop/admin/products" var="back">
+	<spring:url value="/shop" var="back">
 	</spring:url>
 			
 	
@@ -86,10 +80,6 @@
 	<a class="btn btn-default" href="${fn:escapeXml(food)}">Food </a>
 		
 	<a class="btn btn-default" href="${fn:escapeXml(accessories)}">Accessories</a>
-	
-	<sec:authorize access="hasAuthority('admin')">		
-		<a class="btn btn-default" href="${fn:escapeXml(products)}">Add product</a>
-	</sec:authorize>	
 	
 	<a class="btn btn-default" href="${fn:escapeXml(back)}">Return</a>
 	

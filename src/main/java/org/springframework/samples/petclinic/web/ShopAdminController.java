@@ -140,21 +140,21 @@ public class ShopAdminController {
 
 	}
 	
-	@GetMapping(path = "/pets" )
-	public String petList(ModelMap modelmap) {
-		String view = "shop/admin/Pets";
-		List<Product> products = (List<Product>) productService.findAll();
-		List<Product> productsByCategory = products.stream().filter(x->x.getCategory().equals("Pets")).collect(Collectors.toList());
-		int productsNumber = productsByCategory.size();
-		
-		
-		modelmap.addAttribute("product", productsByCategory);
-		modelmap.addAttribute("productsNumber", productsNumber);
-
-
-		return view;
-
-	}
+		@GetMapping(path = "/pets" )
+		public String petList(ModelMap modelmap) {
+			String view = "shop/admin/Pets";
+			List<Product> products = (List<Product>) productService.findAll();
+			List<Product> productsByCategory = products.stream().filter(x->x.getCategory().equals("Pets")).collect(Collectors.toList());
+			int productsNumber = productsByCategory.size();
+			
+			
+			modelmap.addAttribute("product", productsByCategory);
+			modelmap.addAttribute("productsNumber", productsNumber);
+	
+	
+			return view;
+	
+		}
 	
 	@GetMapping(path = "/food" )
 	public String foodList(ModelMap modelmap) {
