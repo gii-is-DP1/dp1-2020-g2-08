@@ -29,6 +29,9 @@ public class HotelService {
 	 
 	 @Autowired
 	 private ReviewService reviewService;
+	 
+	 @Autowired
+	 private BookingService bookingService;
 	 @Transactional
 	 public int hotelCount() {
 		 
@@ -71,8 +74,11 @@ public void delete(Hotel hotel) {
 		hotelRepo.delete(hotel);	
 }
 
-@Transactional
+
 public void deleteById(Integer hotelId) {
+	
+	bookingService.eliminarBookingsPorHotel(hotelId);
+	reviewService.eliminarReviewsPorHotel(hotelId);
 	hotelRepo.deleteById(hotelId);
 	
 }

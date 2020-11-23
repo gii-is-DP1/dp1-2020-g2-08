@@ -8,6 +8,7 @@
 <petclinic:layout pageName="hoteles">
     <h2>Hotels</h2>
 
+
     <table id="hotelsTable" class="table table-striped">
         <thead>
         <tr>
@@ -20,7 +21,7 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${hoteles}" var="hotel">
+        <c:forEach items="${hoteles}" var="hotel" varStatus="i">
             <tr>
                 <td>
                     <c:out value="${hotel.aforo}"/>
@@ -31,26 +32,19 @@
                 <td>
                     <c:out value="${hotel.city}"/>
                 </td>
-                
-                
-                
                  <td>
-                   
-                </td> <td>
-                    
+                    <c:out value="${numBookings[i.index]}"/>
+                </td>
+                 <td>
+                    <c:out value="${numReviews[i.index]}"/>
                 </td>
                 
                 
-               <%--  <td>:
-                    <c:forEach var="booking" items="${hotel.bookings}">
-                     Owner:   <c:out value="${booking.owner.firstName} "/> Pet: <c:out value="${review.pet.name} "/>
-                    </c:forEach>
-                </td> --%>
-                <%-- <td>
-                    <c:forEach var="review" items="${hotel.reviews}">
-                     Stars:   <c:out value="${review.stars} "/> Owner: <c:out value="${review.owner.firstName} "/>
-                    </c:forEach>
-                </td> --%>
+                
+                
+                
+                
+          
                 <td><spring:url value="/hotel/delete/${hotel.id}"
 							var="borrarHotel">
 							
