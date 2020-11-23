@@ -13,12 +13,16 @@ import javax.websocket.server.PathParam;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Booking;
+import org.springframework.samples.petclinic.model.Client;
 import org.springframework.samples.petclinic.model.Hotel;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Product;
+import org.springframework.samples.petclinic.service.AuthoritiesService;
+import org.springframework.samples.petclinic.service.ClientService;
 import org.springframework.samples.petclinic.service.ProductService;
 import org.springframework.samples.petclinic.service.ShopService;
+import org.springframework.samples.petclinic.service.UserService;
 import org.springframework.samples.petclinic.service.exceptions.DuplicatedPetNameException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -29,23 +33,31 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/shop/admin/products")
+@RequestMapping("/shop/admin")
 public class ShopAdminController {
 
 	@Autowired
 	private ProductService productService;
 	@Autowired
 	private ShopService shopService;
+	@Autowired
+	private ClientService clientService;
+	@Autowired
+	private UserService userService;
+	@Autowired
+	private AuthoritiesService authoritiesService;
 	
 	private static List<String> categoryList = Arrays.asList("Pets", "Food", "Toys", "Accessories");
 	private static List<String> offerOptions = Arrays.asList("Yes", "No");
 
 	@Autowired
-	public ShopAdminController(ProductService productService) {
+	public ShopAdminController(ProductService productService, UserService userService, AuthoritiesService authoritiesService) {
 		this.productService = productService;
+		this.userService = userService;
+		this.authoritiesService = authoritiesService;
 	}
 
-	@GetMapping()
+	@GetMapping(path = "/products")
 	public String productList(ModelMap modelmap) {
 		String view = "shop/admin/ProductList";
 		Iterable<Product> products = productService.findAll();
@@ -58,7 +70,7 @@ public class ShopAdminController {
 
 	}
 
-	@GetMapping(path = "/add")
+	@GetMapping(path = "/products/add")
 	public String addProduct(ModelMap modelmap) {
 		String view = "shop/admin/newProduct";
 		modelmap.addAttribute("product", new Product());
@@ -68,7 +80,7 @@ public class ShopAdminController {
 
 	}
 
-	@PostMapping(path = "/save")
+	@PostMapping(path = "/products/save")
 	public String save(@PathParam("category") String category, @PathParam("name") String name,
 			@PathParam("price") Double price, @PathParam("inOffer") String inOffer, ModelMap modelmap) {
 
@@ -84,7 +96,7 @@ public class ShopAdminController {
 
 	}
 
-	@GetMapping(path = "/delete/{productId}")
+	@GetMapping(path = "/products/delete/{productId}")
 	public String deleteProduct(@PathVariable("productId") int productId, ModelMap modelmap) {
 		Optional<Product> product = productService.findProductById(productId);
 
@@ -99,7 +111,7 @@ public class ShopAdminController {
 		return view;
 	}
 
-	@GetMapping(path = "/edit/{productId}")
+	@GetMapping(path = "/products/edit/{productId}")
 	public String edit(@PathVariable("productId") int productId, ModelMap modelmap) {
 		Optional<Product> product = this.productService.findProductById(productId);
 		modelmap.put("product", product);
@@ -109,7 +121,7 @@ public class ShopAdminController {
 
 	}
 
-	@PostMapping(value = "/edit/{productId}")
+	@PostMapping(value = "/products/edit/{productId}")
 	public String processUpdateForm(@Valid Product product, BindingResult result,
 			@PathVariable("productId") int productId, ModelMap modelmap) throws DuplicatedPetNameException {
 		if (result.hasErrors()) {
@@ -128,7 +140,7 @@ public class ShopAdminController {
 		}
 	}
 	
-	@GetMapping("shop/admin/ProductList/{category}")
+	@GetMapping("/products/{category}")
 	public String productListByCategory(@PathVariable ("category") String category, ModelMap modelmap) {
 		String view = "shop/admin/ProductList";
 		List<Product> products = (List<Product>) productService.findAll();
@@ -140,7 +152,7 @@ public class ShopAdminController {
 
 	}
 	
-		@GetMapping(path = "/pets" )
+		@GetMapping(path = "/products/pets" )
 		public String petList(ModelMap modelmap) {
 			String view = "shop/admin/Pets";
 			List<Product> products = (List<Product>) productService.findAll();
@@ -156,7 +168,7 @@ public class ShopAdminController {
 	
 		}
 	
-	@GetMapping(path = "/food" )
+	@GetMapping(path = "/products/food" )
 	public String foodList(ModelMap modelmap) {
 		String view = "shop/admin/Food";
 		List<Product> products = (List<Product>) productService.findAll();
@@ -171,7 +183,7 @@ public class ShopAdminController {
 
 	}
 	
-	@GetMapping(path = "/toys" )
+	@GetMapping(path = "/products/toys" )
 	public String toysList(ModelMap modelmap) {
 		String view = "shop/admin/Toys";
 		List<Product> products = (List<Product>) productService.findAll();
@@ -188,7 +200,7 @@ public class ShopAdminController {
 
 	}
 	
-	@GetMapping(path = "/accessories" )
+	@GetMapping(path = "/products/accessories" )
 	public String accessoriesList(ModelMap modelmap) {
 		String view = "shop/admin/Accessories";
 		List<Product> products = (List<Product>) productService.findAll();
@@ -202,6 +214,18 @@ public class ShopAdminController {
 
 
 
+		return view;
+
+	}
+	
+	@GetMapping(path = "/clients" )
+	public String clientsList(ModelMap modelmap) {
+		String view = "shop/admin/ClientsList";
+		Iterable<Client> clients = clientService.findAll();
+		
+//		int clientsNumber = clients.size();
+		modelmap.addAttribute("clients", clients);
+//		modelmap.addAttribute("clientsNumber", clientsNumber);
 		return view;
 
 	}
