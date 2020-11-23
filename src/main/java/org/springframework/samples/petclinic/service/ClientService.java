@@ -2,6 +2,8 @@ package org.springframework.samples.petclinic.service;
 
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.model.Client;
@@ -29,6 +31,10 @@ public class ClientService {
 		return clientRepo.findAll();
 	}
 
+	@Transactional
+	public int clientCount() {
+		return (int) clientRepo.count();
+	}
 	
 		public void saveClient(Client client) throws DataAccessException {
 			//creating owner

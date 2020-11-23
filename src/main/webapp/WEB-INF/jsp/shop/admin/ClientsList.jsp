@@ -8,7 +8,7 @@
 <petclinic:layout pageName="clients">
 	<h2>Clients List</h2>
 
-	<table id="productTable" class="table table-striped">
+	<table id="clientTable" class="table table-striped">
 		<thead>
 			<tr>
 				<th>First name</th>
@@ -19,7 +19,6 @@
 				<th>Nif</th>
 				<th>Telephone</th>
 				<th>Username</th>
-				<th>Actions</th>
 
 			</tr>
 		</thead>
@@ -35,7 +34,8 @@
 					<td><c:out value="${client.email}" /></td>
 					<td><c:out value="${client.nif}" /></td>
 					<td><c:out value="${client.telephone}" /></td>
-					<td><c:out value="${client.user}" /></td>
+					<td><c:out value="${client.user.username}" /></td>
+
 
 
 				</tr>

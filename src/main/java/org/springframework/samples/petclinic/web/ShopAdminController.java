@@ -24,6 +24,7 @@ import org.springframework.samples.petclinic.service.ProductService;
 import org.springframework.samples.petclinic.service.ShopService;
 import org.springframework.samples.petclinic.service.UserService;
 import org.springframework.samples.petclinic.service.exceptions.DuplicatedPetNameException;
+import org.springframework.security.config.web.server.ServerHttpSecurity.OAuth2ClientSpec;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -220,12 +221,13 @@ public class ShopAdminController {
 	
 	@GetMapping(path = "/clients" )
 	public String clientsList(ModelMap modelmap) {
+		modelmap.clear();
 		String view = "shop/admin/ClientsList";
-		Iterable<Client> clients = clientService.findAll();
-		
-//		int clientsNumber = clients.size();
-		modelmap.addAttribute("clients", clients);
-//		modelmap.addAttribute("clientsNumber", clientsNumber);
+		Iterable<Client> clients = clientService.findAll();	
+		int clientsNumber = clientService.clientCount();
+		modelmap.addAttribute("clientsNumber", clientsNumber);
+		modelmap.addAttribute("clients", clients );
+
 		return view;
 
 	}
