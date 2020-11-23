@@ -109,4 +109,6 @@ INSERT INTO reviews(id,description,review_date,stars,tittle,hotel_id,owner_id) V
 INSERT INTO reviews(id,description,review_date,stars,tittle,hotel_id,owner_id) VALUES (2, 'prueba descripcion 2','2020-03-10',4,'prueba de titulo 2',2,13);
 INSERT INTO reviews(id,description,review_date,stars,tittle,hotel_id,owner_id) VALUES (3, 'prueba descripcion 3','2020-04-10',1,'prueba de titulo 3',3,11);
 
-
+INSERT INTO users(username,password,enabled) VALUES ('mangarmar','mangarmar',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (10,'mangarmar','client');
+INSERT INTO clients VALUES (1, 'Manuel', 'Garcia', 'Domingo Molina', 'Sevilla','gmail@gmail.com','111111','654321022','mangarmar');

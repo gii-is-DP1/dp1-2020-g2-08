@@ -16,20 +16,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/shop")
 public class ShopClientController {
-	
+
 	@Autowired
 	private ProductService productService;
 	@Autowired
 	private ShopService shopService;
-	
+
 	private static List<String> categoryList = Arrays.asList("Pets", "Food", "Toys", "Accessories");
 	private static List<String> offerOptions = Arrays.asList("Yes", "No");
-	
+
 	public ShopClientController(ProductService productService) {
 
 		this.productService = productService;
 	}
-	
+
 	@GetMapping()
 	public String productList(ModelMap modelmap) {
 		String view = "shop/home";
@@ -42,75 +42,65 @@ public class ShopClientController {
 		return view;
 
 	}
-	
-	@GetMapping(path = "/products/pets" )
+
+	@GetMapping(path = "/products/pets")
 	public String petList(ModelMap modelmap) {
 		String view = "shop/products/pets";
 		List<Product> products = (List<Product>) productService.findAll();
-		List<Product> productsByCategory = products.stream().filter(x->x.getCategory().equals("Pets")).collect(Collectors.toList());
+		List<Product> productsByCategory = products.stream().filter(x -> x.getCategory().equals("Pets"))
+				.collect(Collectors.toList());
 		int productsNumber = productsByCategory.size();
-		
-		
+
 		modelmap.addAttribute("product", productsByCategory);
 		modelmap.addAttribute("productsNumber", productsNumber);
-
 
 		return view;
 
 	}
-	
-	@GetMapping(path = "products/food" )
+
+	@GetMapping(path = "products/food")
 	public String foodList(ModelMap modelmap) {
 		String view = "shop/products/food";
 		List<Product> products = (List<Product>) productService.findAll();
-		List<Product> productsByCategory = products.stream().filter(x->x.getCategory().equals("Food")).collect(Collectors.toList());
+		List<Product> productsByCategory = products.stream().filter(x -> x.getCategory().equals("Food"))
+				.collect(Collectors.toList());
 		int productsNumber = productsByCategory.size();
 
 		modelmap.addAttribute("product", productsByCategory);
 		modelmap.addAttribute("productsNumber", productsNumber);
 
-
 		return view;
 
 	}
-	
-	
-	@GetMapping(path = "products/toys" )
+
+	@GetMapping(path = "products/toys")
 	public String toysList(ModelMap modelmap) {
 		String view = "shop/products/toys";
 		List<Product> products = (List<Product>) productService.findAll();
-		List<Product> productsByCategory = products.stream().filter(x->x.getCategory().equals("Toys")).collect(Collectors.toList());
+		List<Product> productsByCategory = products.stream().filter(x -> x.getCategory().equals("Toys"))
+				.collect(Collectors.toList());
 		int productsNumber = productsByCategory.size();
 
-		
 		modelmap.addAttribute("product", productsByCategory);
 		modelmap.addAttribute("productsNumber", productsNumber);
-
-
 
 		return view;
 
 	}
-	
-	@GetMapping(path = "products/accessories" )
+
+	@GetMapping(path = "products/accessories")
 	public String accessoriesList(ModelMap modelmap) {
 		String view = "shop/products/accessories";
 		List<Product> products = (List<Product>) productService.findAll();
-		List<Product> productsByCategory = products.stream().filter(x->x.getCategory().equals("Accessories")).collect(Collectors.toList());
+		List<Product> productsByCategory = products.stream().filter(x -> x.getCategory().equals("Accessories"))
+				.collect(Collectors.toList());
 		int productsNumber = productsByCategory.size();
 
-		
-		
 		modelmap.addAttribute("product", productsByCategory);
 		modelmap.addAttribute("productsNumber", productsNumber);
-
-
 
 		return view;
 
 	}
-	
-	
-	
 
 }
