@@ -114,18 +114,26 @@ public class HotelController {
 	public String listadoHoteles(ModelMap modelmap) {
 
 		// Trae todas las reservas y reseñas
-		Iterable<Hotel> hoteles = hotelService.findAll();
-//		List<Hotel> hoteles = (List<Hotel>) hotels;
-//		Map<Hotel,List<Booking>> mapa = new TreeMap<Hotel, List<Booking>>();
-//		
-//		for (int i = 0; i < hoteles.size(); i++) {
-//			mapa.put(hoteles.get(i), bookingService.findBookingsByHotelId(hoteles.get(i).getId()));
-//			}
+		List<Hotel> hoteles = (List<Hotel>) hotelService.findAll();
+		List<Integer> numBookings= new ArrayList<Integer>();
+		List<Integer> numReviews= new ArrayList<Integer>();
+		
 		
 		
 
 		if (hoteles.iterator().hasNext()) {
+			
+			for (int i = 0; i < hoteles.size(); i++) {
+				
+				numBookings.add(bookingService.findBookingsByHotelId(hoteles.get(i).getId()).size())  ;
+				numReviews.add(reviewService.findReviewByHotelId(hoteles.get(i).getId()).size())  ;
+
+				
+				}
+			
 			modelmap.addAttribute("hoteles", hoteles);
+			modelmap.addAttribute("numBookings", numBookings);
+			modelmap.addAttribute("numReviews", numReviews);
 			return "hotel/listadoHoteles";
 
 		} else {
@@ -199,10 +207,7 @@ public class HotelController {
 	@GetMapping(path = "/delete/{hotelId}")
 	public String borrarHotel(@PathVariable("hotelId") Integer hotelId, ModelMap modelmap) {
 
-		// Con estos metodos borramos reviews y bookings en caso de que los haya, para
-		// poder borrar el hotel
-		bookingService.eliminarBookingsPorHotel(hotelId);
-		reviewService.eliminarReviewsPorHotel(hotelId);
+		
 		// Llegados a este punto, para el hotel seleccionado se han borrado todas las
 		// reviews y bookings, por lo que procedemos a borrarlo
 		hotelService.deleteById(hotelId);
