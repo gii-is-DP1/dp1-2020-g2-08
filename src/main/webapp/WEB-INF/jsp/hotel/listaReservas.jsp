@@ -35,7 +35,7 @@
 					<td><c:out value="${booking.endDate}" /></td>
 					<td><c:out value="${booking.hotel.city}" /></td>
 					<sec:authorize access="hasAuthority('admin')">
-						<td><spring:url value="/hotel/booking/delete/${booking.id}/1"
+						<td><spring:url value="/hotel/booking/delete/${booking.id}/${booking.owner.id}"
 								var="bookingId">
 
 							</spring:url> <a href="${fn:escapeXml(bookingId)}"> Delete</a></td>
