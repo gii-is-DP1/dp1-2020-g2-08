@@ -17,6 +17,7 @@
 				<th style="width: 120px">Owner</th>
 				<th>City</th>
 				<th>Actions</th>
+				<th></th>
 
 			</tr>
 		</thead>
@@ -36,6 +37,10 @@
 							var="bookingId">
 							
 						</spring:url> <a href="${fn:escapeXml(bookingId)}"> Delete</a></td>
+						<td><spring:url value="/hotel/booking/edit/${booking.id}"
+							var="editar">
+							
+						</spring:url> <a href="${fn:escapeXml(editar)}"> Edit</a></td>
 				</tr>
 
 			</c:forEach>

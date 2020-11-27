@@ -90,7 +90,7 @@ public class BookingController {
 				return "hotel/editBooking";
 			} else {
 				modelmap.addAttribute("message", "Para poder crear una reserva, tienes que estar logueado como owner");
-				return "welcome";
+				return hotelController.listadoReservas(modelmap);
 			}
 		} else {
 			modelmap.addAttribute("message", "No puedes crear una nueva reserva hasta que no haya un hotel disponible");
@@ -101,16 +101,28 @@ public class BookingController {
 
 	// CREAR UNA NUEVA RESERVA
 	@PostMapping(path = "/save/{ownerId}")
-	public String guardarBooking(Booking booking, @PathVariable("ownerId") Integer ownerId, ModelMap modelmap) {
+	public String guardarBooking(@Valid Booking booking, @PathVariable("ownerId") Integer ownerId, ModelMap modelmap) {
 
-		booking.setOwner(ownerService.findOwnerById(ownerId));
+		Owner o = ownerService.findOwnerById(ownerId);
+		booking.setOwner(o);
 		if (bookingService.fechaValida(booking) && bookingService.numeroDiasValido(booking)) {
-			bookingService.save(booking);
+			if (bookingService.numeroBookingsPorOwner(ownerId)>=3) {
+				modelmap.addAttribute("message", "No se pueden hacer más de 3 reservas");
+				return crearBooking(modelmap);
+			}
+			else if (bookingService.numeroBookingsPorPet(booking.getPet().getId())>=1) {
+				modelmap.addAttribute("message", "Esta mascota ya tiene una reserva en un hotel");
+				return crearBooking(modelmap);
+			}
+			else {bookingService.save(booking);
 			modelmap.addAttribute("message", "Booking creado con éxito!");
 
 			modelmap.clear();
 			String vista = hotelController.listadoReservasPorOwner(ownerId, modelmap);
 			return vista;
+				
+			}
+			
 		} else {
 			modelmap.addAttribute("message", "La reserva tiene que ser de mas de 1 dia y como maximo de 7");
 			return crearBooking(modelmap);
@@ -189,10 +201,14 @@ public class BookingController {
 			bookingToUpdate.setHotel(booking.getHotel());
 			bookingToUpdate.setOwner(booking.getOwner());
 			bookingToUpdate.setPet(booking.getPet());
-
+			if (bookingService.fechaValida(bookingToUpdate) && bookingService.numeroDiasValido(bookingToUpdate)) {
 			this.bookingService.save(bookingToUpdate);
 
-			return hotelController.listadoReservas(modelmap);
+			return hotelController.listadoReservas(modelmap);}
+			else {
+				modelmap.addAttribute("message", "La reserva tiene que ser de mas de 1 dia y como maximo de 7");
+				return edit(bookingId, modelmap);
+			}
 		}
 	}
 

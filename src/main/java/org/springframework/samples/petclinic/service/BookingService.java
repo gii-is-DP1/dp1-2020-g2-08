@@ -45,6 +45,18 @@ public class BookingService {
 		return lista.stream().filter(x -> x.getOwner().getId().equals(ownerId)).collect(Collectors.toList());
 	}
 	
+	public Integer numeroBookingsPorOwner(int ownerId) {
+		List<Booking> lista = new ArrayList<Booking>();
+		lista = (List<Booking>) bookingRepo.findAll();
+		return lista.stream().filter(x -> x.getOwner().getId().equals(ownerId)).collect(Collectors.toList()).size();
+	}
+	
+	public Integer numeroBookingsPorPet(int petId) {
+		List<Booking> lista = new ArrayList<Booking>();
+		lista = (List<Booking>) bookingRepo.findAll();
+		return lista.stream().filter(x -> x.getPet().getId().equals(petId)).collect(Collectors.toList()).size();
+	}
+	
 	@Transactional
 	public List<Booking> findBookingsByHotelId(int hotelId) {
 		List<Booking> lista = new ArrayList<Booking>();
