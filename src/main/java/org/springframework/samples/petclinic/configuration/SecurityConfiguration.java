@@ -46,7 +46,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/hotel/owner/**").hasAnyAuthority("owner","admin")	
 				.antMatchers("/hotel/booking/**").hasAnyAuthority("owner","admin")	
 				.antMatchers("/hotel/myBookings/**").hasAnyAuthority("owner","admin")
-				.antMatchers("/hotel/review/**").hasAnyAuthority("owner")	
+				.antMatchers("/hotel/review/**").hasAnyAuthority("owner","admin")	
 				.antMatchers("/hotel/**").hasAnyAuthority("admin")
 				.antMatchers("/admin/**").hasAnyAuthority("admin")
 				.antMatchers("/owners/**").hasAnyAuthority("owner","admin")				
