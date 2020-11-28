@@ -115,9 +115,10 @@ public class BookingController {
 				return crearBooking(modelmap);
 			}
 			else {bookingService.save(booking);
+			modelmap.clear();
 			modelmap.addAttribute("message", "Booking creado con éxito!");
 
-			modelmap.clear();
+			
 			String vista = hotelController.listadoReservasPorOwner(ownerId, modelmap);
 			return vista;
 				
@@ -203,8 +204,8 @@ public class BookingController {
 			bookingToUpdate.setPet(booking.getPet());
 			if (bookingService.fechaValida(bookingToUpdate) && bookingService.numeroDiasValido(bookingToUpdate)) {
 			this.bookingService.save(bookingToUpdate);
-
-			return hotelController.listadoReservas(modelmap);}
+			modelmap.addAttribute("message", "La reserva se ha editado correctamente");
+			return hotelController.listadoMisReservas(modelmap);}
 			else {
 				modelmap.addAttribute("message", "La reserva tiene que ser de mas de 1 dia y como maximo de 7");
 				return edit(bookingId, modelmap);

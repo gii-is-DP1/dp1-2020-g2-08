@@ -152,7 +152,7 @@ public class HotelController {
 			// Obtiene el id del owner para redirigir a la vista de reservas de ese owner
 			devolverOwner(modelmap);
 
-			return "redirect:owner/" + modelmap.getAttribute("ownerId");
+			return listadoReservasPorOwner((int) modelmap.getAttribute("ownerId"), modelmap);
 
 		} else {
 			modelmap.addAttribute("message", "Usted no está autenticado como owner");
