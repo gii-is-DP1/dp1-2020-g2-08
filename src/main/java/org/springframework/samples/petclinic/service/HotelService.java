@@ -42,6 +42,9 @@ public class HotelService {
 		 return hotelRepo.findAll();
 	 }
 	 
+// ------------------------------------------------------------------------------------
+	 
+	 
 	 @Transactional
 	 public Hotel findById(Integer hotelId){
 		 return hotelRepo.findById(hotelId).get();
@@ -63,23 +66,25 @@ public class HotelService {
 		 }	
 
 
-@Transactional
-public void save(Hotel hotel) {
-	hotelRepo.save(hotel);
+	@Transactional
+	public void save(Hotel hotel) {
+		hotelRepo.save(hotel);
+		
+	}
 	
-}
-
-@Transactional
-public void delete(Hotel hotel) {	
-		hotelRepo.delete(hotel);	
-}
-
-
-public void deleteById(Integer hotelId) {
+	@Transactional
+	public void delete(Hotel hotel) {	
+			hotelRepo.delete(hotel);	
+	}
 	
-	bookingService.eliminarBookingsPorHotel(hotelId);
-	reviewService.eliminarReviewsPorHotel(hotelId);
-	hotelRepo.deleteById(hotelId);
 	
-}
+	public void deleteById(Integer hotelId) {
+		
+		bookingService.eliminarBookingsPorHotel(hotelId);
+		reviewService.eliminarReviewsPorHotel(hotelId);
+		hotelRepo.deleteById(hotelId);
+		
+	}
+	
+	
 }
