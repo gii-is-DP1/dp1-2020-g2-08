@@ -35,7 +35,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author Juergen Hoeller
- * @author Ken Krebs
+ * @author Ken Kreb
  * @author Arjen Poutsma
  * @author Michael Isvy
  */

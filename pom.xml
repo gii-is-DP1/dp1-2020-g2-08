@@ -46,14 +46,25 @@
 		</developer>
 		
 		<developer>
+
+			<id>alvgomper1</id>
+			<name>Alvaro Gomez Perez</name>
+			<email>alvgomper1@alum.us.es</email>
+    <roles>
+				<role>developer</role>
+			</roles>
+    </developer>
+
+  	<developer>
 			<id>jortolhur</id>
 			<name>Jorge Toledo Vega</name>
 			<email>jortolhur@alum.us.es</email>
+
 			<roles>
 				<role>developer</role>
 			</roles>
 		</developer>
-		
+
 	</developers>
 
 		<properties>

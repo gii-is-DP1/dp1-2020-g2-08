@@ -1,3 +1,6 @@
+		
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
@@ -9,16 +12,6 @@
 
 <nav class="navbar navbar-default" role="navigation">
 	<div class="container">
-		<div class="navbar-header">
-			<a class="navbar-brand"
-				href="<spring:url value="/" htmlEscape="true" />"><span></span></a>
-			<button type="button" class="navbar-toggle" data-toggle="collapse"
-				data-target="#main-navbar">
-				<span class="sr-only"><os-p>Toggle navigation</os-p></span> <span
-					class="icon-bar"></span> <span class="icon-bar"></span> <span
-					class="icon-bar"></span>
-			</button>
-		</div>
 		<div class="navbar-collapse collapse" id="main-navbar">
 			<ul class="nav navbar-nav">
 
@@ -40,11 +33,59 @@
 					<span>Veterinarians</span>
 				</petclinic:menuItem>
 
-				<petclinic:menuItem active="${name eq 'error'}" url="/oups"
+
+				<div class="nav navbar-nav navbar-right">
+
+
+					<li class="dropdown"><a href="/hotel" class="dropdown-toggle"
+						data-toggle="dropdown"> <span
+							class="glyphicon glyphicon glyphicon-calendar"></span> <span>Hotel</span>
+
+							<ul class="dropdown-menu">
+								<li><a href="/hotel">All bookings</a></li>
+								<li><a href="/hotel/myBookings">My bookings</a></li>
+								<li><a href="/hotel/booking/new">New booking</a></li>
+								
+								<sec:authorize access="hasAuthority('admin')">
+								<li><a href="/hotel/listadoHoteles">All Hotels</a></li>
+		<li><a href="/hotel/new">New Hotel</a></li>
+	</sec:authorize>
+								
+
+							</ul>
+				</div>
+
+				
+						
+						<div class="nav navbar-nav navbar-right">
+
+
+							<li class="dropdown"><a href="/shop" class="dropdown-toggle"
+								data-toggle="dropdown"> <span
+									class="glyphicon glyphicon glyphicon-shopping-cart"></span> <span>Shop</span>
+
+									<ul class="dropdown-menu">
+										<li><a href="/shop">Shop</a></li>
+										<sec:authorize access="hasAuthority('admin')">
+										<li><a href="/shop/admin/products">Product list</a></li>
+										<li><a href="/shop/admin/sales">Sales</a></li>
+										<li><a href="/shop/admin/clients">Client list</a></li>
+										</sec:authorize>
+									</ul>
+						</div>
+								
+				
+				
+				
+
+
+
+
+				<%-- <petclinic:menuItem active="${name eq 'error'}" url="/oups"
 					title="trigger a RuntimeException to see how it is handled">
 					<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
 					<span>Error</span>
-				</petclinic:menuItem>
+				</petclinic:menuItem> --%>
 
 			</ul>
 
@@ -54,11 +95,19 @@
 			<ul class="nav navbar-nav navbar-right">
 				<sec:authorize access="!isAuthenticated()">
 					<li><a href="<c:url value="/login" />">Login</a></li>
-					<li><a href="<c:url value="/users/new" />">Register</a></li>
+					
+					<li class="dropdown"><a href="/shop" class="dropdown-toggle"
+								data-toggle="dropdown"> <span
+									class="glyphicon glyphicon"></span> <span>Register</span>
+
+									<ul class="dropdown-menu">
+										<li><a href="/users/new">Register owner</a></li>	
+										<li><a href="/users/new/client">Register shop client list</a></li>
+									</ul>
 				</sec:authorize>
 				<sec:authorize access="isAuthenticated()">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span> 
+						data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span>
 							<strong><sec:authentication property="name" /></strong> <span
 							class="glyphicon glyphicon-chevron-down"></span>
 					</a>
@@ -84,7 +133,7 @@
 								</div>
 							</li>
 							<li class="divider"></li>
-<!-- 							
+							<!-- 							
                             <li> 
 								<div class="navbar-login navbar-login-session">
 									<div class="row">
