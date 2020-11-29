@@ -1,10 +1,8 @@
 package org.springframework.samples.petclinic.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.Collection;
 import java.util.Optional;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -58,7 +56,6 @@ class ProductServiceTests {
 		product.setPrice(6.0);
 		products.remove(product);
 		assertThat(products.size()).isEqualTo(found - 1);
-
 		this.productService.deleteById(1);
 
 		assertThat(product.getId()).isNotNull();
@@ -69,7 +66,6 @@ class ProductServiceTests {
 	public void shouldDelete() {
 		Collection<Product> products = (Collection<Product>) this.productService.findAll();
 		int found = products.size();
-
 		Product product = new Product();
 		product.setId(1);
 		product.setCategory("Pets");
