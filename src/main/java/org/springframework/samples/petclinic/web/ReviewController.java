@@ -76,8 +76,14 @@ public class ReviewController {
 		@PostMapping(path = "saveReview/{ownerId}")
 		public String guardarReview(@Valid Review review, BindingResult result, ModelMap modelmap,
 				@PathVariable("ownerId") Integer ownerId ) { // pathparam coge el parametro del formulario hidden
-			
-//			review.setHotel(hotelService.findById(hotelId));
+			if (result.hasErrors()) {
+				modelmap.addAttribute("review", review);
+				modelmap.addAttribute("message", result.getAllErrors());
+				
+				return crearReviewHotel(modelmap);
+				
+			}
+			else{
 			review.setOwner(ownerService.findOwnerById(ownerId));
 			Integer ownerActual=ownerService.devolverOwnerId();
 			modelmap.addAttribute("ownerId", ownerActual);
@@ -99,7 +105,7 @@ public class ReviewController {
 			
 
 		}
-		
+}
 		
 		// BORRAR UNA RESERVA
 				@GetMapping(path = "/delete/{reviewId}")

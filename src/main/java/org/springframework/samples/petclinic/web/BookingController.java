@@ -164,7 +164,7 @@ public class BookingController {
 	public String edit(@PathVariable("bookingId") int bookingId, ModelMap modelmap) {
 		Integer ownerId = ownerService.devolverOwnerId();
 		// si la reserva es del owner, deja editarla, si no, te manda a las reservas
-		if (bookingService.findBookingById(bookingId).getOwner().getId().equals(ownerId)) {
+		if (ownerId!=null && (bookingService.findBookingById(bookingId).getOwner().getId().equals(ownerId))) {
 
 			List<Hotel> hoteles = (List<Hotel>) hotelService.findAll();
 
@@ -181,7 +181,7 @@ public class BookingController {
 			return "hotel/editBooking2";
 		}
 		else {
-			
+			modelmap.addAttribute("message", "No puedes editar bookings de otro owner");
 			return hotelController.listadoReservas(modelmap);
 		}
 
