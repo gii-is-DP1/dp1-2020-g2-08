@@ -85,8 +85,8 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03',
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04', 'spayed');
 
 INSERT INTO hotel(id,aforo,ocupadas,city) VALUES (1, 50, 0, 'Sevilla');
-INSERT INTO hotel(id,aforo,ocupadas,city) VALUES (2, 50, 0, 'Cordoba');
-INSERT INTO hotel(id,aforo,ocupadas,city) VALUES (3, 50, 0, 'Malaga');
+INSERT INTO hotel(id,aforo,ocupadas,city) VALUES (2, 40, 0, 'Cordoba');
+INSERT INTO hotel(id,aforo,ocupadas,city) VALUES (3, 30, 0, 'Malaga');
 
 INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (1, '2020-02-10', '2020-02-15',1,1,1);
 INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (2, '2020-02-10', '2020-02-16',1,2,2);

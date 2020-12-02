@@ -19,7 +19,9 @@
 								</script>
     </jsp:attribute>
 	<jsp:body>
-        <h2><c:if test="${booking['new']}">New </c:if> Booking for <c:out value="${pets[0].owner.firstName} ${pets[0].owner.lastName}" /> </h2>
+        <h2>
+			<c:if test="${booking['new']}">New </c:if> Booking for <c:out
+				value="${pets[0].owner.firstName} ${pets[0].owner.lastName}" /> </h2>
 
 <!--  Hay que enviar los datos de owner, pet, fecha inicio y fecha fin-->
         
@@ -31,21 +33,33 @@
                 <petclinic:inputField label="Start Date"
 					name="startDate" />
                 <petclinic:inputField label="End Date" name="endDate" />
-             
-                 <%--    <petclinic:selectField label="Pet" name="pet" names="${pets}" size="2" /> --%>
-                 
-                 <label for="pet">Choose your pet:</label>
+                
+                <spring:bind path="pet">  
+                  <label for="pet">Choose your pet:</label>
                         <select name="pet">
    						 <c:forEach items="${pets}" var="pet">  
-   						 <option value="${pet.id}">${pet.name} 
-							
-					</c:forEach>
-    </select> <br><br><br>
+   						 <option value="${pet.id}">${pet.name} 	
+						</c:forEach>
+    </select>
+					<div class="${cssGroup}">
+          <c:if test="${status.error}">
+                <span
+								class="glyphicon glyphicon-remove form-control-feedback"
+								aria-hidden="true"></span>
+                <span class="help-inline">${status.errorMessage}</span>
+            </c:if>
+					</div>
+				</spring:bind>
+				
+				
                      <label for="hotel">Choose your Hotel:</label>
                         <select name="hotel">
    						 <c:forEach items="${hoteles}" var="hotel">  
    						 <option value="${hotel.id}">${hotel.city} 
 							
+					
+					
+					
 					</c:forEach>  
     </select><br>
                

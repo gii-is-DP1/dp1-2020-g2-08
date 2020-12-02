@@ -59,6 +59,7 @@ public class PetController {
                 this.ownerService = ownerService;
 	}
 
+	//Esto se envia a la vista, es como poner en el modelmap.add("types",Types)
 	@ModelAttribute("types")
 	public Collection<PetType> populatePetTypes() {
 		return this.petService.findPetTypes();
