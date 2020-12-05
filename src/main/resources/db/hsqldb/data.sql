@@ -88,9 +88,14 @@ INSERT INTO hotel(id,aforo,ocupadas,city) VALUES (1, 50, 0, 'Sevilla');
 INSERT INTO hotel(id,aforo,ocupadas,city) VALUES (2, 40, 0, 'Cordoba');
 INSERT INTO hotel(id,aforo,ocupadas,city) VALUES (3, 30, 0, 'Malaga');
 
-INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (1, '2020-02-10', '2020-02-15',1,1,1);
-INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (2, '2020-02-10', '2020-02-16',1,2,2);
-INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (3, '2020-02-10', '2020-02-17',1,3,3);
+INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (1, '2020-12-10', '2020-12-11',1,1,1);
+INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (2, '2020-12-10', '2020-12-12',1,2,2);
+INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (3, '2020-12-10', '2020-12-13',1,3,3);
+INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (4, '2020-12-10', '2020-12-14',1,3,3);
+INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (5, '2020-12-10', '2020-12-15',1,3,3);
+INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (6, '2020-12-10', '2020-12-16',1,3,3);
+INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (7, '2020-12-10', '2020-12-17',1,3,3);
+INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (8, '2020-12-10', '2020-12-17',1,3,3);
 
 INSERT INTO shop(id, category) VALUES (1, 'Pets');
 INSERT INTO shop(id, category) VALUES (2, 'Toys');

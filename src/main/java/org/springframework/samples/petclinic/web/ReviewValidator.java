@@ -51,17 +51,17 @@ public class ReviewValidator implements Validator {
 		Integer stars = review.getStars();
 		// description validation
 		if (!StringUtils.hasLength(description) || description.length()>200 || description.length()<3) {
-			errors.rejectValue("Description", REQUIRED+" and between 3 and 200 characters", REQUIRED+" and between 3 and 200 character");
+			errors.rejectValue("description"," Description requires between 3 and 200 characters", " Description requires and between 3 and 200 characters");
 		}
 		
 		// description validation
 				if (!StringUtils.hasLength(tittle) || tittle.length()>30 || tittle.length()<3) {
-					errors.rejectValue("Tittle", REQUIRED+" and between 3 and 30 characters", REQUIRED+" and between 3 and 30 character");
+					errors.rejectValue("tittle", " Tittle requires between 3 and 30 characters", " Tittle requires between 3 and 30 characters");
 				}
 
 		// hotel validation
 		if (review.isNew() && hotel == null) {
-			errors.rejectValue("Hotel", REQUIRED, REQUIRED);
+			errors.rejectValue("hotel", REQUIRED, REQUIRED);
 		}
 		
 //		// Owner validation
@@ -71,15 +71,15 @@ public class ReviewValidator implements Validator {
 
 		//  date validation
 		if (date == null) {
-			errors.rejectValue("Review Date", REQUIRED, REQUIRED);
+			errors.rejectValue("reviewDate", "Booking date is required","Booking date is required");
 		}
 		//Stars validation
 		if (stars == null) {
-			errors.rejectValue("Stars", REQUIRED, REQUIRED);
+			errors.rejectValue("stars", REQUIRED, REQUIRED);
 		}
 		
 		if (stars>5 || stars<1) {
-			errors.rejectValue("Stars between 1 and 5 ", REQUIRED, REQUIRED);
+			errors.rejectValue("stars ", REQUIRED, "Stars between 1 and 5");
 		}
 	}
 

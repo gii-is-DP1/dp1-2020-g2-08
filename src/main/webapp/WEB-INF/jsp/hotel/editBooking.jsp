@@ -10,10 +10,12 @@
         <script>
 									$(function() {
 										$("#startDate").datepicker({
-											dateFormat : 'yy/mm/dd'
+											dateFormat : 'yy/mm/dd',
+												min: '20/12/5'
 										});
 										$("#endDate").datepicker({
-											dateFormat : 'yy/mm/dd'
+											dateFormat : 'yy/mm/dd',
+												min: '20/12/7'
 										});
 									});
 								</script>
@@ -27,8 +29,8 @@
         
 
         <form:form modelAttribute="booking" class="form-horizontal"
-			action="/hotel/booking/save/${ownerId}">
-			
+			>
+			 <input type="hidden" name="ownerId" value="${owner.id}"/>
             <div class="form-group has-feedback">
                 <petclinic:inputField label="Start Date"
 					name="startDate" />
@@ -51,8 +53,25 @@
 					</div>
 				</spring:bind>
 				
+				<%-- <spring:bind path="hotel">  
+                  <label for="hotel">Choose your hotel:</label>
+                        <select name="hotel">
+   						 <c:forEach items="${hoteles}" var="hotel">  
+   						 <option value="${hotel.id}">${hotel.city} 	
+						</c:forEach>
+    </select>
+					<div class="${cssGroup}">
+          <c:if test="${status.error}">
+                <span
+								class="glyphicon glyphicon-remove form-control-feedback"
+								aria-hidden="true"></span>
+                <span class="help-inline">${status.errorMessage}</span>
+            </c:if>
+					</div>
+				</spring:bind>
+				 --%>
 				
-                     <label for="hotel">Choose your Hotel:</label>
+                    <label for="hotel">Choose your Hotel:</label>
                         <select name="hotel">
    						 <c:forEach items="${hoteles}" var="hotel">  
    						 <option value="${hotel.id}">${hotel.city} 
@@ -61,7 +80,7 @@
 					
 					
 					</c:forEach>  
-    </select><br>
+    </select><br> 
                
             </div>
 

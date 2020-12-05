@@ -21,14 +21,14 @@ import lombok.Data;
 public class Booking extends BaseEntity {
 	
 	//Fecha de inicio de la reserva en el hotel.
-    @NotNull
+   
     @Column(name = "start_date")
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
     private LocalDate startDate;
  
     
     //Fecha de fin de la reserva en el hotel.
-    @NotNull
+   
     @Column(name = "end_date")
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
     private LocalDate endDate;
