@@ -1,16 +1,10 @@
 package org.springframework.samples.petclinic.web;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Period;
 
-import javax.xml.stream.events.EndDocument;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Booking;
-import org.springframework.samples.petclinic.model.Hotel;
-import org.springframework.samples.petclinic.model.Owner;
-import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.service.BookingService;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -42,9 +36,7 @@ public class BookingValidator implements Validator {
 		if (booking.getStartDate() == null) {
 			errors.rejectValue("startDate", REQUIRED, REQUIRED);
 		}
-		if (booking.getHotel() == null) {
-			errors.rejectValue("hotel", REQUIRED, REQUIRED);
-		}
+	
 
 		if (booking.getPet() == null) {
 			errors.rejectValue("pet", REQUIRED, REQUIRED);
@@ -69,7 +61,10 @@ public class BookingValidator implements Validator {
 //		if (bookingService.estaOcupadoEnRango(booking.getStartDate(), booking.getEndDate(), booking.getHotel().getId())) {
 //			errors.rejectValue("startDate", "La fecha seleccionada no está disponible", "La fecha seleccionada no está disponible");
 //		}
-		}
+	
+		
+	
+	} 
 
 	
 

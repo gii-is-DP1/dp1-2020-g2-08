@@ -8,25 +8,48 @@
 <petclinic:layout pageName="Bookings">
 	<jsp:attribute name="customScript">
         <script>
-									$(function() {
-										$("#startDate").datepicker({
-											dateFormat : 'yy/mm/dd'
-										});
-										$("#endDate").datepicker({
-											dateFormat : 'yy/mm/dd'
-										});
-									});
+        $(function() {
+      	  $("#startDate").datepicker({
+      		  dateFormat : 'yy/mm/dd',
+				    beforeShowDay: function(date) {
+				    	
+				      if (${restriccion}) {
+				        return [false, "CSSclass", "disabled"];
+				      } else {
+				        return [true, '', ''];
+				      }
+				    }
+				  });
+										
+											  $("#endDate").datepicker({
+												  dateFormat : 'yy/mm/dd',
+											    beforeShowDay: function(date) {
+											    	
+											      if (${restriccion} ) {
+											        return [false, "CSSclass", "disabled"];
+											      } else {
+											        return [true, '', ''];
+											      }
+											    }
+											  });
+											});
+										
+									
+									
 								</script>
     </jsp:attribute>
 	<jsp:body>
-        <h2><c:if test="${booking['new']}">New </c:if> Booking for <c:out value="${pets[0].owner.firstName} ${pets[0].owner.lastName}" /> </h2>
+        <h2>
+			<c:if test="${booking['new']}">New </c:if> Booking for <c:out
+				value="${pets[0].owner.firstName} ${pets[0].owner.lastName}" /> </h2>
 
 <!--  Hay que enviar los datos de owner, pet, fecha inicio y fecha fin-->
         
 
         <form:form modelAttribute="booking" class="form-horizontal"
 			action="/hotel/booking/edit/${booking.id}">
-			<input type="hidden" id="owner" name="owner" value="${booking.owner.id}">
+			<input type="hidden" id="owner" name="owner"
+				value="${booking.owner.id}">
             <div class="form-group has-feedback">
                 <petclinic:inputField label="Start Date"
 					name="startDate" />
@@ -39,6 +62,7 @@
    						 <c:forEach items="${pets}" var="pet">  
    						 <option value="${pet.id}">${pet.name} 
 							
+					
 					</c:forEach>
     </select> <br><br><br>
                      <label for="hotel">Choose your Hotel:</label>
@@ -46,6 +70,7 @@
    						 <c:forEach items="${hoteles}" var="hotel">  
    						 <option value="${hotel.id}">${hotel.city} 
 							
+					
 					</c:forEach>  
     </select><br>
                

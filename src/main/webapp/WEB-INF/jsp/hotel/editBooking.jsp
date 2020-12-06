@@ -11,7 +11,7 @@
 	<jsp:attribute name="customScript">
         <script>
 									
-									
+								 	
          $(function() {
         	  $("#startDate").datepicker({
         		  dateFormat : 'yy/mm/dd',
@@ -47,13 +47,14 @@
 	<jsp:body>
         <h2>
 			<c:if test="${booking['new']}">New </c:if> Booking for <c:out
-				value="${pets[0].owner.firstName} ${pets[0].owner.lastName}" /> </h2>
+				value="${pets[0].owner.firstName} ${pets[0].owner.lastName}" /> in <c:out value=" ${hotel.city}"/></h2>
 
 <!--  Hay que enviar los datos de owner, pet, fecha inicio y fecha fin-->
         
 
         <form:form modelAttribute="booking" class="form-horizontal">
 			 <input type="hidden" name="ownerId" value="${owner.id}" />
+			 <input type="hidden" name="hotel" value="${hotel.id}" />
             <div class="form-group has-feedback">
                 <petclinic:inputField label="Start Date"
 					name="startDate" />
@@ -80,19 +81,7 @@
 				</spring:bind>
 		
 				
-                    <label for="hotel">Choose your Hotel:</label>
-                        <select name="hotel">
-   						 <c:forEach items="${hoteles}" var="hotel">  
-   						 <option value="${hotel.id}">${hotel.city} 
-							
-					
-					
-					
-					
-					
-					
-					</c:forEach>  
-    </select><br> 
+            <br> 
                
             </div>
 
