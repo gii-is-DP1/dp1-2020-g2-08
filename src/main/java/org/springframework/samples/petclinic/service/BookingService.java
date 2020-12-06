@@ -3,6 +3,7 @@ package org.springframework.samples.petclinic.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collector;
@@ -14,6 +15,7 @@ import static java.time.temporal.ChronoUnit.DAYS;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Booking;
@@ -112,26 +114,26 @@ public class BookingService {
 			}
 		}
 	}
-
-	public boolean numeroDiasValido(Booking booking) {
-
-		long dias = DAYS.between(booking.getStartDate(), booking.getEndDate());
-
-		if ((dias < 1) || (dias > 7)) {
-			return false;
-		} else {
-			return true;
-		}
-
-	}
-
-	public boolean fechaValida(Booking booking) {
-		if (booking.getStartDate().isBefore(booking.getEndDate())) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+//
+//	public boolean numeroDiasValido(Booking booking) {
+//
+//		long dias = DAYS.between(booking.getStartDate(), booking.getEndDate());
+//
+//		if ((dias < 1) || (dias > 7)) {
+//			return false;
+//		} else {
+//			return true;
+//		}
+//
+//	}
+//
+//	public boolean fechaValida(Booking booking) {
+//		if (booking.getStartDate().isBefore(booking.getEndDate())) {
+//			return true;
+//		} else {
+//			return false;
+//		}
+//	}
 
 	public Map<LocalDate, Integer> ocupacionesPorDias(Integer hotelId) {
 		Map<LocalDate, Integer> ocupaciones = new HashMap<LocalDate, Integer>();
@@ -184,6 +186,53 @@ public class BookingService {
 
 		return res;
 
+	}
+
+	public List<String> diasOcupadosStr(Integer aforo, Integer hotelId) {
+
+		List<String> ocupados = new ArrayList<String>();
+		ocupados = ocupacionesPorDias(hotelId).entrySet().stream().filter(x -> x.getValue() >= aforo)
+				.map(x -> x.getKey().toString()).collect(Collectors.toList());
+
+		return ocupados;
+
+	}
+
+	public List<String> parseaDates(List<String> lista) {
+		List<String> res = new ArrayList<String>();
+
+		for (int i = 0; i < lista.size(); i++) {
+			res.add(lista.get(i).replace("-", ","));
+		}
+
+		return res;
+	}
+
+	public List<String> parseaDates2(List<LocalDate> lista) {
+		List<String> res = new ArrayList<String>();
+
+		for (int i = 0; i < lista.size(); i++) {
+			int dia = lista.get(i).getDayOfMonth();
+			String mes = lista.get(i).getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES"));
+			int anyo = lista.get(i).getYear();
+
+			res.add(dia + " de " + mes + " del " + anyo);
+		}
+
+		return res;
+	}
+    //   new Date(2020,12,29).getDate() == date.getDate() || new Date( ).getDate() == date.getDate()
+	public String restriccionCalendario(List<String> lista) {
+		String res ="new Date("+lista.get(0).replace("-",",")+").getDate() == date.getDate() ";
+		
+		
+		for (int i = 1; i < lista.size(); i++) {
+			res = res+" || new Date("+lista.get(i).replace("-",",")+" ).getDate() == date.getDate()";
+		}
+		
+		
+		return res ;
+		
 	}
 
 }

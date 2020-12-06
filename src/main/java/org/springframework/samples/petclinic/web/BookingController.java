@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.web;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -91,6 +92,10 @@ public class BookingController {
 				modelmap.put("owner", owner);
 				modelmap.put("ownerId", ownerId);
 				modelmap.put("pets", pets);
+				//List<LocalDate> res = bookingService.diasOcupados(4,1);
+				//modelmap.addAttribute("message", "Los dias ocupados con mas de 4 reservas en el hotel 1 son:"+bookingService.parseaDates2(res));
+				List<String> res2 = bookingService.diasOcupadosStr(4,1);
+				modelmap.addAttribute("restriccion", bookingService.restriccionCalendario(res2));
 
 				// Redirige al formulario editBooking.jsp
 				return "hotel/editBooking";
@@ -109,6 +114,9 @@ public class BookingController {
 	@PostMapping(path = "/new")
 	public String guardarBooking(@Valid Booking booking, BindingResult result, @PathParam("ownerId") Integer ownerId,
 			ModelMap modelmap) {
+		List<String> res2 = bookingService.diasOcupadosStr(4,1);
+		modelmap.addAttribute("restriccion", bookingService.restriccionCalendario(res2));
+		
 		if (result.hasErrors()) {
 
 			List<Pet> pets = new ArrayList<Pet>();
@@ -205,7 +213,7 @@ public class BookingController {
 
 	@PostMapping(value = "/edit/{bookingId}")
 	public String processUpdateForm(@Valid Booking booking, BindingResult result,
-			@PathVariable("bookingId") int bookingId, ModelMap modelmap) throws DuplicatedPetNameException {
+			@PathVariable("bookingId") int bookingId, ModelMap modelmap)  {
 		if (result.hasErrors()) {
 			modelmap.put("booking", booking);
 			modelmap.put("message", "Hubo un error al editar el booking");
@@ -218,14 +226,11 @@ public class BookingController {
 			bookingToUpdate.setHotel(booking.getHotel());
 			bookingToUpdate.setOwner(booking.getOwner());
 			bookingToUpdate.setPet(booking.getPet());
-			if (bookingService.fechaValida(bookingToUpdate) && bookingService.numeroDiasValido(bookingToUpdate)) {
+			
 				this.bookingService.save(bookingToUpdate);
 				modelmap.addAttribute("message", "La reserva se ha editado correctamente");
 				return hotelController.listadoMisReservas(modelmap);
-			} else {
-				modelmap.addAttribute("message", "La reserva tiene que ser de mas de 1 dia y como maximo de 7");
-				return edit(bookingId, modelmap);
-			}
+			
 		}
 	}
 

@@ -104,10 +104,10 @@ public class HotelController {
 			modelmap.addAttribute("bookings", bookings);
 			modelmap.addAttribute("hotel", hotel);
 		
-			List<LocalDate> res = bookingService.diasOcupados(4,1);
+			List<String> res = bookingService.diasOcupadosStr(4,1);
 			
 			
-			modelmap.addAttribute("message", "Los dias ocupados con mas de 4 reservas en el hotel 1 son:"+res);
+			modelmap.addAttribute("message", "Los dias ocupados con mas de 4 reservas en el hotel 1 son:"+bookingService.restriccionCalendario(res));
 			
 
 			// Manda todos los atributos a la vista listaReservas.jsp
