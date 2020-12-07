@@ -83,10 +83,6 @@ public class BookingController {
 		for (int i = 0; i < hoteles.size(); i++) {
 			bookings.add(hoteles.get(i).getBookings().size());
 			reviews.add(hoteles.get(i).getReviews().size());
-			
-			
-			
-			
 			Set<Review> reviewss = hoteles.get(i).getReviews();
 			List<Review> rev = reviewss.stream().collect(Collectors.toList());
 			for (int j = 0; j < rev.size(); j++) {
@@ -115,9 +111,11 @@ public class BookingController {
 		if (hotelService.findAll().iterator().hasNext()) {
 			//comprueba que es un owner quien va a hacer el booking
 			if (ownerService.esOwner()) {
-				if (bookingService.findBookingsByHotelId(hotelId).size()>4) { 		// hay que cambiar el 4 por el aforo
+				if (bookingService.findBookingsByHotelId(hotelId).size()>4) { 
+					List<LocalDate> res = bookingService.diasOcupados(4,hotelId);// hay que cambiar el 4 por el aforo
 					List<String> res2 = bookingService.diasOcupadosStr(4,hotelId);	// hay que cambiar el 4 por el aforo
 				modelmap.addAttribute("restriccion", bookingService.restriccionCalendario(res2));
+				modelmap.put("diasOcupados", bookingService.parseaDates2(res)); 
 				}
 				else {
 					modelmap.addAttribute("restriccion","new Date().getDate() == date.getDate()");
@@ -165,11 +163,11 @@ public class BookingController {
 		}
 		
 		if (result.hasErrors()) {
-
+			Owner owner = ownerService.findOwnerById(ownerId);
 			List<Pet> pets = new ArrayList<Pet>();
 			pets = ownerService.findOwnerById(ownerId).getPets();
-			modelmap.addAttribute("message", "Hubo un error al crear el booking");
-			Owner owner = ownerService.findOwnerById(ownerId);
+			
+			modelmap.put("message", "Hubo un error al crear el booking");			
 			modelmap.put("booking", booking);
 			modelmap.put("owner", owner);
 			modelmap.put("pets", pets);
@@ -177,32 +175,14 @@ public class BookingController {
 			modelmap.put("hotel", hotelService.findById(hotelId));
 			return "hotel/editBooking";
 		} else {
-			Owner o = ownerService.findOwnerById(ownerId);
-			booking.setOwner(o);
-
-			if (bookingService.numeroBookingsPorOwner(ownerId) >= 3) {
-				modelmap.addAttribute("message", "No se pueden hacer más de 3 reservas");
-				return crearBooking(modelmap, hotelId);
-			} else if (bookingService.numeroBookingsPorPet(booking.getPet().getId()) >= 1) {
-				modelmap.addAttribute("message", "Esta mascota ya tiene una reserva en un hotel");
-				return crearBooking(modelmap, hotelId);
-			} else {
-
-				if (bookingService.estaOcupadoEnRango(booking.getStartDate(), booking.getEndDate(),
-						booking.getHotel().getId())) {
-					modelmap.addAttribute("message", "La reserva contiene días que ya se ha alcanzado el aforo máximo");
-					return crearBooking(modelmap, hotelId);
-
-				} else {
-					bookingService.save(booking);
-					modelmap.addAttribute("message", "Booking creado con éxito!");
-					String vista = hotelController.listadoReservasPorOwner(ownerId, modelmap);
-					return vista;
+		return	validaBooking(modelmap, booking,ownerId,hotelId);
+					
 				}
+		
 
-			}
+			
 
-		}
+		
 	}
 
 	// BORRAR UNA RESERVA
@@ -285,4 +265,37 @@ public class BookingController {
 		}
 	}
 
+	public String validaBooking(ModelMap modelmap, @Valid Booking booking, Integer ownerId, Integer hotelId ) {
+		
+		
+		if (bookingService.numeroBookingsPorOwner(ownerId) >= 3) {
+			modelmap.addAttribute("message", "No se pueden hacer más de 3 reservas");
+			return crearBooking(modelmap, hotelId);
+		} else if (bookingService.numeroBookingsPorPet(booking.getPet().getId()) >= 1) {
+			modelmap.addAttribute("message", "Esta mascota ya tiene una reserva en un hotel");
+			return crearBooking(modelmap, hotelId);}
+		
+		else {
+
+			if (bookingService.estaOcupadoEnRango(booking.getStartDate(), booking.getEndDate(),
+					booking.getHotel().getId())) {
+				modelmap.addAttribute("message", "La reserva contiene días que ya se ha alcanzado el aforo máximo");
+				return crearBooking(modelmap, hotelId);
+
+			}
+			
+			else {
+				booking.setHotel(hotelService.findById(hotelId));
+				booking.setOwner(ownerService.findOwnerById(ownerId));
+				bookingService.save(booking);
+				modelmap.addAttribute("message", "Booking creado con éxito!");
+				String vista = hotelController.listadoReservasPorOwner(ownerId, modelmap);
+				return vista;
+				}
+			}
+		
+		
+		
+	
+	}
 }

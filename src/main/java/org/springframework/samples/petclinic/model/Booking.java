@@ -48,7 +48,7 @@ public class Booking extends BaseEntity {
     private Hotel hotel;
 
 	public LocalDate getStartDate() {
-		return startDate;
+		return this.startDate;
 	}
 
 	public void setStartDate(LocalDate startDate) {

@@ -92,6 +92,23 @@
                 </div>
             </div>
         </form:form>
+        <h2>Full days for this hotel:
+        
+        <c:set var="dias" value="${diasOcupados.size()}"></c:set>
+        <c:if test="${dias==null }">
+       <p> There are no full days at this hotel</p>
+        </c:if>
+        
+         </h2>
+        <c:forEach items="${diasOcupados}" var="dia">
+        
+        <p>${dia }</p>
+    
+        
+        </c:forEach>
+        
+        
+        
 
         <br />
         
