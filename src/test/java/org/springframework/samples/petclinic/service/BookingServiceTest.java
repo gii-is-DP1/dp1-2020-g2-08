@@ -28,7 +28,7 @@ public class BookingServiceTest {
 	protected OwnerService ownerService;
 	@Autowired
 	protected PetService petService;
-	
+
 	@Test
 	@Transactional
 	public void shouldFindBookingById() {
@@ -49,6 +49,7 @@ public class BookingServiceTest {
 		assertThat(booking.getEndDate().isEqual(in));
 		assertThat(booking.getEndDate().isEqual(out));
 	}
+	
 	
 	@Test
 	@Transactional
