@@ -146,12 +146,15 @@ public class BookingController {
 	@PostMapping(path = "/new/{hotelId}")
 	public String guardarBooking(@Valid Booking booking, BindingResult result, @PathParam("ownerId") Integer ownerId,
 			@PathVariable("hotelId") Integer hotelId, ModelMap modelmap) {
+		System.out.println("-----------------------------------------------------------------------------------------------------------------");
+		System.out.println("-----------------------------------------------------------------------------------------------------------------");
+		System.out.println("-----------------------------------------------------------------------------------------------------------------");
 		calendario(modelmap, hotelId);
 		Hotel hotel = hotelService.findById(hotelId);
 		Owner owner = ownerService.findOwnerById(ownerId);
 		List<Pet> pets = new ArrayList<Pet>();
 		pets = ownerService.findOwnerById(ownerId).getPets();
-
+		
 		if (result.hasErrors()) {
 
 			creaModelMap(hotel, owner, ownerId, pets, booking, modelmap);
@@ -159,6 +162,7 @@ public class BookingController {
 			return "hotel/editBooking";
 
 		} else {
+			
 			return validaBooking(modelmap, booking, ownerId, hotelId);
 
 		}

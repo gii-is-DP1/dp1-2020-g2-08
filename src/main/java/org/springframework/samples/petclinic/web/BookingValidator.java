@@ -14,8 +14,8 @@ public class BookingValidator implements Validator {
 	
 	@Override
 	public void validate(Object obj, Errors errors) {
-
 		Booking booking = (Booking) obj;
+		
 		LocalDate fechaSalida = booking.getEndDate();
 		LocalDate fechaEntrada = booking.getStartDate();
 		
@@ -27,16 +27,14 @@ public class BookingValidator implements Validator {
 		
 		
 		
-		if (fechaSalida.isBefore(fechaEntrada)) {
-			errors.rejectValue("endDate", "La fecha de salida no puede ser anterior a la de entrada", "La fecha de salida no puede ser anterior a la de entrada");
+
+		
+		if (fechaSalida==null) {
+			errors.rejectValue("endDate",  "Booking date is required","Booking date is required");
 		}
 		
-		if (booking.getEndDate().toString() == "") {
-			errors.rejectValue("endDate", REQUIRED, REQUIRED);
-		}
-		
-		if (booking.getStartDate().toString() == "") {
-			errors.rejectValue("startDate", REQUIRED, REQUIRED);
+		if (fechaEntrada==null) {
+			errors.rejectValue("startDate", "Booking date is required","Booking date is required");
 		}
 	
 
@@ -44,14 +42,22 @@ public class BookingValidator implements Validator {
 			errors.rejectValue("pet", REQUIRED, REQUIRED);
 		}
 		
-		
-		if (Period.between(fechaEntrada, fechaSalida.plusDays(1)).getDays()>8 ) {
+		if (fechaEntrada!=null && fechaSalida!=null) {
+			if (fechaSalida.isBefore(fechaEntrada)) {
+		errors.rejectValue("endDate", "La fecha de salida no puede ser anterior a la de entrada", "La fecha de salida no puede ser anterior a la de entrada");
+	}
+			if (Period.between(fechaEntrada, fechaSalida.plusDays(1)).getDays()>8 ) {
 			errors.rejectValue("endDate", "La reserva no puede durar mas de 7 dias", "La reserva no puede durar mas de 7 dias");
 		}
 		
 		if ( Period.between(fechaEntrada, fechaSalida.plusDays(1)).getDays()<2) {
 			errors.rejectValue("endDate", "La reserva tiene que durar al menos 1 dia", "La reserva tiene que durar al menos 1 dia");
 		}
+		
+			
+		}
+		
+
 		
 		if (booking.getPet().getType().getName().equals("lizard")) {
 			errors.rejectValue("pet", "La mascota no puede ser un lizard", "La mascota no puede ser un lizard");
