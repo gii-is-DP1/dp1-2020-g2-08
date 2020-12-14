@@ -20,10 +20,10 @@ public class BookingValidator implements Validator {
 		LocalDate fechaEntrada = booking.getStartDate();
 		
 		
-		if (fechaEntrada.isBefore(LocalDate.now())) {
-			errors.rejectValue("startDate", "La fecha de entrada como minimo tiene que ser mañana","La fecha de entrada como minimo tiene que ser mañana");
-		}
-		
+//		if (fechaEntrada.getDayOfYear()<=(LocalDate.now().getDayOfYear())) {
+//			errors.rejectValue("startDate", "La fecha de entrada como minimo tiene que ser mañana","La fecha de entrada como minimo tiene que ser mañana");
+//		}
+//		
 		
 		
 		
@@ -31,11 +31,11 @@ public class BookingValidator implements Validator {
 			errors.rejectValue("endDate", "La fecha de salida no puede ser anterior a la de entrada", "La fecha de salida no puede ser anterior a la de entrada");
 		}
 		
-		if (booking.getEndDate() == null ) {
+		if (booking.getEndDate().toString() == "") {
 			errors.rejectValue("endDate", REQUIRED, REQUIRED);
 		}
 		
-		if (booking.getStartDate() == null) {
+		if (booking.getStartDate().toString() == "") {
 			errors.rejectValue("startDate", REQUIRED, REQUIRED);
 		}
 	

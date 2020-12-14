@@ -40,6 +40,7 @@
             <tr>
               
                 <td>
+                
                     <c:out value="${valoracionMedia[i.index]}" />
                 </td>
                 <td>
