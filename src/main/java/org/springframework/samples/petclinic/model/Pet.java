@@ -112,4 +112,12 @@ public class Pet extends NamedEntity {
 		visit.setPet(this);
 	}
 
+	public Set<Booking> getBookings() {
+		return bookings;
+	}
+
+	public void setBookings(Set<Booking> bookings) {
+		this.bookings = bookings;
+	}
+
 }

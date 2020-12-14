@@ -1,6 +1,8 @@
 package org.springframework.samples.petclinic.web;
 
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
@@ -16,7 +18,9 @@ import org.springframework.samples.petclinic.service.ReviewService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,6 +47,10 @@ public class ReviewController {
 		this.reviewService = reviewService;
 		this.hotelService=hotelService;
 
+	}
+	@InitBinder("review")
+	public void initPetBinder(WebDataBinder dataBinder) {
+		dataBinder.setValidator(new ReviewValidator());
 	}
 	
 	// nueva reseña al hotel
@@ -78,7 +86,7 @@ public class ReviewController {
 				@PathVariable("ownerId") Integer ownerId ) { // pathparam coge el parametro del formulario hidden
 			if (result.hasErrors()) {
 				modelmap.addAttribute("review", review);
-				modelmap.addAttribute("message", result.getAllErrors());
+				modelmap.addAttribute("message", result.getAllErrors().stream().map(x->x.getDefaultMessage()).collect(Collectors.toList()));
 				
 				return crearReviewHotel(modelmap);
 				

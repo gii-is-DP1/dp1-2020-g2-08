@@ -1,10 +1,15 @@
 package org.springframework.samples.petclinic.web;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Booking;
 import org.springframework.samples.petclinic.model.Hotel;
@@ -42,6 +47,8 @@ public class HotelController {
 	@Autowired
 	private ReviewService reviewService;
 
+	
+	
 	@Autowired
 	public HotelController(HotelService hotelService, OwnerService ownerService, BookingService bookingService,
 			ReviewService reviewService) {
@@ -97,6 +104,7 @@ public class HotelController {
 			modelmap.addAttribute("bookings", bookings);
 			modelmap.addAttribute("hotel", hotel);
 		
+			
 			
 
 			// Manda todos los atributos a la vista listaReservas.jsp
@@ -171,6 +179,7 @@ public class HotelController {
 		// Pone las reservas en el modelmap para mandar a la vista
 		modelmap.addAttribute("bookings", bookings);
 		modelmap.addAttribute("owner", ownerService.findOwnerById(ownerId));
+		modelmap.addAttribute("ownerId", ownerId);
 
 		// Redirige a misReservas.jsp
 		return "hotel/misReservas";

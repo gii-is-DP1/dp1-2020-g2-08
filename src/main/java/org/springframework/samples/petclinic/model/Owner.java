@@ -193,4 +193,14 @@ public class Owner extends Person {
 				.append("telephone", this.telephone).toString();
 	}
 
+	public Set<Review> getReviews() {
+		return reviews;
+	}
+
+	public void setReviews(Set<Review> reviews) {
+		this.reviews = reviews;
+	}
+	
+	
+
 }
