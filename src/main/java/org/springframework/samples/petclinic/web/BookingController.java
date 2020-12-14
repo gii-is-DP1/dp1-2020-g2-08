@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Booking;
 import org.springframework.samples.petclinic.model.Hotel;
@@ -222,19 +223,18 @@ public class BookingController {
 		// si la reserva es del owner, deja editarla, si no, te manda a las reservas
 		if (ownerId != null && (bookingService.findBookingById(bookingId).getOwner().getId().equals(ownerId))) {
 
-			List<Hotel> hoteles = (List<Hotel>) hotelService.findAll();
-
-			List<Pet> pets = new ArrayList<Pet>();
-			pets = ownerService.findOwnerById(ownerId).getPets();
+			
+			List<Pet> pets = ownerService.findOwnerById(ownerId).getPets();
 			Booking booking = this.bookingService.findBookingById(bookingId);
 			Owner owner = ownerService.findOwnerById(ownerId);
+			Hotel hotel = booking.getHotel();
+			modelmap.put("hotel", hotel);
 			modelmap.addAttribute("owner", owner);
 			modelmap.addAttribute("ownerId", ownerId);
 			modelmap.addAttribute("pets", pets);
-			modelmap.addAttribute("hoteles", hoteles);
-
 			modelmap.put("booking", booking);
-			return "hotel/editBooking2";
+			
+			return "hotel/editBooking";
 		} else {
 			modelmap.addAttribute("message", "No puedes editar bookings de otro owner");
 			return hotelController.listadoReservas(modelmap);
@@ -246,21 +246,26 @@ public class BookingController {
 	public String processUpdateForm(@Valid Booking booking, BindingResult result,
 			@PathVariable("bookingId") int bookingId, ModelMap modelmap)  {
 		if (result.hasErrors()) {
+			
+		List<Pet> pets = ownerService.findOwnerById(booking.getOwner().getId()).getPets();
+		
+		modelmap.put("message", "Hubo un error al crear el booking");
+		modelmap.put("pets", pets);		
 			modelmap.put("booking", booking);
-			modelmap.put("message", "Hubo un error al editar el booking");
-			return "hotel/editBooking2";
+//			modelmap.put("message",result.getAllErrors());
+			return "hotel/editBooking";
 		} else {
 			Booking bookingToUpdate = this.bookingService.findBookingById(bookingId);
+			BeanUtils.copyProperties(booking, bookingToUpdate, "id","owner","pet","hotel");   
+//			bookingToUpdate.setStartDate(booking.getStartDate());
+//			bookingToUpdate.setEndDate(booking.getEndDate());
+			
 
-			bookingToUpdate.setStartDate(booking.getStartDate());
-			bookingToUpdate.setEndDate(booking.getEndDate());
-			bookingToUpdate.setHotel(booking.getHotel());
-			bookingToUpdate.setOwner(booking.getOwner());
-			bookingToUpdate.setPet(booking.getPet());
+			
 			
 				this.bookingService.save(bookingToUpdate);
 				modelmap.addAttribute("message", "La reserva se ha editado correctamente");
-				return hotelController.listadoMisReservas(modelmap);
+				return hotelController.listadoMisReservas(modelmap); 
 			
 		}
 	}

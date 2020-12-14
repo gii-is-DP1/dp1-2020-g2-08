@@ -51,7 +51,7 @@ public class ReviewValidator implements Validator {
 		Integer stars = review.getStars();
 		// description validation
 		if (!StringUtils.hasLength(description) || description.length()>200 || description.length()<3) {
-			errors.rejectValue("description"," Description requires between 3 and 200 characters", " Description requires and between 3 and 200 characters");
+			errors.rejectValue("description"," Description requires between 3 and 200 characters", " Description requires between 3 and 200 characters");
 		}
 		
 		// description validation
@@ -64,10 +64,7 @@ public class ReviewValidator implements Validator {
 			errors.rejectValue("hotel", REQUIRED, REQUIRED);
 		}
 		
-//		// Owner validation
-//				if (review.isNew() && owner == null) {
-//					errors.rejectValue("Owner", REQUIRED, REQUIRED);
-//				}
+
 
 		//  date validation
 		if (date == null) {

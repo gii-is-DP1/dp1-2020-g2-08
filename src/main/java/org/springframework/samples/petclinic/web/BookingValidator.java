@@ -11,8 +11,7 @@ import org.springframework.validation.Validator;
 
 public class BookingValidator implements Validator {
 	private static final String REQUIRED = "required";
-	@Autowired
-	private BookingService bookingService;	
+	
 	@Override
 	public void validate(Object obj, Errors errors) {
 
@@ -21,9 +20,9 @@ public class BookingValidator implements Validator {
 		LocalDate fechaEntrada = booking.getStartDate();
 		
 		
-//		if (fechaEntrada.isBefore(LocalDate.now())) {
-//			errors.rejectValue("startDate", "La fecha de entrada como minimo tiene que ser mañana","La fecha de entrada como minimo tiene que ser mañana");
-//		}
+		if (fechaEntrada.isBefore(LocalDate.now())) {
+			errors.rejectValue("startDate", "La fecha de entrada como minimo tiene que ser mañana","La fecha de entrada como minimo tiene que ser mañana");
+		}
 		
 		
 		
