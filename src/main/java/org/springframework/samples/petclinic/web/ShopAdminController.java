@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.DoubleUnaryOperator;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -28,7 +29,9 @@ import org.springframework.security.config.web.server.ServerHttpSecurity.OAuth2C
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,6 +53,11 @@ public class ShopAdminController {
 	
 	private static List<String> categoryList = Arrays.asList("Pets", "Food", "Toys", "Accessories");
 	private static List<String> offerOptions = Arrays.asList("Yes", "No");
+	
+	@InitBinder("product")
+	public void initPetBinder(WebDataBinder dataBinder) {
+		dataBinder.setValidator(new ShopAdminValidator());
+	}
 
 	@Autowired
 	public ShopAdminController(ProductService productService, UserService userService, AuthoritiesService authoritiesService) {
@@ -78,22 +86,29 @@ public class ShopAdminController {
 		modelmap.addAttribute("categories", categoryList);
 		modelmap.addAttribute("offers", offerOptions);
 		return view;
-
 	}
 
 	@PostMapping(path = "/products/save")
-	public String save(@PathParam("category") String category, @PathParam("name") String name,
+	public String save(@Valid Product product, BindingResult result, @PathParam("category") String category, @PathParam("name") String name,
 			@PathParam("price") Double price, @PathParam("inOffer") String inOffer, ModelMap modelmap) {
 
-		Product product = new Product();
+		if (result.hasErrors()) {
+			modelmap.addAttribute("product", product);
+			modelmap.addAttribute("message", result.getAllErrors().stream().map(x->x.getDefaultMessage()).collect(Collectors.toList()));
+			
+			return addProduct(modelmap);
+			
+		} else {
+	
 		product.setCategory(category);
 		product.setName(name);
 		product.setPrice(price);
 		product.setInOffer(inOffer);
 
 		productService.save(product);
-		modelmap.addAttribute("message", "New product added");
+		modelmap.addAttribute("message", "New product added");	
 		return "redirect:/shop/admin/products";
+		}
 
 	}
 
