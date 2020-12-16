@@ -18,15 +18,21 @@ public class Product extends BaseEntity {
 	@NotNull
 	@Column(name = "name")
 	private String name;
+	
 	@NotNull
-	@JoinColumn(name = "category_id")
+	@Column(name = "category")
 	private String category;
+	
 	@NotNull
 	@Column(name = "price")
 	private Double price;
+	
 	@NotNull
 	@Column(name = "inOffer")
 	private String inOffer;
+	
+	
+
 	
 
 }

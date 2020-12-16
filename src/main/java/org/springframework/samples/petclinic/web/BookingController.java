@@ -146,9 +146,7 @@ public class BookingController {
 	@PostMapping(path = "/new/{hotelId}")
 	public String guardarBooking(@Valid Booking booking, BindingResult result, @PathParam("ownerId") Integer ownerId,
 			@PathVariable("hotelId") Integer hotelId, ModelMap modelmap) {
-		System.out.println("-----------------------------------------------------------------------------------------------------------------");
-		System.out.println("-----------------------------------------------------------------------------------------------------------------");
-		System.out.println("-----------------------------------------------------------------------------------------------------------------");
+		
 		calendario(modelmap, hotelId);
 		Hotel hotel = hotelService.findById(hotelId);
 		Owner owner = ownerService.findOwnerById(ownerId);

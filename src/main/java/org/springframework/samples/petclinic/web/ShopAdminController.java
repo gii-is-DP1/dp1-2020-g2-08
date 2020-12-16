@@ -21,7 +21,7 @@ import org.springframework.samples.petclinic.model.Product;
 import org.springframework.samples.petclinic.service.AuthoritiesService;
 import org.springframework.samples.petclinic.service.ClientService;
 import org.springframework.samples.petclinic.service.ProductService;
-import org.springframework.samples.petclinic.service.ShopService;
+
 import org.springframework.samples.petclinic.service.UserService;
 import org.springframework.samples.petclinic.service.exceptions.DuplicatedPetNameException;
 import org.springframework.security.config.web.server.ServerHttpSecurity.OAuth2ClientSpec;
@@ -39,8 +39,7 @@ public class ShopAdminController {
 
 	@Autowired
 	private ProductService productService;
-	@Autowired
-	private ShopService shopService;
+	
 	@Autowired
 	private ClientService clientService;
 	@Autowired

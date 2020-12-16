@@ -5,6 +5,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -31,12 +32,13 @@ public class Client extends Person {
 	@NotEmpty
 	private String telephone;
 	
-//	@Column(name = "orders")
-//	private String orders;
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)	
+	private Set<Order> orders;
 	
 	@Column(name = "email")
 	@NotEmpty
 	private String email;
+	
 	@Column(name = "nif")
 	@NotEmpty
 	private String nif;
