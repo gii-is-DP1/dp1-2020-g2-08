@@ -19,8 +19,10 @@
             <petclinic:inputField label="NIF" name="nif"/>
             <petclinic:inputField label="Email" name="email"/>
             <petclinic:inputField label="Telephone" name="telephone"/>
-            <petclinic:inputField label="Username" name="user.username"/>
-            <petclinic:inputField label="Password" name="user.password"/>
+            <label for="username"> Username: </label>
+            <input type="text" label="Username" name="username" required/></br>
+            <label for="password"> Password: </label>
+            <input type="password" label="Password" name="password" required/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">

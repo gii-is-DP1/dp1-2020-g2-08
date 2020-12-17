@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.DoubleUnaryOperator;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -55,7 +56,9 @@ public class ShopAdminController {
 	
 	@InitBinder("product")
 	public void initPetBinder(WebDataBinder dataBinder) {
+
 		dataBinder.setValidator(new ProductValidator());
+
 	}
 
 	@Autowired
@@ -85,7 +88,6 @@ public class ShopAdminController {
 		modelmap.addAttribute("categories", categoryList);
 		modelmap.addAttribute("offers", offerOptions);
 		return view;
-
 	}
 
 	@PostMapping(path = "/products/save")
@@ -98,7 +100,9 @@ public class ShopAdminController {
 			
 			return addProduct(modelmap);
 			
+
 		}else {
+
 	
 		product.setCategory(category);
 		product.setName(name);
