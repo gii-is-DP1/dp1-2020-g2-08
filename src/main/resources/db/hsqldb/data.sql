@@ -113,4 +113,4 @@ INSERT INTO reviews(id,description,review_date,stars,tittle,hotel_id,owner_id) V
 
 INSERT INTO users(username,password,enabled) VALUES ('mangarmar','mangarmar',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (10,'mangarmar','client');
-INSERT INTO clients VALUES (1, 'Manuel', 'Garcia', 'Domingo Molina', 'Sevilla','gmail@gmail.com','111111','654321022','mangarmar');
+INSERT INTO clients VALUES (1, 'Manuel', 'Garcia', 'Domingo Molina', 'Sevilla','gmail@gmail.com','mangarmar','1111111','mangarmar','654321022','mangarmar');

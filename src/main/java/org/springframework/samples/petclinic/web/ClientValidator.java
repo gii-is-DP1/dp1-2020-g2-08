@@ -16,21 +16,21 @@ private static final String REQUIRED = "required";
 	public void validate(Object obj, Errors errors) {
 
 		Client client = (Client) obj;
-		String name = client.getFirstName();
-		String lastName = client.getLastName();
-		String address = client.getAddress();
-		String city = client.getCity();
 		String nif = client.getNif();
-		String username = client.getUser().getUsername();
-		String password = client.getUser().getPassword();
+		String username = client.getNameuser();
+		String password = client.getPass();
 		
 		
-		if(nif==null || !nif.equals("[0-9]{7,8}[A-Z a-z]")) {
+		if(nif==null || nif.equals("[0-9]{7,8}[A-Z a-z]")) {
 			errors.rejectValue("nif", "Wrong nif format", "Wrong nif format");
 		}
-		if(username.length()==0) {
-			errors.rejectValue("username", "Username is empty");
+		if(username.length()<3) {
+			errors.rejectValue("nameuser", "Username is empty","Username is empty");
 		}
+		if(password.length()<3) {
+			errors.rejectValue("pass", "Password is empty","Password is empty");
+		}
+		
 		
 	}
 

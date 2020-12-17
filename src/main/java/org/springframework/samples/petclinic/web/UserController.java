@@ -15,12 +15,16 @@
  */
 package org.springframework.samples.petclinic.web;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.model.Authorities;
 import org.springframework.samples.petclinic.model.Client;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.User;
@@ -49,11 +53,17 @@ public class UserController {
 	private final OwnerService ownerService;
 	
 	private final ClientService clientService;
+	
+	private final UserService userService;
+	
+	private final AuthoritiesService authoritiesService;
 
 	@Autowired
-	public UserController(OwnerService clinicService, ClientService clientService) {
+	public UserController(OwnerService clinicService, ClientService clientService, AuthoritiesService authoritiesService, UserService userService) {
 		this.ownerService = clinicService;
 		this.clientService = clientService;
+		this.authoritiesService = authoritiesService;
+		this.userService = userService;
 	}
 
 	@InitBinder
@@ -80,7 +90,7 @@ public class UserController {
 		}
 	}
 	
-	@InitBinder("clients")
+	@InitBinder("client")
 	public void initPetBinder(WebDataBinder dataBinder) {
 		dataBinder.setValidator(new ClientValidator());
 	}
@@ -95,6 +105,8 @@ public class UserController {
 
 	@PostMapping(value = "/users/new/client")
 	public String processCreationClientForm(@Valid Client client,BindingResult result, ModelMap modelmap) {
+		
+		
 		if (result.hasErrors()) {
 			
 			modelmap.addAttribute("client", client);
@@ -104,6 +116,8 @@ public class UserController {
 		else {
 
 			this.clientService.saveClient(client);
+			
+
 			return "redirect:/";
 		}
 	}
