@@ -28,7 +28,7 @@ public class BookingServiceTest {
 	protected OwnerService ownerService;
 	@Autowired
 	protected PetService petService;
-	
+
 	@Test
 	@Transactional
 	public void shouldFindBookingById() {
@@ -49,6 +49,7 @@ public class BookingServiceTest {
 		assertThat(booking.getEndDate().isEqual(in));
 		assertThat(booking.getEndDate().isEqual(out));
 	}
+	
 	
 	@Test
 	@Transactional
@@ -92,15 +93,11 @@ public class BookingServiceTest {
 	public void shouldDeleteByBookingId() {
 //		TODO
 		List<Booking> bookings= (List<Booking>) bookingService.findAll();
-		System.out.println("------------------------------------------------------>>>>>> BOOKINGS ANTES DE BORRAR: "+bookings.size() );
-		
-		
 		bookingService.deleteById(1);
 		
 		List<Booking> bookings2= (List<Booking>) bookingService.findAll();
-		System.out.println("------------------------------------------------------>>>>>> BOOKINGS despues DE BORRAR: "+bookings2.size() );
-		
-		assertThat(bookings2.size()== bookings.size()-1);
+
+		assertThat(bookings2.size() == bookings.size()-1);
 		
 		
 	}
@@ -109,15 +106,12 @@ public class BookingServiceTest {
 	@Transactional
 	public void shouldDeleteByBookig() {
 		List<Booking> bookings= (List<Booking>) bookingService.findAll();
-		System.out.println("------------------------------------------------------>>>>>> BOOKINGS ANTES DE BORRAR: "+bookings.size() );
-		
 		
 		Booking booking = bookingService.findBookingById(1);
 		bookingService.delete(booking);
 		
 		List<Booking> bookings2= (List<Booking>) bookingService.findAll();
-		System.out.println("------------------------------------------------------>>>>>> BOOKINGS despues DE BORRAR: "+bookings2.size() );
-		
+
 		assertThat(bookings2.size()== bookings.size()-1);
 	}
 	
@@ -126,9 +120,8 @@ public class BookingServiceTest {
 	public void shouldInsertBooking() {
 		List<Booking>bookingList =  (List<Booking>) this.bookingService.findAll();
 		
-		
 		int found = bookingList.size();
-		assertThat(found).isEqualTo(3);
+		assertThat(found).isEqualTo(8);
 		
 		
 		LocalDate in = LocalDate.now();

@@ -22,6 +22,7 @@ public class Product extends BaseEntity {
 	@NotNull
 	@Column(name = "category")
 	private String category;
+
 	
 	@NotNull
 	@Column(name = "price")

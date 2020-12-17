@@ -34,7 +34,7 @@
 					<td><c:out value="${client.email}" /></td>
 					<td><c:out value="${client.nif}" /></td>
 					<td><c:out value="${client.telephone}" /></td>
-					<td><c:out value="${client.user.username}" /></td>
+					<td><c:out value="${client.user.username}"/></td>
 
 
 

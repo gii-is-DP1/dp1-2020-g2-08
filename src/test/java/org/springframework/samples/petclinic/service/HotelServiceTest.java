@@ -20,9 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 class HotelServiceTest {
 	
 	@Autowired
-	 private HotelRepository hotelRepo;
-
-	@Autowired
 	protected HotelService hotelService;
 	@Autowired
 	protected ReviewService reviewService;
@@ -34,7 +31,7 @@ class HotelServiceTest {
 //		TODO
 		Hotel hotel = this.hotelService.findById(2);
 		assertThat(hotel.getCity().startsWith("Cordoba"));
-		assertThat(hotel.getAforo()).isEqualTo(50);
+		assertThat(hotel.getAforo()).isEqualTo(5);
 	}
 	
 	@Test
