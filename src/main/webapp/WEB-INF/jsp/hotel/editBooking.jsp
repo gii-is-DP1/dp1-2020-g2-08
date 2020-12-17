@@ -24,6 +24,8 @@
 				      }
 				    }
 				  });
+        	   $("#startDate").attr("readonly","readonly");
+				  $("#endDate").attr("readonly","readonly"); 
 										
 											  $("#endDate").datepicker({
 												  dateFormat : 'yy/mm/dd',

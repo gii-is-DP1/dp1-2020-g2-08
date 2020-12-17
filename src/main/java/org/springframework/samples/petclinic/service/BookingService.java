@@ -44,7 +44,7 @@ public class BookingService {
 	public Iterable<Booking> findAll() {
 		return bookingRepo.findAll();
 	}
-
+  
 	@Transactional
 	public Booking findBookingById(int bookingId) {
 		return bookingRepo.findById(bookingId).get();

@@ -74,12 +74,13 @@ public class BookingController {
 	public void setAllowedFields(WebDataBinder dataBinder) {
 		dataBinder.setDisallowedFields("id");
 	}
+
 	@GetMapping(path = "/new")
 	public String elegirHotel(ModelMap modelmap) {
 		List<Hotel> hoteles = (List<Hotel>) hotelService.findAll();
 		List<Integer> bookings = new ArrayList<Integer>();
 		List<Integer> reviews = new ArrayList<Integer>();
-		List<Integer> valoracionMedia= new ArrayList<Integer>();
+		List<Integer> valoracionMedia = new ArrayList<Integer>();
 		int cont = 0;
 		for (int i = 0; i < hoteles.size(); i++) {
 			bookings.add(hoteles.get(i).getBookings().size());
@@ -87,56 +88,46 @@ public class BookingController {
 			Set<Review> reviewss = hoteles.get(i).getReviews();
 			List<Review> rev = reviewss.stream().collect(Collectors.toList());
 			for (int j = 0; j < rev.size(); j++) {
-			cont=cont+	rev.get(j).getStars();
-			
+				cont = cont + rev.get(j).getStars();
+
 			}
-			valoracionMedia.add(cont/reviewss.size());
-			cont=0;
-			
-			
+			if (reviewss.size() < 1) {
+				valoracionMedia.add(0);
+				cont = 0;
+			} else {
+				valoracionMedia.add(cont / reviewss.size());
+				cont = 0;
+
+			}
 		}
-		
-		modelmap.addAttribute("hoteles",hoteles);
-		modelmap.addAttribute("numeroBookings",bookings);
-		modelmap.addAttribute("numeroReviews",reviews);
-		modelmap.addAttribute("valoracionMedia",valoracionMedia);
+
+		modelmap.addAttribute("hoteles", hoteles);
+		modelmap.addAttribute("numeroBookings", bookings);
+		modelmap.addAttribute("numeroReviews", reviews);
+		modelmap.addAttribute("valoracionMedia", valoracionMedia);
 		return "hotel/newBooking";
 	}
-	
-	
-	
+
 	// CREAR UNA NUEVA RESERVA
 	@GetMapping(path = "/new/{hotelId}")
 	public String crearBooking(ModelMap modelmap, @PathVariable("hotelId") Integer hotelId) {
-		//Comprueba que hay hoteles creados
+		// Comprueba que hay hoteles creados
 		if (hotelService.findAll().iterator().hasNext()) {
-			//comprueba que es un owner quien va a hacer el booking
+			// comprueba que es un owner quien va a hacer el booking
 			if (ownerService.esOwner()) {
-				if (bookingService.findBookingsByHotelId(hotelId).size()>4) { 
-					List<LocalDate> res = bookingService.diasOcupados(4,hotelId);// hay que cambiar el 4 por el aforo
-					List<String> res2 = bookingService.diasOcupadosStr(4,hotelId);	// hay que cambiar el 4 por el aforo
-				modelmap.addAttribute("restriccion", bookingService.restriccionCalendario(res2));
-				modelmap.put("diasOcupados", bookingService.parseaDates2(res)); 
-				}
-				else {
-					modelmap.addAttribute("restriccion","new Date().getDate() == date.getDate()");
-				}
+				Hotel hotel = hotelService.findById(hotelId);
 				Integer ownerId = ownerService.devolverOwnerId();
 				Owner owner = ownerService.findOwnerById(ownerId);
+				List<Pet> pets = new ArrayList<Pet>();
+				pets = ownerService.findOwnerById(ownerId).getPets();calendario(modelmap, hotelId);
+				
 				// Crea una lista con las mascotas para que las muestre en el formulario de
 				// nueva reserva
-				List<Pet> pets = new ArrayList<Pet>();
-				pets = ownerService.findOwnerById(ownerId).getPets();
-				Hotel hotel = hotelService.findById(hotelId);
 				
+				
+
 				Booking booking = new Booking();
-				modelmap.put("hotel", hotel);
-				modelmap.put("booking", booking);
-				modelmap.put("owner", owner);
-				modelmap.put("ownerId", ownerId);
-				modelmap.put("pets", pets);
-				
-				
+				creaModelMap(hotel, owner, ownerId, pets, booking, modelmap);
 
 				// Redirige al formulario editBooking.jsp
 				return "hotel/editBooking";
@@ -153,37 +144,80 @@ public class BookingController {
 
 	// CREAR UNA NUEVA RESERVA
 	@PostMapping(path = "/new/{hotelId}")
-	public String guardarBooking(@Valid Booking booking, BindingResult result, @PathParam("ownerId") Integer ownerId,@PathVariable("hotelId") Integer hotelId,
-			ModelMap modelmap) {
-		if (bookingService.findBookingsByHotelId(hotelId).size()>4) { 		// hay que cambiar el 4 por el aforo
-			List<String> res2 = bookingService.diasOcupadosStr(4,hotelId);	// hay que cambiar el 4 por el aforo
-		modelmap.addAttribute("restriccion", bookingService.restriccionCalendario(res2));
-		}
-		else {
-			modelmap.addAttribute("restriccion","new Date().getDate() == date.getDate()");
-		}
+	public String guardarBooking(@Valid Booking booking, BindingResult result, @PathParam("ownerId") Integer ownerId,
+			@PathVariable("hotelId") Integer hotelId, ModelMap modelmap) {
+		
+		calendario(modelmap, hotelId);
+		Hotel hotel = hotelService.findById(hotelId);
+		Owner owner = ownerService.findOwnerById(ownerId);
+		List<Pet> pets = new ArrayList<Pet>();
+		pets = ownerService.findOwnerById(ownerId).getPets();
 		
 		if (result.hasErrors()) {
-			Owner owner = ownerService.findOwnerById(ownerId);
-			List<Pet> pets = new ArrayList<Pet>();
-			pets = ownerService.findOwnerById(ownerId).getPets();
+
+			creaModelMap(hotel, owner, ownerId, pets, booking, modelmap);
+			modelmap.put("message", "Hubo un error al crear el booking");
+			return "hotel/editBooking";
+
+		} else {
 			
-			modelmap.put("message", "Hubo un error al crear el booking");			
-			modelmap.put("booking", booking);
-			modelmap.put("owner", owner);
-			modelmap.put("pets", pets);
-			modelmap.put("hotelId", hotelId);
-			modelmap.put("hotel", hotelService.findById(hotelId));
+			return validaBooking(modelmap, booking, ownerId, hotelId);
+
+		}
+
+	}
+
+	// EDITAR UNA RESERVA
+
+	@GetMapping(path = "/edit/{bookingId}")
+	public String edit(@PathVariable("bookingId") int bookingId, ModelMap modelmap) {
+		Integer ownerId = ownerService.devolverOwnerId();
+		Booking booking = bookingService.findBookingById(bookingId);
+		Hotel hotel = booking.getHotel();
+		calendario(modelmap, booking.getHotel().getId());
+		// si la reserva es del owner, deja editarla, si no, te manda a las reservas
+		if (ownerId != null && (bookingService.findBookingById(bookingId).getOwner().getId().equals(ownerId))) {
+			List<Pet> pets = ownerService.findOwnerById(ownerId).getPets();
+
+			Owner owner = ownerService.findOwnerById(ownerId);
+			creaModelMap(hotel, owner, ownerId, pets, booking, modelmap);
 			return "hotel/editBooking";
 		} else {
-		return	validaBooking(modelmap, booking,ownerId,hotelId);
-					
-				}
-		
+			modelmap.addAttribute("message", "No puedes editar bookings de otro owner");
+			return hotelController.listadoReservas(modelmap);
+		}
 
-			
+	}
 
-		
+	@PostMapping(value = "/edit/{bookingId}")
+	public String processUpdateForm(@Valid Booking booking, BindingResult result,
+			@PathVariable("bookingId") int bookingId, ModelMap modelmap) {
+		Integer ownerId = ownerService.devolverOwnerId();
+		List<Pet> pets = ownerService.findOwnerById(ownerId).getPets();
+		Owner owner = ownerService.findOwnerById(ownerId);
+		Hotel hotel = booking.getHotel();
+		if (result.hasErrors()) {
+			calendario(modelmap, booking.getHotel().getId()); // añade las restricciones de dias al calendario
+			creaModelMap(hotel, owner, ownerId, pets, booking, modelmap);
+			modelmap.put("message", "Hubo un error al crear el booking");
+			return "hotel/editBooking";
+		} else {
+			if (bookingService.estaOcupadoEnRango(booking.getStartDate(), booking.getEndDate(),
+					booking.getHotel().getId())) {
+				calendario(modelmap, hotel.getId());
+				creaModelMap(hotel, owner, ownerId, pets, booking, modelmap);
+				modelmap.addAttribute("message", "La reserva contiene días que ya se ha alcanzado el aforo máximo");
+				return "hotel/editBooking";
+
+			} else {
+				Booking bookingToUpdate = this.bookingService.findBookingById(bookingId);
+				BeanUtils.copyProperties(booking, bookingToUpdate, "id", "owner", "pet", "hotel");
+
+				this.bookingService.save(bookingToUpdate);
+				modelmap.addAttribute("message", "La reserva se ha editado correctamente");
+				return hotelController.listadoMisReservas(modelmap);
+			}
+		}
 	}
 
 	// BORRAR UNA RESERVA
@@ -213,73 +247,27 @@ public class BookingController {
 		return hotelController.listadoReservasPorOwner(ownerId, modelmap);
 	}
 
-	// EDITAR UNA RESERVA
+	/**
+	 * Valida que el numero de booking por owner sea menor o igual a 3, que una
+	 * mascota npo tenga mas de 1 reserva, y que la reserva que se va a hacer no
+	 * incluya dias en los que el hotel está lleno.En caso de que una no se cumpla,
+	 * te devuelve al formulario de creacion
+	 * 
+	 * @param modelmap modelmap en el que introduce los datos para la vista * @param
+	 *                 booking booking creado al que se le va a hacer la validacion
+	 *                 * @param ownerId owner que quiere hacer el booking
+	 * @param hotelId  hotel que queremos ver las restricciones de fechas
+	 */
+	public String validaBooking(ModelMap modelmap, @Valid Booking booking, Integer ownerId, Integer hotelId) {
 
-	@GetMapping(path = "/edit/{bookingId}")
-	public String edit(@PathVariable("bookingId") int bookingId, ModelMap modelmap) {
-		Integer ownerId = ownerService.devolverOwnerId();
-		List<String> res2 = bookingService.diasOcupadosStr(4,1);
-		modelmap.addAttribute("restriccion", bookingService.restriccionCalendario(res2));
-		// si la reserva es del owner, deja editarla, si no, te manda a las reservas
-		if (ownerId != null && (bookingService.findBookingById(bookingId).getOwner().getId().equals(ownerId))) {
-
-			
-			List<Pet> pets = ownerService.findOwnerById(ownerId).getPets();
-			Booking booking = this.bookingService.findBookingById(bookingId);
-			Owner owner = ownerService.findOwnerById(ownerId);
-			Hotel hotel = booking.getHotel();
-			modelmap.put("hotel", hotel);
-			modelmap.addAttribute("owner", owner);
-			modelmap.addAttribute("ownerId", ownerId);
-			modelmap.addAttribute("pets", pets);
-			modelmap.put("booking", booking);
-			
-			return "hotel/editBooking";
-		} else {
-			modelmap.addAttribute("message", "No puedes editar bookings de otro owner");
-			return hotelController.listadoReservas(modelmap);
-		}
-
-	}
-
-	@PostMapping(value = "/edit/{bookingId}")
-	public String processUpdateForm(@Valid Booking booking, BindingResult result,
-			@PathVariable("bookingId") int bookingId, ModelMap modelmap)  {
-		if (result.hasErrors()) {
-			
-		List<Pet> pets = ownerService.findOwnerById(booking.getOwner().getId()).getPets();
-		
-		modelmap.put("message", "Hubo un error al crear el booking");
-		modelmap.put("pets", pets);		
-			modelmap.put("booking", booking);
-//			modelmap.put("message",result.getAllErrors());
-			return "hotel/editBooking";
-		} else {
-			Booking bookingToUpdate = this.bookingService.findBookingById(bookingId);
-			BeanUtils.copyProperties(booking, bookingToUpdate, "id","owner","pet","hotel");   
-//			bookingToUpdate.setStartDate(booking.getStartDate());
-//			bookingToUpdate.setEndDate(booking.getEndDate());
-			
-
-			
-			
-				this.bookingService.save(bookingToUpdate);
-				modelmap.addAttribute("message", "La reserva se ha editado correctamente");
-				return hotelController.listadoMisReservas(modelmap); 
-			
-		}
-	}
-
-	public String validaBooking(ModelMap modelmap, @Valid Booking booking, Integer ownerId, Integer hotelId ) {
-		
-		
 		if (bookingService.numeroBookingsPorOwner(ownerId) >= 3) {
 			modelmap.addAttribute("message", "No se pueden hacer más de 3 reservas");
 			return crearBooking(modelmap, hotelId);
 		} else if (bookingService.numeroBookingsPorPet(booking.getPet().getId()) >= 1) {
 			modelmap.addAttribute("message", "Esta mascota ya tiene una reserva en un hotel");
-			return crearBooking(modelmap, hotelId);}
-		
+			return crearBooking(modelmap, hotelId);
+		}
+
 		else {
 
 			if (bookingService.estaOcupadoEnRango(booking.getStartDate(), booking.getEndDate(),
@@ -288,7 +276,7 @@ public class BookingController {
 				return crearBooking(modelmap, hotelId);
 
 			}
-			
+
 			else {
 				booking.setHotel(hotelService.findById(hotelId));
 				booking.setOwner(ownerService.findOwnerById(ownerId));
@@ -296,11 +284,38 @@ public class BookingController {
 				modelmap.addAttribute("message", "Booking creado con éxito!");
 				String vista = hotelController.listadoReservasPorOwner(ownerId, modelmap);
 				return vista;
-				}
 			}
-		
-		
-		
-	
+		}
+
 	}
+
+	/**
+	 * Añade las restricciones al calendario de la vista jsp, además, pasa los dias
+	 * para que se muestren como texto, diciendo los dias llenos de el hotel
+	 * 
+	 * @param modelmap modelmap en el que introduce los datos para la vista
+	 * @param hotelId  hotel que queremos ver las restricciones de fechas
+	 */
+	public void calendario(ModelMap modelmap, int hotelId) {
+		if (bookingService.findBookingsByHotelId(hotelId).size() > 4) {
+			List<LocalDate> res = bookingService.diasOcupados(4, hotelId);// hay que cambiar el 4 por el aforo
+			List<String> res2 = bookingService.diasOcupadosStr(4, hotelId); // hay que cambiar el 4 por el aforo
+			modelmap.addAttribute("restriccion", bookingService.restriccionCalendario(res2));
+			modelmap.put("diasOcupados", bookingService.parseaDates2(res));
+		} else {
+			modelmap.addAttribute("restriccion", "new Date().getDate() == date.getDate()");
+		}
+	}
+
+	public void creaModelMap(Hotel hotel, Owner owner, int ownerId, List<Pet> pets, Booking booking,
+			ModelMap modelmap) {
+		modelmap.put("hotel", hotel);
+		modelmap.addAttribute("owner", owner);
+		modelmap.addAttribute("ownerId", ownerId);
+		modelmap.put("hotelId", hotel.getId());
+
+		modelmap.put("pets", pets);
+		modelmap.put("booking", booking);
+	}
+
 }
