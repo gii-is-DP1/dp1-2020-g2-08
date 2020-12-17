@@ -56,7 +56,9 @@ public class ShopAdminController {
 	
 	@InitBinder("product")
 	public void initPetBinder(WebDataBinder dataBinder) {
-		dataBinder.setValidator(new ShopAdminValidator());
+
+		dataBinder.setValidator(new ProductValidator());
+
 	}
 
 	@Autowired
@@ -98,7 +100,9 @@ public class ShopAdminController {
 			
 			return addProduct(modelmap);
 			
-		} else {
+
+		}else {
+
 	
 		product.setCategory(category);
 		product.setName(name);

@@ -21,7 +21,6 @@ public class Product extends BaseEntity {
 	@NotNull
 	@JoinColumn(name = "category_id")
 	private String category;
-	@NotNull
 	@Column(name = "price")
 	private Double price;
 	@NotNull
