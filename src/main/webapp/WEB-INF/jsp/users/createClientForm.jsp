@@ -19,10 +19,12 @@
             <petclinic:inputField label="NIF" name="nif"/>
             <petclinic:inputField label="Email" name="email"/>
             <petclinic:inputField label="Telephone" name="telephone"/>
-            <label for="username"> Username: </label>
-            <input type="text" label="Username" name="username" required/></br>
-            <label for="password"> Password: </label>
-            <input type="password" label="Password" name="password" required/>
+            <petclinic:inputField label="Username" name="nameuser"/>
+            <petclinic:inputField label="Password" name="pass"/> 
+           <%-- <label for="username"> Username: </label> --%>
+           <%-- <input type="text" label="Username" name="username" required/></br> --%>
+          <%--  <label for="password"> Password: </label> --%>
+          <%--  <input type="password" label="Password" name="password" required/> --%>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">

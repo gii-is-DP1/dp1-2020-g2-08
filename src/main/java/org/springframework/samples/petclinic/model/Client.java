@@ -21,6 +21,7 @@ import lombok.Data;
 @Table(name = "clients")
 public class Client extends Person {
 	
+	
 	@Column(name = "address")
 	@NotEmpty
 	private String address;
@@ -49,6 +50,39 @@ public class Client extends Person {
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "username", referencedColumnName = "username")
 	private User user;
+	
+	@Column(name = "nameuser")
+	@NotEmpty
+	private String nameuser;
+	
+	@Column(name = "pass")
+	@NotEmpty
+	private String pass;
+	
+
+	public String getNameuser() {
+		return nameuser;
+	}
+
+	public void setNameuser(String nameuser) {
+		this.nameuser = nameuser;
+	}
+
+	public Set<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(Set<Order> orders) {
+		this.orders = orders;
+	}
+
+	public String getPass() {
+		return pass;
+	}
+
+	public void setPass(String pass) {
+		this.pass = pass;
+	}
 
 	public String getAddress() {
 		return address;
