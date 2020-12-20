@@ -33,9 +33,9 @@ public class Order extends BaseEntity{
 			@DateTimeFormat(pattern = "yyyy/MM/dd")
 		    private LocalDate deliveryDate;
 		 
-		 //Importe total del producto
-		 @Column(name = "price_order")
-		 private Double priceOrder;
+//		 //Importe total del producto
+//		 @Column(name = "price_order")
+//		 private Double priceOrder;
 		 
 		 
 		 //Estado del producto
@@ -62,7 +62,18 @@ public class Order extends BaseEntity{
 		 private Client client;
 		 
 		 @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)	
-			private Set<Product> products;
+			private Set<ProductoVendido> products;
+		 
+		 public double getPrecioTotal() {
+			 double res = 0.0;
+			 for (ProductoVendido prod:this.products) {
+				 res+=prod.getTotal();
+				
+			}
+			 return res;
+			 
+			 
+		 }
 
 		public LocalDate getOrderDate() {
 			return orderDate;
@@ -80,13 +91,13 @@ public class Order extends BaseEntity{
 			this.deliveryDate = deliveryDate;
 		}
 
-		public Double getPriceOrder() {
-			return priceOrder;
-		}
-
-		public void setPriceOrder(Double priceOrder) {
-			this.priceOrder = priceOrder;
-		}
+//		public Double getPriceOrder() {
+//			return priceOrder;
+//		}
+//
+//		public void setPriceOrder(Double priceOrder) {
+//			this.priceOrder = priceOrder;
+//		}
 
 		public String getState() {
 			return state;
@@ -138,11 +149,11 @@ public class Order extends BaseEntity{
 			this.client = client;
 		}
 
-		public Set<Product> getProducts() {
+		public Set<ProductoVendido> getProducts() {
 			return products;
 		}
 
-		public void setProducts(Set<Product> products) {
+		public void setProducts(Set<ProductoVendido> products) {
 			this.products = products;
 		}
 		 

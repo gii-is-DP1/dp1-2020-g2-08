@@ -57,13 +57,15 @@ public class ClientService {
 			
 			
 			User user = new User();
+			
 			user.setUsername(client.getNameuser());
 			user.setPassword(client.getPass());
+			
 			userService.saveUser(user);	
 			authoritiesService.saveAuthorities(user.getUsername(), "client");
 			
-			
-		
+			User user2 = user = userService.findUser(client.getNameuser()).get();
+			client.setUser(user2);
 			clientRepo.save(client);
 			
 			
