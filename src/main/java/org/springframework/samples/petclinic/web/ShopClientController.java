@@ -42,7 +42,7 @@ public class ShopClientController {
 
 	}
 
-	@GetMapping(path = "/products/pets")
+	@GetMapping(path = "/products/pets") // {category}
 	public String petList(ModelMap modelmap) {
 		String view = "shop/products/pets";
 		List<Product> products = (List<Product>) productService.findAll();
