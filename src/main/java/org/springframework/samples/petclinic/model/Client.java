@@ -35,7 +35,7 @@ public class Client extends Person {
 	@Digits(fraction = 0, integer = 10)
 	private String telephone;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)	
+	@OneToMany(cascade = CascadeType.ALL)	
 	private Set<Order> orders;
 	
 	@Column(name = "email")
