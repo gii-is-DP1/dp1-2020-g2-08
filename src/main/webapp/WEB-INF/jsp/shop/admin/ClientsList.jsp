@@ -19,6 +19,7 @@
 				<th>Nif</th>
 				<th>Telephone</th>
 				<th>Username</th>
+				<th>Coupons</th>
 
 			</tr>
 		</thead>
@@ -35,7 +36,7 @@
 					<td><c:out value="${client.nif}" /></td>
 					<td><c:out value="${client.telephone}" /></td>
 					<td><c:out value="${client.user.username}"/></td>
-
+					<td><c:out value="${clientCoupons}"/></td>
 
 
 				</tr>

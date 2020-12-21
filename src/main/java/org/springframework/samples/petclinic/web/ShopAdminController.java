@@ -241,11 +241,11 @@ public class ShopAdminController {
 	public String clientsList(ModelMap modelmap) {
 		modelmap.clear();
 		String view = "shop/admin/ClientsList";
-		Iterable<Client> clients = clientService.findAll();	
+		List<Client> clients = (List<Client>) clientService.findAll();	
 		int clientsNumber = clientService.clientCount();
 		modelmap.addAttribute("clientsNumber", clientsNumber);
 		modelmap.addAttribute("clients", clients );
-
+		modelmap.addAttribute("clientCoupons", clients.get(0).getCoupons().stream().findFirst().get() );
 		return view;
 
 	}
