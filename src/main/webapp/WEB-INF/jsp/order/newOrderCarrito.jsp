@@ -1,4 +1,4 @@
-<%@ page session="false" trimDirectiveWhitespaces="true"%>
+
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
@@ -9,20 +9,46 @@
      
     </jsp:attribute>
 	<jsp:body>
-         <h2>
-            Buy product <br><br>
-        </h2>
-        <div>
-           <h3> Product Summary</h3>
-           <p>  Name: ${product.name}</p><br>
-           <p>  Price: ${product.price} euros</p><br>
-           <p> Category: ${product.category}</p><br>
+	<h1>Your order summary</h1><br>
+          <div class="table-">
+          
+            <table id="productTable" class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                     
+                   
+                </tr>
+                </thead>
+			<tbody>
+				
+					<c:forEach items="${carrito}" var="carrito" varStatus="i">
+					<tr>
+
+						<td>${carrito.name}</td>
+						<td>${carrito.price}</td>
+						<td>${carrito.cantidad}</td>
+						<td>${carrito.total}</td>
+						
+						
+</tr>
+					</c:forEach>
+
+				
+				
+				
+			</tbody>
+		</table>
         </div>
         <form:form modelAttribute="order" class="form-horizontal">
              
             <div class="form-group has-feedback">
                 
-               
+               <h1>Add your facturation data</h1><br>
                 
                 <petclinic:inputField label="Address" name="address" />
                 <petclinic:inputField label="City"
