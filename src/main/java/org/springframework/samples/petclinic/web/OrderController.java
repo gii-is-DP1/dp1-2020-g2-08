@@ -142,7 +142,13 @@ public class OrderController {
 	
 	
 	@GetMapping(value = "shop/carrito/complete")
-	public String procesarPedido( ModelMap modelmap) {
+	public String procesarPedido(HttpServletRequest request, ModelMap modelmap) {
+		List<ProductoParaVenta> carrito = this.obtenerCarrito(request);
+		// Si no hay carrito o está vacío, regresamos inmediatamente
+		if (carrito == null || carrito.size() <= 0) {
+			modelmap.put("message", "El carrito esta vacio");
+			return "/shop/carrito/carrito";
+		}
 		Order order = new Order();
 		modelmap.put("order",order);
 		return "order/newOrderCarrito";

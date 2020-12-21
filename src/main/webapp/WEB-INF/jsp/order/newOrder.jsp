@@ -19,7 +19,7 @@
            <p> Category: ${product.category}</p><br>
         </div>
         <form:form modelAttribute="order" class="form-horizontal">
-             
+              <h1>Add your facturation data</h1><br>
             <div class="form-group has-feedback">
                 
                

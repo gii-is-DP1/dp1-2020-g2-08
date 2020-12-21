@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -7,6 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -16,7 +19,7 @@ import javax.validation.constraints.NotEmpty;
 
 import lombok.Data;
 
-
+@Data
 @Entity
 @Table(name = "clients")
 public class Client extends Person {
@@ -58,6 +61,16 @@ public class Client extends Person {
 	@Column(name = "pass")
 	@NotEmpty
 	private String pass;
+	
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "clients_coupons",
+            joinColumns = {
+                    @JoinColumn(name = "client_id", referencedColumnName = "id",
+                            nullable = false, updatable = false)},
+            inverseJoinColumns = {
+                    @JoinColumn(name = "coupon_id", referencedColumnName = "id",
+                            nullable = false, updatable = false)})
+    private Set<Coupon> coupons = new HashSet<>();
 	
 
 	public String getNameuser() {
