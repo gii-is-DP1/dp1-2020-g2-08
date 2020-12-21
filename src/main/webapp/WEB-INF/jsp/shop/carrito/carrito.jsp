@@ -50,10 +50,14 @@
 
 				
 				
-				
 			</tbody>
 		</table>
         </div>
+        
+        
+				<spring:url value="/shop/carrito/complete" var="cart"></spring:url>
+				
+				<a class="btn btn-default" href="${fn:escapeXml(cart)}"> Purchase </a>
 	
 	
 </petclinic:layout>
