@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -257,6 +259,29 @@ public class OrderController {
 
 		}
 
+	}
+	
+	@GetMapping(path = "/shop/myOrders")
+	private String myOrderList(ModelMap modelmap) {
+		String view = "shop/myOrders";
+		Integer clientId = clientService.devolverClientId();
+		List<Order> ordersByClientId = orderService.findOrderByClientId(clientId);
+		Integer ordersNumber = ordersByClientId.size();
+		modelmap.addAttribute("orders", ordersByClientId);
+		modelmap.addAttribute("ordersNumber",ordersNumber);
+
+		
+		return view;
+	}
+	
+	@GetMapping(path = "/shop/view/products/{orderId}")
+	private String productsByOrder	(@PathVariable (value="orderId") Integer orderId, ModelMap modelmap) {
+		String view = "shop/productsByOrder";
+		List<ProductoVendido> productsByOrder = orderService.findProductsByOrder(orderId);
+		Integer productsNumber = productsByOrder.size();
+		modelmap.addAttribute("products", productsByOrder);
+		modelmap.addAttribute("productsNumber",productsNumber);
+		return view;
 	}
 
 	@PostMapping(path = "shop/buy/{productId}")
