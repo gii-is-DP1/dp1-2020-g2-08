@@ -114,3 +114,8 @@ INSERT INTO reviews(id,description,review_date,stars,tittle,hotel_id,owner_id) V
 INSERT INTO users(username,password,enabled) VALUES ('mangarmar','mangarmar',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (10,'mangarmar','client');
 INSERT INTO clients VALUES (1, 'Manuel', 'Garcia', 'Domingo Molina', 'Sevilla','gmail@gmail.com','mangarmar','1111111','mangarmar','654321022','mangarmar');
+
+
+INSERT INTO orders VALUES(1, 'Prim', 'Sevilla', 'España', '2020-12-10', '2020-12-11','41410','In progress', 1);
+INSERT INTO producto_vendido VALUES(1, 1, 'Dog´s Ball','8.75',1);
+INSERT INTO producto_vendido VALUES(2, 1, 'Pipes for birds','5.0',1);
