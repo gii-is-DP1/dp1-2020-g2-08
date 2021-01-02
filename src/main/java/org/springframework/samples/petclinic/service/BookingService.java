@@ -223,11 +223,14 @@ public class BookingService {
 	}
     //   new Date(2020,12,29).getDate() == date.getDate() || new Date( ).getDate() == date.getDate()
 	public String restriccionCalendario(List<String> lista) {
-		String res ="new Date("+lista.get(0).replace("-",",")+").getDate() == date.getDate() ";
+		String res ="new Date("+lista.get(0).replace("-",",")+").valueOf() == fecha.valueOf() ";
 		
 		
 		for (int i = 1; i < lista.size(); i++) {
-			res = res+" || new Date("+lista.get(i).replace("-",",")+" ).getDate() == date.getDate()";
+			
+			
+			
+			res = res+" || new Date("+lista.get(i).replace("-",",")+" ).valueOf() == fecha.valueOf()";
 		}
 		
 		

@@ -128,7 +128,15 @@
 												<a href="<c:url value="/logout" />"
 													class="btn btn-primary btn-block btn-sm">Logout</a>
 											</p>
+											<p class="text-left">
+												<a href="<c:url value="/shop/myOrders" />"
+													class="btn btn-primary btn-block btn-sm">My orders</a>
+											</p>
 										</div>
+										
+	
+										
+										
 									</div>
 								</div>
 							</li>
@@ -150,6 +158,11 @@
 -->
 						</ul></li>
 				</sec:authorize>
+					<petclinic:menuItem active="${name eq 'cart'}" url="/shop/carrito">
+					<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+				</petclinic:menuItem>
+									
+									</ul>
 			</ul>
 		</div>
 

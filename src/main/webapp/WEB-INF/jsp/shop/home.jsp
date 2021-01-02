@@ -8,16 +8,23 @@
 <petclinic:layout pageName="products">
 
 
-	<spring:url value="/shop/products/pets" var="pets">
+	
+	<spring:url value="/shop/products/Pets" var="pets">
 	</spring:url>
-	<spring:url value="/shop/products/food" var="food">
+	<spring:url value="/shop/products/Food" var="food">
 	</spring:url>
-	<spring:url value="/shop/products/toys" var="toys">
+	<spring:url value="/shop/products/Toys" var="toys">
 	</spring:url>
-	<spring:url value="/shop/products/accessories" var="accessories">
+	<spring:url value="/shop/products/Accessories" var="accessories">
 	</spring:url>
 	
-			
+	<sec:authorize access="hasAuthority('client')">
+	
+		<spring:url value="/shop/carrito" var="cart"></spring:url>
+				
+		<a class="btn btn-default" href="${fn:escapeXml(cart)}"> Cart </a>
+		
+	</sec: authorize>
 	
 	<a class="btn btn-default" href="${fn:escapeXml(pets)}">Pets </a>
 

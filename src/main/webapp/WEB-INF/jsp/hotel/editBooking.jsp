@@ -16,8 +16,10 @@
         	  $("#startDate").datepicker({
         		  dateFormat : 'yy/mm/dd',
 				    beforeShowDay: function(date) {
-				    	
-				      if (${restriccion}) {
+				    
+				  fecha = new Date(date)
+				    	fecha.setMonth(date.getMonth()+1);
+				      if ( ${restriccion}     ) {
 				        return [false, "CSSclass", "disabled"];
 				      } else {
 				        return [true, '', ''];
@@ -30,7 +32,9 @@
 											  $("#endDate").datepicker({
 												  dateFormat : 'yy/mm/dd',
 											    beforeShowDay: function(date) {
-											    	
+											    	fecha = new Date(date)
+											    	fecha.setMonth(date.getMonth()+1);
+											    
 											      if (${restriccion} ) {
 											        return [false, "CSSclass", "disabled"];
 											      } else {
@@ -47,6 +51,7 @@
 								</script>
     </jsp:attribute>
 	<jsp:body>
+	
         <h2>
 			<c:if test="${booking['new']}">New </c:if> Booking for <c:out
 				value="${pets[0].owner.firstName} ${pets[0].owner.lastName}" /> in <c:out value=" ${hotel.city}"/></h2>
