@@ -15,10 +15,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Booking;
 import org.springframework.samples.petclinic.model.Client;
+import org.springframework.samples.petclinic.model.Coupon;
 import org.springframework.samples.petclinic.model.Hotel;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Product;
+import org.springframework.samples.petclinic.repository.CouponRepository;
 import org.springframework.samples.petclinic.service.AuthoritiesService;
 import org.springframework.samples.petclinic.service.ClientService;
 import org.springframework.samples.petclinic.service.ProductService;
@@ -42,6 +44,8 @@ public class ShopAdminController {
 
 	@Autowired
 	private ProductService productService;
+	@Autowired
+	private CouponRepository couponRepository;
 	
 	@Autowired
 	private ClientService clientService;
@@ -189,6 +193,48 @@ public class ShopAdminController {
 		return view;
 
 	}
+	
+	@GetMapping(path = "/coupons/add")
+	public String addCoupon(ModelMap modelmap) {
+		String view = "shop/admin/newCoupon";
+		modelmap.addAttribute("coupon", new Coupon());
+		return view;
+	}
 
+	@PostMapping(path = "/coupons/save")
+	public String save(@Valid Coupon coupon, BindingResult result,  ModelMap modelmap) {
+		String view = "shop/admin/couponList";
+		if (result.hasErrors()) {
+			modelmap.addAttribute("coupon", coupon);
+			modelmap.addAttribute("message", result.getAllErrors().stream().map(x->x.getDefaultMessage()).collect(Collectors.toList()));
+			
+			return addCoupon(modelmap);
+			
+
+		}else {
+
+	
+			couponRepository.save(coupon);
+		
+		modelmap.addAttribute("message", "New coupon added");	
+		return couponsList(modelmap);
+		}
+
+		
+	
+
+
+
+}
+	
+	@GetMapping(path = "/coupons" )
+	public String couponsList(ModelMap modelmap) {
+		modelmap.clear();
+		String view = "shop/admin/couponList";
+		List<Coupon> coupons = (List<Coupon>) couponRepository.findAll();	
+			modelmap.addAttribute("coupons", coupons );
+				return view;
+
+	}
 
 }

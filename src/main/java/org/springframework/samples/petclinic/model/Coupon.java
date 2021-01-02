@@ -10,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 @Data
@@ -22,10 +24,11 @@ public class Coupon extends BaseEntity{
 	private Integer discount;
 	
 	@Column(name = "expireDate")
+	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	private LocalDate expireDate;
 	
 	 @ManyToMany(mappedBy = "coupons", fetch = FetchType.LAZY)
-	   private Set<Client> students = new HashSet<>();
+	   private Set<Client> clients = new HashSet<>();
 	
 	
 
