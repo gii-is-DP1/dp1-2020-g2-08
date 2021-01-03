@@ -55,9 +55,13 @@
         </div>
         
         
-				<spring:url value="/shop/carrito/complete" var="cart"></spring:url>
+				<spring:url value="/shop/carrito/complete" var="complete"></spring:url>
 				
-				<a class="btn btn-default" href="${fn:escapeXml(cart)}"> Purchase </a>
+				<a class="btn btn-success" href="${fn:escapeXml(complete)}"> Complete order </a>
+				
+				<spring:url value="/shop/carrito/reset" var="reset"></spring:url>
+				
+				<a class="btn btn-danger" href="${fn:escapeXml(reset)}"> Remove all </a>
 	
 	
 </petclinic:layout>

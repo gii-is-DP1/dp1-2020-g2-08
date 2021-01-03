@@ -86,17 +86,6 @@ public class OrderController {
 		this.guardarCarrito(new ArrayList<>(), request);
 	}
 
-	@GetMapping(value = "shop/addCarrito")
-	public String generaCarrito(ModelMap model, HttpServletRequest request) {
-		añadeCarritoAutomatico(request);
-		double total = 0.0;
-		List<ProductoParaVenta> carrito = this.obtenerCarrito(request);
-		for (ProductoParaVenta p : carrito)
-			total += p.getTotal();
-		model.addAttribute("total", total);
-		model.addAttribute("carrito", carrito);
-		return "shop/carrito/carrito";
-	}
 
 	@GetMapping(value = "shop/add/{productId}")
 	public String addProductToCart(ModelMap model, HttpServletRequest request,
@@ -219,27 +208,38 @@ public class OrderController {
 	
 	
 	
-	
-	
-	private void añadeCarritoAutomatico(HttpServletRequest request) {
-		List<Product> products = (List<Product>) productService.findAll();
-		List<ProductoParaVenta> res = obtenerCarrito(request);
+//	@GetMapping(value = "shop/addCarrito")
+//	public String generaCarrito(ModelMap model, HttpServletRequest request) {
+//		añadeCarritoAutomatico(request);
+//		double total = 0.0;
+//		List<ProductoParaVenta> carrito = this.obtenerCarrito(request);
+//		for (ProductoParaVenta p : carrito)
+//			total += p.getTotal();
+//		model.addAttribute("total", total);
+//		model.addAttribute("carrito", carrito);
+//		return "shop/carrito/carrito";
+//	}
 
-		for (int i = 0; i < products.size(); i++) {
-			Product productoActual = products.get(i);
-			ProductoParaVenta p = new ProductoParaVenta();
-			p.setCantidad(1);
-			p.setCategory(productoActual.getCategory());
-			p.setInOffer(productoActual.getInOffer());
-			p.setName(productoActual.getName());
-			p.setPrice(productoActual.getPrice());
-
-			res.add(p);
-
-		}
-		guardarCarrito(res, request);
-
-	}
+//	
+//	private void añadeCarritoAutomatico(HttpServletRequest request) {
+//		List<Product> products = (List<Product>) productService.findAll();
+//		List<ProductoParaVenta> res = obtenerCarrito(request);
+//
+//		for (int i = 0; i < products.size(); i++) {
+//			Product productoActual = products.get(i);
+//			ProductoParaVenta p = new ProductoParaVenta();
+//			p.setCantidad(1);
+//			p.setCategory(productoActual.getCategory());
+//			p.setInOffer(productoActual.getInOffer());
+//			p.setName(productoActual.getName());
+//			p.setPrice(productoActual.getPrice());
+//
+//			res.add(p);
+//
+//		}
+//		guardarCarrito(res, request);
+//
+//	}
 
 	// Para comprar 1 solo articulo sin añadir al carro /shop/buy/(productId)
 	@GetMapping(path = "/shop/buy/{productId}")
@@ -274,15 +274,7 @@ public class OrderController {
 		return view;
 	}
 	
-	@GetMapping(path = "/shop/view/products/{orderId}")
-	private String productsByOrder	(@PathVariable (value="orderId") Integer orderId, ModelMap modelmap) {
-		String view = "shop/productsByOrder";
-		List<ProductoVendido> productsByOrder = orderService.findProductsByOrder(orderId);
-		Integer productsNumber = productsByOrder.size();
-		modelmap.addAttribute("products", productsByOrder);
-		modelmap.addAttribute("productsNumber",productsNumber);
-		return view;
-	}
+	
 
 	@PostMapping(path = "shop/buy/{productId}")
 	public String guardaCompraProducto(ModelMap modelmap, @PathVariable("productId") Integer productId, Order order,
@@ -320,5 +312,22 @@ public class OrderController {
 		}
 
 	}
+	
+	@GetMapping(path = "/shop/view/products/{orderId}")
+	private String productsByOrder	(@PathVariable (value="orderId") Integer orderId, ModelMap modelmap) {
+		String view = "shop/productsByOrder";
+		List<ProductoVendido> productsByOrder = orderService.findProductsByOrder(orderId);
+		Integer productsNumber = productsByOrder.size();
+		modelmap.addAttribute("products", productsByOrder);
+		modelmap.addAttribute("productsNumber",productsNumber);
+		return view;
+	}
+	
+	@GetMapping(value = "/shop/carrito/reset")
+	public String cancelarVenta(HttpServletRequest request, ModelMap modelmap) {
+	    this.limpiarCarrito(request);
+	   modelmap.addAttribute("message", "Se han eliminado todos los productos del carrito");
+	            
+	    return mostrarCarrito(modelmap, request);}
 
 }

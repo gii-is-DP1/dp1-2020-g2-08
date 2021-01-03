@@ -45,10 +45,7 @@
 							
 							
 							
-							<spring:url value="/shop/products/review/{productId}"
-								var="productId">
-								<spring:param name="productId" value="${product.id}" />
-							</spring:url> <a href="${fn:escapeXml(productId)}"> / Review</a>
+					
 						</td>		
 						
 							
