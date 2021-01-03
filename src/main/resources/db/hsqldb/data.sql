@@ -119,3 +119,11 @@ INSERT INTO clients VALUES (1, 'Manuel', 'Garcia', 'Domingo Molina', 'Sevilla','
 INSERT INTO orders VALUES(1, 'Prim', 'Sevilla', 'España', '2020-12-10', '2020-12-11','41410','In progress', 1);
 INSERT INTO producto_vendido VALUES(1, 1, 'Dog´s Ball','8.75',1);
 INSERT INTO producto_vendido VALUES(2, 1, 'Pipes for birds','5.0',1);
+
+INSERT INTO coupons VALUES(1,50,'2021-12-10');
+INSERT INTO coupons VALUES(2,60,'2022-10-10');
+INSERT INTO coupons VALUES(3,70,'2023-07-10');
+INSERT INTO coupons VALUES(4,80,'2024-03-10');
+
+INSERT INTO clients_coupons VALUES(1,1);
+INSERT INTO clients_coupons VALUES(1,2);

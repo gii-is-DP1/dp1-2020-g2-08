@@ -38,7 +38,7 @@
 					<td><spring:url value="/shop/view/products/{orderId}"
 							var="orderId">
 							<spring:param name="orderId" value="${order.id}" />
-						</spring:url> <a href="${fn:escapeXml(orderId)}"> Products</a></td>
+						</spring:url> <a href="${fn:escapeXml(orderId)}"> See products</a></td>
 						
 						<td><spring:url value="/shop/admin/orders/deny/{orderId}"
 							var="orderId">

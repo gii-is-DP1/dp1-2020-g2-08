@@ -14,18 +14,22 @@
 				<th style="width: 150px;">Discount(%)</th>
 				<th style="width: 200px;">Expire Date</th>
 				
+				
 				<th>Actions</th>
 
 			</tr>
 		</thead>
 		<tbody>
 
+<h2></h2>
 
 			<c:forEach items="${coupons}" var="coupon">
 				<tr>
 					<td><c:out value="${coupon.discount}" /></a></td>
 
 					<td><c:out value="${coupon.expireDate}" /></a></td>
+					
+						
 					
 
 					<sec:authorize access="hasAuthority('admin')">

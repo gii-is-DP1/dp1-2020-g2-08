@@ -3,8 +3,10 @@ package org.springframework.samples.petclinic.web;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.DoubleUnaryOperator;
 import java.util.stream.Collectors;
 
@@ -24,6 +26,7 @@ import org.springframework.samples.petclinic.model.Product;
 import org.springframework.samples.petclinic.repository.CouponRepository;
 import org.springframework.samples.petclinic.service.AuthoritiesService;
 import org.springframework.samples.petclinic.service.ClientService;
+import org.springframework.samples.petclinic.service.CouponService;
 import org.springframework.samples.petclinic.service.OrderService;
 import org.springframework.samples.petclinic.service.ProductService;
 
@@ -49,6 +52,9 @@ public class ShopAdminController {
 	
 	@Autowired
 	private OrderService orderService;
+	
+	@Autowired
+	private CouponService couponService;
 	@Autowired
 	private CouponRepository couponRepository;
 	
@@ -194,7 +200,7 @@ public class ShopAdminController {
 		int clientsNumber = clientService.clientCount();
 		modelmap.addAttribute("clientsNumber", clientsNumber);
 		modelmap.addAttribute("clients", clients );
-		modelmap.addAttribute("clientCoupons", clients.get(0).getCoupons().stream().findFirst().get() );
+//		modelmap.addAttribute("clientCoupons", clients.get(0).getCoupons().stream().findFirst().get() );
 		return view;
 
 	}
@@ -208,7 +214,7 @@ public class ShopAdminController {
 
 	@PostMapping(path = "/coupons/save")
 	public String save(@Valid Coupon coupon, BindingResult result,  ModelMap modelmap) {
-		String view = "shop/admin/couponList";
+		
 		if (result.hasErrors()) {
 			modelmap.addAttribute("coupon", coupon);
 			modelmap.addAttribute("message", result.getAllErrors().stream().map(x->x.getDefaultMessage()).collect(Collectors.toList()));
@@ -239,6 +245,23 @@ public class ShopAdminController {
 		List<Coupon> coupons = (List<Coupon>) couponRepository.findAll();	
 			modelmap.addAttribute("coupons", coupons );
 				return view;
+
+	}
+	
+	@GetMapping(path = "/coupons/{clientId}" )
+	public String clientCouponsList(ModelMap modelmap,@PathVariable("clientId") int clientId) {
+		
+		Client client = clientService.findById(clientId);
+		if (client.getCoupons()==null) {
+			modelmap.addAttribute("message", "No hay cupones disponibles para este cliente" );
+			return  couponsList(modelmap);
+		}
+		else {
+		Iterable<Coupon> coupons =   couponRepository.findAll();
+		Set<Coupon> cupones= client.getCoupons();
+			modelmap.addAttribute("coupons", coupons );
+			modelmap.addAttribute("cupones", cupones);
+				return  "shop/admin/couponList";}
 
 	}
 	
