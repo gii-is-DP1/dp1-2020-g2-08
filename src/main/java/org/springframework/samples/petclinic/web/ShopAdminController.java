@@ -17,12 +17,14 @@ import org.springframework.samples.petclinic.model.Booking;
 import org.springframework.samples.petclinic.model.Client;
 import org.springframework.samples.petclinic.model.Coupon;
 import org.springframework.samples.petclinic.model.Hotel;
+import org.springframework.samples.petclinic.model.Order;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Product;
 import org.springframework.samples.petclinic.repository.CouponRepository;
 import org.springframework.samples.petclinic.service.AuthoritiesService;
 import org.springframework.samples.petclinic.service.ClientService;
+import org.springframework.samples.petclinic.service.OrderService;
 import org.springframework.samples.petclinic.service.ProductService;
 
 import org.springframework.samples.petclinic.service.UserService;
@@ -44,6 +46,9 @@ public class ShopAdminController {
 
 	@Autowired
 	private ProductService productService;
+	
+	@Autowired
+	private OrderService orderService;
 	@Autowired
 	private CouponRepository couponRepository;
 	
@@ -234,6 +239,44 @@ public class ShopAdminController {
 		List<Coupon> coupons = (List<Coupon>) couponRepository.findAll();	
 			modelmap.addAttribute("coupons", coupons );
 				return view;
+
+	}
+	
+	@GetMapping(path = "/orders" )
+	public String ordersList(ModelMap modelmap) {
+		
+		String view = "shop/admin/orderList";
+		
+		List<Order> orders = (List<Order>) orderService.findAll();
+		
+		modelmap.addAttribute("ordersNumber", orders.size());
+		modelmap.addAttribute("orders", orders );
+		
+		return view;
+
+	}
+	
+	@GetMapping(path = "/orders/deny/{orderId}" )
+	public String denyOrder(ModelMap modelmap,@PathVariable ("orderId") int orderId) {
+		
+		
+		
+		Order order =  orderService.findOrderById(orderId).get();
+		order.setState("Cancelled");
+		orderService.save(order);
+		modelmap.addAttribute("message", "El pedido se ha cancelado con éxito");
+			
+		return ordersList(modelmap);
+
+	}
+	@GetMapping(path = "/orders/confirm/{orderId}" )
+	public String confirmOrder(ModelMap modelmap,@PathVariable ("orderId") int orderId) {
+		Order order =  orderService.findOrderById(orderId).get();
+		order.setState("Confirmed");
+		orderService.save(order);
+		modelmap.addAttribute("message", "El pedido se ha confirmado con éxito");
+			
+		return ordersList(modelmap);
 
 	}
 
