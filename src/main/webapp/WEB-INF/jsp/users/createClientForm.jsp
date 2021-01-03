@@ -10,7 +10,7 @@
     <h2>
         <c:if test="${client['new']}">New </c:if> Client
     </h2>
-    <form:form modelAttribute="client" class="form-horizontal" id="add-client-form">
+    <form:form modelAttribute="client" class="form-horizontal" id="add-client-form" >
         <div class="form-group has-feedback">
             <petclinic:inputField label="First Name" name="firstName"/>
             <petclinic:inputField label="Last Name" name="lastName"/>
@@ -21,10 +21,6 @@
             <petclinic:inputField label="Telephone" name="telephone"/>
             <petclinic:inputField label="Username" name="nameuser"/>
             <petclinic:inputField label="Password" name="pass"/> 
-           <%-- <label for="username"> Username: </label> --%>
-           <%-- <input type="text" label="Username" name="username" required/></br> --%>
-          <%--  <label for="password"> Password: </label> --%>
-          <%--  <input type="password" label="Password" name="password" required/> --%>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">

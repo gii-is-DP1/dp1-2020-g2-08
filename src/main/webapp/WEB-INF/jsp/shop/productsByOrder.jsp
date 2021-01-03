@@ -14,17 +14,29 @@
 				<th style="width: 150px;">Name</th>
 				<th style="width: 200px;">Quantity</th>
 				<th>Price</th>
+				<th>Rate</th>
 			</tr>
 		</thead>
 		<tbody>
 
 
 			<c:forEach items="${products}" var="product">
+				
 				<tr>
 					<td><c:out value="${product.nombre}" /></td>
 					<td><c:out value="${product.cantidad}" /></td>
 					<td><c:out value="${product.precio}" /></td>
-
+					<td><spring:url value="/shop/products/review/{productId}"
+							var="productId">
+							<spring:param name="productId" value="${product.id}" />
+						</spring:url> <a href="${fn:escapeXml(productId)}"> Review</a>
+    				
+    				
+    				
+      			</div>			
+      			</form:form>
+      
+					</td> 
 				</tr>
 				
 			</c:forEach>
@@ -35,6 +47,7 @@
 		</tbody>
 		
 	</table>
+
 	
 </petclinic:layout>
 	
