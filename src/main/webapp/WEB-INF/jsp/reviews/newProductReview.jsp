@@ -5,36 +5,25 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
 <link rel="stylesheet" type="text/css" href="stars.css">
 <petclinic:layout pageName="reviews">
-	<jsp:attribute name="customScript">
-        <script>
-									$(function() {
-										$("#reviewDate").datepicker({
-											dateFormat : 'yy/mm/dd'
-										});
-									});
-								</script>
-    </jsp:attribute>
+	
 	<jsp:body>
         <h2>
-            New Review
+            New Product Review
         </h2>
         <form:form modelAttribute="review" class="form-horizontal"
-			action="/hotel/review/saveReview/${ownerId}">
+			action="/shop/products/review/${productId}">
              
             <div class="form-group has-feedback">
                 
                <%--  <petclinic:inputField label="Rating" name="stars" /> --%>
                 
-               
-                <petclinic:inputField label="Tittle" name="tittle" />
-                <petclinic:inputField label="Description"
-					name="description" />
+           
             
       
    	 	</select>   
    	 	
                 <div class="control-group"><br> 	
-                             <div class="rate"><h3> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Stars</h3>
+   <div class="rate"><h3> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Stars</h3>
     <input type="radio" id="star5" name="stars" value="5" />
     <label for="star5" title="text">5 stars</label>
     <input type="radio" id="star4" name="stars" value="4" />
