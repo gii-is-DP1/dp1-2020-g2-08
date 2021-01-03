@@ -40,10 +40,13 @@
 						<td>${carrito.total}</td>
 						<td>${carrito.inOffer}</td>
 						<td>
-							<form th:action="@{/vender/quitar/} + ${iterador.index}"
+						<spring:url value="/shop/carrito/remove/${i.index}" var="delete"></spring:url>
+				
+				<a class="btn btn-danger" href="${fn:escapeXml(delete)}"> Delete </a>
+							<%-- <form th:action="@{/shop/carrito/remove/} + ${i.index}"
 								method="post">
 								<button type="submit" class="btn btn-danger">delete</button>
-							</form>
+							</form> --%>
 						</td>
 </tr>
 					</c:forEach>

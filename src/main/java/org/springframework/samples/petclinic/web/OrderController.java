@@ -328,6 +328,17 @@ public class OrderController {
 	    this.limpiarCarrito(request);
 	   modelmap.addAttribute("message", "Se han eliminado todos los productos del carrito");
 	            
-	    return mostrarCarrito(modelmap, request);}
+	    return mostrarCarrito(modelmap, request);
+	    }
 
+@GetMapping(value = "/shop/carrito/remove/{indice}")
+public String quitarDelCarrito(@PathVariable int indice, HttpServletRequest request, ModelMap modelmap) {
+    List<ProductoParaVenta> carrito = this.obtenerCarrito(request);
+    if (carrito != null && carrito.size() > 0 && carrito.get(indice) != null) {
+        carrito.remove(indice);
+        this.guardarCarrito(carrito, request);
+        modelmap.addAttribute("message", "Se ha eliminado el producto del carrito");
+    }
+    return mostrarCarrito(modelmap, request);
+}
 }
