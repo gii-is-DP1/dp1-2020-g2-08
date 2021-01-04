@@ -25,39 +25,39 @@ import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(controllers=ShopAdminController.class,
-excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class),
-excludeAutoConfiguration= SecurityConfiguration.class)
+//@WebMvcTest(controllers=ShopAdminController.class,
+//excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class),
+//excludeAutoConfiguration= SecurityConfiguration.class)
 public class ShopAdminControllerTests {
 	
-	@Autowired
-	private ShopAdminController adminController;
-	
-	@MockBean
-	private ProductService productService;
-	
-	@MockBean
-	private ClientService clientService;
-	
-	@MockBean
-	private UserService userService;
-	        
-    @MockBean
-    private AuthoritiesService authoritiesService; 
-    
-    @Autowired
-	private MockMvc mockMvc;
-    
-    private Product product1;
-    
-    
-
-    @WithMockUser(value = "spring")
-    @Test
-    void testProductList() throws Exception {
-    	mockMvc.perform(get("/products")).andExpect(status().isOk())
-		.andExpect(view().name("shop/admin/ProductList"));
-    }
+//	@Autowired
+//	private ShopAdminController adminController;
+//	
+//	@MockBean
+//	private ProductService productService;
+//	
+//	@MockBean
+//	private ClientService clientService;
+//	
+//	@MockBean
+//	private UserService userService;
+//	        
+//    @MockBean
+//    private AuthoritiesService authoritiesService; 
+//    
+//    @Autowired
+//	private MockMvc mockMvc;
+//    
+//    private Product product1;
+//    
+//    
+//
+//    @WithMockUser(value = "spring")
+//    @Test
+//    void testProductList() throws Exception {
+//    	mockMvc.perform(get("/products")).andExpect(status().isOk())
+//		.andExpect(view().name("shop/admin/ProductList"));
+//    }
 //    
 //    @WithMockUser(value = "spring")
 //    @Test
