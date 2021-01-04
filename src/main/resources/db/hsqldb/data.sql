@@ -119,3 +119,5 @@ INSERT INTO clients VALUES (1, 'Manuel', 'Garcia', 'Domingo Molina', 'Sevilla','
 INSERT INTO orders VALUES(1, 'Prim', 'Sevilla', 'España', '2020-12-10', '2020-12-11','41410','In progress', 1);
 INSERT INTO producto_vendido VALUES(1, 1, 'Dog´s Ball','8.75',1);
 INSERT INTO producto_vendido VALUES(2, 1, 'Pipes for birds','5.0',1);
+
+INSERT INTO product_reviews VALUES(1, 4, 1, 1);

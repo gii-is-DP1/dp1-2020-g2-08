@@ -75,11 +75,11 @@ public class ProductReviewService {
 //	 --------------------------------------------------
 	 
 
-//@Transactional
-//public List<Review> findReviewByHotelId(Integer hotelId){
-//	 List<Review> reviews = (List<Review>) reviewRepo.findAll();
-//	 	return reviews.stream().filter(x->x.getHotel().getId().equals(hotelId)).collect(Collectors.toList());
-//}
+@Transactional
+public List<ProductReview> findProductReviewByProductId(Integer productId){
+	 List<ProductReview> productReviews = (List<ProductReview>) prodReviewRepo.findAll();
+	 	return productReviews.stream().filter(x->x.getProductoVendido().getId().equals(productId)).collect(Collectors.toList());
+}
 	 
 
 
