@@ -12,9 +12,9 @@ import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import lombok.Data;
 
-@Data
+
+
 @Entity
 @Table(name = "coupons")
 public class Coupon extends BaseEntity{
@@ -26,9 +26,35 @@ public class Coupon extends BaseEntity{
 	@Column(name = "expireDate")
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	private LocalDate expireDate;
-	
-	 @ManyToMany(mappedBy = "coupons", fetch = FetchType.LAZY)
-	   private Set<Client> clients = new HashSet<>();
+//	
+//	 @ManyToMany(mappedBy = "coupons", fetch = FetchType.LAZY)
+//	   private Set<Client> clients = new HashSet<>();
+
+	public Integer getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(Integer discount) {
+		this.discount = discount;
+	}
+
+	public LocalDate getExpireDate() {
+		return expireDate;
+	}
+
+	public void setExpireDate(LocalDate expireDate) {
+		this.expireDate = expireDate;
+	}
+
+//	public Set<Client> getClients() {
+//		return clients;
+//	}
+//
+//	public void setClients(Set<Client> clients) {
+//		this.clients = clients;
+//	}
+//
+//	
 	
 	
 

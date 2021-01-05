@@ -19,7 +19,7 @@ import javax.validation.constraints.NotEmpty;
 
 import lombok.Data;
 
-@Data
+
 @Entity
 @Table(name = "clients")
 public class Client extends Person {
@@ -204,6 +204,14 @@ public class Client extends Person {
 	public String toString() {
 		return "Client [address=" + address + ", city=" + city + ", telephone=" + telephone + ", email=" + email
 				+ ", nif=" + nif + ", user=" + user + "]";
+	}
+
+	public Set<Coupon> getCoupons() {
+		return coupons;
+	}
+
+	public void setCoupons(Set<Coupon> coupons) {
+		this.coupons = coupons;
 	}
 
 	

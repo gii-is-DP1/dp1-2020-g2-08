@@ -3,8 +3,11 @@ package org.springframework.samples.petclinic.web;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.DoubleUnaryOperator;
 import java.util.stream.Collectors;
 
@@ -17,12 +20,15 @@ import org.springframework.samples.petclinic.model.Booking;
 import org.springframework.samples.petclinic.model.Client;
 import org.springframework.samples.petclinic.model.Coupon;
 import org.springframework.samples.petclinic.model.Hotel;
+import org.springframework.samples.petclinic.model.Order;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Product;
 import org.springframework.samples.petclinic.repository.CouponRepository;
 import org.springframework.samples.petclinic.service.AuthoritiesService;
 import org.springframework.samples.petclinic.service.ClientService;
+import org.springframework.samples.petclinic.service.CouponService;
+import org.springframework.samples.petclinic.service.OrderService;
 import org.springframework.samples.petclinic.service.ProductService;
 
 import org.springframework.samples.petclinic.service.UserService;
@@ -44,6 +50,12 @@ public class ShopAdminController {
 
 	@Autowired
 	private ProductService productService;
+	
+	@Autowired
+	private OrderService orderService;
+	
+	@Autowired
+	private CouponService couponService;
 	@Autowired
 	private CouponRepository couponRepository;
 	
@@ -189,7 +201,7 @@ public class ShopAdminController {
 		int clientsNumber = clientService.clientCount();
 		modelmap.addAttribute("clientsNumber", clientsNumber);
 		modelmap.addAttribute("clients", clients );
-		modelmap.addAttribute("clientCoupons", clients.get(0).getCoupons().stream().findFirst().get() );
+//		modelmap.addAttribute("clientCoupons", clients.get(0).getCoupons().stream().findFirst().get() );
 		return view;
 
 	}
@@ -203,7 +215,7 @@ public class ShopAdminController {
 
 	@PostMapping(path = "/coupons/save")
 	public String save(@Valid Coupon coupon, BindingResult result,  ModelMap modelmap) {
-		String view = "shop/admin/couponList";
+		
 		if (result.hasErrors()) {
 			modelmap.addAttribute("coupon", coupon);
 			modelmap.addAttribute("message", result.getAllErrors().stream().map(x->x.getDefaultMessage()).collect(Collectors.toList()));
@@ -234,6 +246,84 @@ public class ShopAdminController {
 		List<Coupon> coupons = (List<Coupon>) couponRepository.findAll();	
 			modelmap.addAttribute("coupons", coupons );
 				return view;
+
+	}
+	
+	@GetMapping(path = "/coupons/{clientId}" )
+	public String clientCouponsList(ModelMap modelmap,@PathVariable("clientId") int clientId) {
+		Client client = clientService.findById(clientId);
+		Set<Coupon> coupons =  		couponService.findCouponByClientId(clientId);	
+		Iterable<Coupon> coupons2 =  		 couponRepository.findAll();
+			modelmap.addAttribute("couponsClient", coupons );
+			modelmap.addAttribute("coupons", coupons2 );
+			modelmap.addAttribute("client", client );
+			
+				return  "shop/admin/couponListClient";
+
+	}
+	
+	@GetMapping(path = "/orders" )
+	public String ordersList(ModelMap modelmap) {
+		
+		String view = "shop/admin/orderList";
+		
+		List<Order> orders = (List<Order>) orderService.findAll();
+		
+		modelmap.addAttribute("ordersNumber", orders.size());
+		modelmap.addAttribute("orders", orders );
+		
+		return view;
+
+	}
+	
+	@GetMapping(path = "/orders/deny/{orderId}" )
+	public String denyOrder(ModelMap modelmap,@PathVariable ("orderId") int orderId) {
+		
+		
+		
+		Order order =  orderService.findOrderById(orderId).get();
+		order.setState("Cancelled");
+		orderService.save(order);
+		modelmap.addAttribute("message", "El pedido se ha cancelado con éxito");
+			
+		return ordersList(modelmap);
+
+	}
+	@GetMapping(path = "/orders/confirm/{orderId}" )
+	public String confirmOrder(ModelMap modelmap,@PathVariable ("orderId") int orderId) {
+		Order order =  orderService.findOrderById(orderId).get();
+		order.setState("Confirmed");
+		orderService.save(order);
+		modelmap.addAttribute("message", "El pedido se ha confirmado con éxito");
+			
+		return ordersList(modelmap);
+
+	}
+	
+	@GetMapping(path = "/clients/{clientId}/addCoupon/{couponId}" )
+	public String addCouponToClient(ModelMap modelmap,@PathVariable ("clientId") int clientId,@PathVariable ("couponId") int couponId) {
+		
+		Coupon coupon = couponRepository.findById(couponId).get();
+		
+		Client client = clientService.findById(clientId);
+		client.getCoupons().add(coupon);
+		clientService.saveClient(client);
+		modelmap.addAttribute("message", "El cupon se ha añadido al cliente");
+			
+		return clientCouponsList(modelmap, clientId);
+
+	}
+	@GetMapping(path = "/clients/{clientId}/removeCoupon/{couponId}" )
+	public String removeCouponToClient(ModelMap modelmap,@PathVariable ("clientId") int clientId,@PathVariable ("couponId") int couponId) {
+		
+		Coupon coupon = couponRepository.findById(couponId).get();
+		
+		Client client = clientService.findById(clientId);
+		client.getCoupons().remove(coupon);
+		clientService.saveClient(client);
+		modelmap.addAttribute("message", "El cupon se ha eliminado del cliente");
+			
+		return clientCouponsList(modelmap, clientId);
 
 	}
 
