@@ -67,9 +67,13 @@
 									<ul class="dropdown-menu">
 										<li><a href="/shop">Shop</a></li>
 										<sec:authorize access="hasAuthority('admin')">
-										<li><a href="/shop/admin/products">Product list</a></li>
+										<li><a href="/shop/admin/products">Products</a></li>
 										<li><a href="/shop/admin/sales">Sales</a></li>
-										<li><a href="/shop/admin/clients">Client list</a></li>
+										<li><a href="/shop/admin/clients">Clients</a></li>
+										<li><a href="/shop/admin/coupons">Coupons</a></li>
+										
+										
+										
 										</sec:authorize>
 									</ul>
 						</div>
@@ -97,7 +101,7 @@
 					<li><a href="<c:url value="/login" />">Login</a></li>
 					
 					<li class="dropdown"><a href="/shop" class="dropdown-toggle"
-								data-toggle="dropdown"> <span
+								data-toggle="dropdown"></a>	 <span
 									class="glyphicon glyphicon"></span> <span>Register</span>
 
 									<ul class="dropdown-menu">

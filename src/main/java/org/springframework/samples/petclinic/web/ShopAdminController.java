@@ -238,6 +238,17 @@ public class ShopAdminController {
 
 
 }
+	@GetMapping(path = "/coupons/delete/{couponId}" )
+	public String removeCoupon(ModelMap modelmap,@PathVariable ("couponId") int couponId) {
+		
+		Coupon coupon = couponRepository.findById(couponId).get();
+		
+		couponService.delete(coupon);
+		modelmap.addAttribute("message", "El cupon se ha eliminado correctamente");
+			
+		return couponsList(modelmap);
+
+	}
 	
 	@GetMapping(path = "/coupons" )
 	public String couponsList(ModelMap modelmap) {
