@@ -34,6 +34,9 @@ public class CouponService {
 	private OrderRepository orderRepo;
 	@Autowired
 	private ClientRepository clientRepo;
+	
+	@Autowired
+	private ClientService clientService;
 	@Autowired
 	private ProductRepository productRepo;
 	@Autowired
@@ -69,10 +72,19 @@ public class CouponService {
 
 	@Transactional
 	public void delete(Coupon coupon) {
-		couponRepo.delete(coupon);
+		List<Client> clients =  (List<Client>) clientService.findAll(); 
+		for (int i = 0; i < clients.size(); i++) {
+			
+		
+		if (clientService.tieneCupon(coupon, clients.get(i).getId())==true) {
+			clients.get(i).getCoupons().remove(coupon);
+		}
+		
+		
 
 	}
-
+		couponRepo.delete(coupon);
+}
 	@Transactional
 	public void save(Coupon coupon) {
 		couponRepo.save(coupon);
