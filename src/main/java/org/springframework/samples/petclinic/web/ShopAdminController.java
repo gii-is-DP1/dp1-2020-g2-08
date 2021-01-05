@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -250,18 +251,14 @@ public class ShopAdminController {
 	
 	@GetMapping(path = "/coupons/{clientId}" )
 	public String clientCouponsList(ModelMap modelmap,@PathVariable("clientId") int clientId) {
-		
 		Client client = clientService.findById(clientId);
-		if (client.getCoupons()==null) {
-			modelmap.addAttribute("message", "No hay cupones disponibles para este cliente" );
-			return  couponsList(modelmap);
-		}
-		else {
-		Iterable<Coupon> coupons =   couponRepository.findAll();
-		Set<Coupon> cupones= client.getCoupons();
-			modelmap.addAttribute("coupons", coupons );
-			modelmap.addAttribute("cupones", cupones);
-				return  "shop/admin/couponList";}
+		Set<Coupon> coupons =  		couponService.findCouponByClientId(clientId);	
+		Iterable<Coupon> coupons2 =  		 couponRepository.findAll();
+			modelmap.addAttribute("couponsClient", coupons );
+			modelmap.addAttribute("coupons", coupons2 );
+			modelmap.addAttribute("client", client );
+			
+				return  "shop/admin/couponListClient";
 
 	}
 	
@@ -300,6 +297,33 @@ public class ShopAdminController {
 		modelmap.addAttribute("message", "El pedido se ha confirmado con éxito");
 			
 		return ordersList(modelmap);
+
+	}
+	
+	@GetMapping(path = "/clients/{clientId}/addCoupon/{couponId}" )
+	public String addCouponToClient(ModelMap modelmap,@PathVariable ("clientId") int clientId,@PathVariable ("couponId") int couponId) {
+		
+		Coupon coupon = couponRepository.findById(couponId).get();
+		
+		Client client = clientService.findById(clientId);
+		client.getCoupons().add(coupon);
+		clientService.saveClient(client);
+		modelmap.addAttribute("message", "El cupon se ha añadido al cliente");
+			
+		return clientCouponsList(modelmap, clientId);
+
+	}
+	@GetMapping(path = "/clients/{clientId}/removeCoupon/{couponId}" )
+	public String removeCouponToClient(ModelMap modelmap,@PathVariable ("clientId") int clientId,@PathVariable ("couponId") int couponId) {
+		
+		Coupon coupon = couponRepository.findById(couponId).get();
+		
+		Client client = clientService.findById(clientId);
+		client.getCoupons().remove(coupon);
+		clientService.saveClient(client);
+		modelmap.addAttribute("message", "El cupon se ha eliminado del cliente");
+			
+		return clientCouponsList(modelmap, clientId);
 
 	}
 

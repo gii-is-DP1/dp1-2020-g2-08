@@ -44,14 +44,17 @@ public class CouponService {
  
 
 	
+	
 	@Transactional
-	public List<Coupon> findCouponByClientId(int clientId) {
+	public Set<Coupon> findCouponByClientId(int clientId) {
 
-		List<Coupon> couponsList = (List<Coupon>) couponRepo.findAll(); 
+		
+		
 		Client client = clientRepo.findById(clientId).get();
 		
 		
-		return couponsList.stream().filter(x->x.getClients().stream().filter(c->c.getId().equals(clientId)).findFirst().get().equals(clientId)).collect(Collectors.toList());
+		
+		return client.getCoupons();
 	
 	
 	

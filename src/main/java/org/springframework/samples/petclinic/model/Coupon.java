@@ -26,9 +26,9 @@ public class Coupon extends BaseEntity{
 	@Column(name = "expireDate")
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	private LocalDate expireDate;
-	
-	 @ManyToMany(mappedBy = "coupons", fetch = FetchType.LAZY)
-	   private Set<Client> clients = new HashSet<>();
+//	
+//	 @ManyToMany(mappedBy = "coupons", fetch = FetchType.LAZY)
+//	   private Set<Client> clients = new HashSet<>();
 
 	public Integer getDiscount() {
 		return discount;
@@ -46,50 +46,15 @@ public class Coupon extends BaseEntity{
 		this.expireDate = expireDate;
 	}
 
-	public Set<Client> getClients() {
-		return clients;
-	}
-
-	public void setClients(Set<Client> clients) {
-		this.clients = clients;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((clients == null) ? 0 : clients.hashCode());
-		result = prime * result + ((discount == null) ? 0 : discount.hashCode());
-		result = prime * result + ((expireDate == null) ? 0 : expireDate.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Coupon other = (Coupon) obj;
-		if (clients == null) {
-			if (other.clients != null)
-				return false;
-		} else if (!clients.equals(other.clients))
-			return false;
-		if (discount == null) {
-			if (other.discount != null)
-				return false;
-		} else if (!discount.equals(other.discount))
-			return false;
-		if (expireDate == null) {
-			if (other.expireDate != null)
-				return false;
-		} else if (!expireDate.equals(other.expireDate))
-			return false;
-		return true;
-	}
+//	public Set<Client> getClients() {
+//		return clients;
+//	}
+//
+//	public void setClients(Set<Client> clients) {
+//		this.clients = clients;
+//	}
+//
+//	
 	
 	
 

@@ -18,7 +18,7 @@ public class Authorities extends BaseEntity{
 	User user;
 	
 	@Size(min = 3, max = 50)
-	String authority;
+	String authority; 
 	
 	
 }

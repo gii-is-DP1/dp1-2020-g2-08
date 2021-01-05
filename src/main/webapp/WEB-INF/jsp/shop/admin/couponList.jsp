@@ -6,7 +6,7 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
 
 <petclinic:layout pageName="products">
-	<h2>Products List</h2>
+	<h2>Coupons List</h2>
 
 	<table id="productTable" class="table table-striped">
 		<thead>
@@ -21,7 +21,7 @@
 		</thead>
 		<tbody>
 
-<h2></h2>
+
 
 			<c:forEach items="${coupons}" var="coupon">
 				<tr>
@@ -55,6 +55,15 @@
 			</c:forEach>
 			
 			
+	</tbody></table><sec:authorize access="hasAuthority('admin')">
+					
+					<spring:url value="/shop/admin/coupons/add"
+							var="addCoupon">
+							
+						</spring:url> <a class="btn btn-success" href="${fn:escapeXml(addCoupon)}"> New coupon</a>
+					
+						
+					</sec:authorize>	
+	
 	
 </petclinic:layout>
-	
