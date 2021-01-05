@@ -24,7 +24,7 @@ class ProductServiceTests {
 
 	@Test
 	@Transactional
-	public void shouldInsertPetIntoDatabaseAndGenerateId() {
+	public void shouldInsertProductIntoDatabaseAndGenerateId() {
 		Collection<Product> products = (Collection<Product>) this.productService.findAll();
 		int found = products.size();
 
