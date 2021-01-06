@@ -12,13 +12,16 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Client;
+import org.springframework.samples.petclinic.model.Coupon;
 import org.springframework.samples.petclinic.model.Order;
 import org.springframework.samples.petclinic.model.Product;
 import org.springframework.samples.petclinic.model.ProductoParaVenta;
 import org.springframework.samples.petclinic.model.ProductoVendido;
+import org.springframework.samples.petclinic.repository.CouponRepository;
 import org.springframework.samples.petclinic.repository.OrderRepository;
 import org.springframework.samples.petclinic.repository.ProductoVendidoRepository;
 import org.springframework.samples.petclinic.service.ClientService;
+import org.springframework.samples.petclinic.service.CouponService;
 import org.springframework.samples.petclinic.service.OrderService;
 import org.springframework.samples.petclinic.service.ProductService;
 import org.springframework.stereotype.Controller;
@@ -36,6 +39,9 @@ public class OrderController {
 
 	@Autowired
 	private ProductoVendidoRepository productoVendidoRepository;
+	
+	@Autowired
+	private CouponRepository couponRepository;
 	@Autowired
 	private OrderService orderService;
 
@@ -46,6 +52,9 @@ public class OrderController {
 
 	@Autowired
 	private ProductService productService;
+	
+	@Autowired
+	private CouponService couponService;
 
 	@Autowired
 	private ClientService clientService;
@@ -140,8 +149,10 @@ public class OrderController {
 			modelmap.put("message", "El carrito esta vacio");
 			return "/shop/carrito/carrito";
 		}
+		List<Coupon> coupons = couponService.findCouponByClientIdList(clientService.devolverClientId());
 		Order order = new Order();
 		modelmap.put("order",order);
+		modelmap.put("coupons",coupons);
 		return "order/newOrderCarrito";
 	}
 	
@@ -156,6 +167,7 @@ public class OrderController {
 			return "order/newOrderCarrito";
 		}
 		else {
+			double precio=0.0;
 			int clientId = clientService.devolverClientId();
 			Client client = clientService.findById(clientId);
 			List<ProductoParaVenta> carrito = this.obtenerCarrito(request);
@@ -174,7 +186,9 @@ public class OrderController {
 			o.setCity(order.getCity());
 			o.setCountry(order.getCountry());
 			o.setPostalCode(order.getPostalCode());
-			
+			if (order.getCoupon()!=null) {
+			o.setCoupon(order.getCoupon());
+			}
 			orderRepo.save(o) ;
 
 			// Recorrer el carrito
@@ -186,11 +200,18 @@ public class OrderController {
 				productoVendido.setNombre(productoParaVender.getName());
 				productoVendido.setPrecio(productoParaVender.getPrice());
 				productoVendido.setOrder(o);
-
+				precio+=productoVendido.getPrecio();
 				// Y lo guardamos
 				productoVendidoRepo.save(productoVendido);
 			}
-
+			//Se aplica el cupon de descuento
+			if (order.getCoupon()!=null) {
+				precio=(precio*((100)-(order.getCoupon().getDiscount())))/100;
+			}
+			
+			Order orderPrice =orderService.findOrderById(o.getId()).get();
+			orderPrice.setPriceOrder(precio);
+			orderRepo.save(orderPrice);
 			// Al final limpiamos el carrito
 			this.limpiarCarrito(request);
 			// e indicamos una venta exitosa
@@ -244,13 +265,14 @@ public class OrderController {
 	// Para comprar 1 solo articulo sin añadir al carro /shop/buy/(productId)
 	@GetMapping(path = "/shop/buy/{productId}")
 	public String compraProducto(ModelMap modelmap, @PathVariable("productId") Integer productId) {
-
+		
 		if (clientService.esClient()) {
 			Product p = productService.findProductById(productId).get();
 			Order order = new Order();
 			modelmap.put("order", order);
 			modelmap.put("product", p);
-
+			List<Coupon> coupons = couponService.findCouponByClientIdList(clientService.devolverClientId());
+			modelmap.put("coupons",coupons);
 			return "order/newOrder";
 
 		} else {
@@ -261,24 +283,13 @@ public class OrderController {
 
 	}
 	
-	@GetMapping(path = "/shop/myOrders")
-	private String myOrderList(ModelMap modelmap) {
-		String view = "shop/myOrders";
-		Integer clientId = clientService.devolverClientId();
-		List<Order> ordersByClientId = orderService.findOrderByClientId(clientId);
-		Integer ordersNumber = ordersByClientId.size();
-		modelmap.addAttribute("orders", ordersByClientId);
-		modelmap.addAttribute("ordersNumber",ordersNumber);
-
-		
-		return view;
-	}
 	
 	
 
 	@PostMapping(path = "shop/buy/{productId}")
 	public String guardaCompraProducto(ModelMap modelmap, @PathVariable("productId") Integer productId, Order order,
 			BindingResult result) {
+		
 		int clientId = clientService.devolverClientId();
 		Client client = clientService.findById(clientId);
 		ProductoVendido p = new ProductoVendido();
@@ -297,8 +308,15 @@ public class OrderController {
 			order.setOrderDate(LocalDate.now());
 			order.setDeliveryDate(LocalDate.now().plusDays(7));
 			order.setClient(client);
-
+			
 			order.setState("In progress");
+			
+			if (order.getCoupon()!=null) {// precio=(precio*((100)-(order.getCoupon().getDiscount())))/100;
+				order.setPriceOrder( (producto.getPrice()*((100)-order.getCoupon().getDiscount()))/100 );
+			}
+			else {
+				order.setPriceOrder(producto.getPrice());
+			}
 			orderService.save(order);
 
 			p.setCantidad(1);
@@ -311,6 +329,18 @@ public class OrderController {
 			return "shop/home";
 		}
 
+	}
+	@GetMapping(path = "/shop/myOrders")
+	private String myOrderList(ModelMap modelmap) {
+		String view = "shop/myOrders";
+		Integer clientId = clientService.devolverClientId();
+		List<Order> ordersByClientId = orderService.findOrderByClientId(clientId);
+		Integer ordersNumber = ordersByClientId.size();
+		modelmap.addAttribute("orders", ordersByClientId);
+		modelmap.addAttribute("ordersNumber",ordersNumber);
+
+		
+		return view;
 	}
 	
 	@GetMapping(path = "/shop/view/products/{orderId}")

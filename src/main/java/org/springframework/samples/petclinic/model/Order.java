@@ -34,8 +34,8 @@ public class Order extends BaseEntity{
 		    private LocalDate deliveryDate;
 		 
 //		 //Importe total del producto
-//		 @Column(name = "price_order")
-//		 private Double priceOrder;
+		 @Column(name = "price_order")
+		 private Double priceOrder;
 		 
 		 
 		 //Estado del producto
@@ -61,19 +61,33 @@ public class Order extends BaseEntity{
 		 @JoinColumn(name = "client_id")
 		 private Client client;
 		 
+		 @ManyToOne
+		 @JoinColumn(name = "coupon_id")
+		 private Coupon coupon;
+		 
 		 @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)	
 			private Set<ProductoVendido> products;
 		 
-		 public double getPrecioTotal() {
-			 double res = 0.0;
-			 for (ProductoVendido prod:this.products) {
-				 res+=prod.getTotal();
-				
-			}
-			 return res;
-			 
-			 
-		 }
+//		 public double getPrecioTotal() {
+//			 double res = 0.0;
+//			 for (ProductoVendido prod:this.products) {
+//				 res+=prod.getTotal();
+//				
+//			}
+//			 return res;
+//			 
+//			 
+//		 }
+//		 public double getPrecioConCupon(int descuento) {
+//			 double res = 0.0;
+//			 for (ProductoVendido prod:this.products) {
+//				 res+=prod.getTotal();
+//				
+//			}
+//			 return res*(descuento/100);
+//			 
+//			 
+//		 }
 
 		public LocalDate getOrderDate() {
 			return orderDate;
@@ -155,6 +169,20 @@ public class Order extends BaseEntity{
 
 		public void setProducts(Set<ProductoVendido> products) {
 			this.products = products;
+		}
+		public Double getPriceOrder() {
+			return priceOrder;
+		}
+		public void setPriceOrder(Double priceOrder) {
+			this.priceOrder = priceOrder;
+		}
+
+		public Coupon getCoupon() {
+			return coupon;
+		}
+
+		public void setCoupon(Coupon coupon) {
+			this.coupon = coupon;
 		}
 		 
 		 

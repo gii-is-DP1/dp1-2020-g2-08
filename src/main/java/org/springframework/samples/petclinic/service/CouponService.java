@@ -62,6 +62,20 @@ public class CouponService {
 	
 	
 	}
+	@Transactional
+	public List<Coupon> findCouponByClientIdList(int clientId) {
+
+		
+		
+		Client client = clientRepo.findById(clientId).get();
+		
+		
+		
+		return client.getCouponslist();
+	
+	
+	
+	}
 	
 
 	@Transactional

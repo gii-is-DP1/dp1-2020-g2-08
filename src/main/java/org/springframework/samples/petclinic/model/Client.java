@@ -1,6 +1,8 @@
 package org.springframework.samples.petclinic.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -208,6 +210,14 @@ public class Client extends Person {
 
 	public Set<Coupon> getCoupons() {
 		return coupons;
+	}
+	public List<Coupon> getCouponslist() {
+		
+		List<Coupon> lista= new ArrayList<Coupon>();
+		for (Coupon c:coupons) {
+			lista.add(c);
+		}
+		return lista;
 	}
 
 	public void setCoupons(Set<Coupon> coupons) {

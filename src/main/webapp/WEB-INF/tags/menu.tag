@@ -101,7 +101,7 @@
 					<li><a href="<c:url value="/login" />">Login</a></li>
 					
 					<li class="dropdown"><a href="/shop" class="dropdown-toggle"
-								data-toggle="dropdown"></a>	 <span
+								data-toggle="dropdown">	 <span
 									class="glyphicon glyphicon"></span> <span>Register</span>
 
 									<ul class="dropdown-menu">
