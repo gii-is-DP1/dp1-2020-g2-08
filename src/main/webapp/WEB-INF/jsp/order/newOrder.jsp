@@ -31,7 +31,9 @@
 					name="country" />
 					<petclinic:inputField label="Postal Code" name="postalCode" />
                 <br>
-                
+                <div class="control-group">
+                    <petclinic:selectField name="coupon" label="Coupon " names="${coupons}" size="2"/>
+                </div>
                
             </div>
             <div class="form-group">
