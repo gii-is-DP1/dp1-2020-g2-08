@@ -38,7 +38,8 @@
 								var="productId">
 								<spring:param name="productId" value="${product.id}" />
 							</spring:url> <a href="${fn:escapeXml(productId)}"> Add to cart</a>
-							
+											
+						</td>		
 
 				</tr>
 				

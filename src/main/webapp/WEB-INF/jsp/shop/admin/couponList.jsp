@@ -6,13 +6,14 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
 
 <petclinic:layout pageName="products">
-	<h2>Products List</h2>
+	<h2>Coupons List</h2>
 
 	<table id="productTable" class="table table-striped">
 		<thead>
 			<tr>
 				<th style="width: 150px;">Discount(%)</th>
 				<th style="width: 200px;">Expire Date</th>
+				
 				
 				<th>Actions</th>
 
@@ -21,11 +22,14 @@
 		<tbody>
 
 
+
 			<c:forEach items="${coupons}" var="coupon">
 				<tr>
 					<td><c:out value="${coupon.discount}" /></a></td>
 
 					<td><c:out value="${coupon.expireDate}" /></a></td>
+					
+						
 					
 
 					<sec:authorize access="hasAuthority('admin')">
@@ -51,6 +55,15 @@
 			</c:forEach>
 			
 			
+	</tbody></table><sec:authorize access="hasAuthority('admin')">
+					
+					<spring:url value="/shop/admin/coupons/add"
+							var="addCoupon">
+							
+						</spring:url> <a class="btn btn-success" href="${fn:escapeXml(addCoupon)}"> New coupon</a>
+					
+						
+					</sec:authorize>	
+	
 	
 </petclinic:layout>
-	
