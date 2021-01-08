@@ -40,12 +40,12 @@ public class ShopClientController {
 	@GetMapping()
 	public String productList(ModelMap modelmap) {
 		String view = "shop/home";
-//		Iterable<Product> products = productService.findAll();
-//		int productsNumber = productService.productCount();
-//
-//		modelmap.addAttribute("product", products);
-//		modelmap.addAttribute("productsNumber", productsNumber);
-//
+		Iterable<Product> products = productService.findAll();
+		int productsNumber = productService.productCount();
+
+		modelmap.addAttribute("product", products);
+		modelmap.addAttribute("productsNumber", productsNumber);
+
 		return view;
 
 	}
