@@ -1,24 +1,16 @@
 package org.springframework.samples.petclinic.web;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.DoubleUnaryOperator;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.model.Booking;
 import org.springframework.samples.petclinic.model.Client;
 import org.springframework.samples.petclinic.model.Coupon;
-import org.springframework.samples.petclinic.model.Hotel;
-import org.springframework.samples.petclinic.model.Owner;
-import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Product;
 import org.springframework.samples.petclinic.repository.CouponRepository;
 import org.springframework.samples.petclinic.service.AuthoritiesService;
@@ -27,7 +19,6 @@ import org.springframework.samples.petclinic.service.ProductService;
 
 import org.springframework.samples.petclinic.service.UserService;
 import org.springframework.samples.petclinic.service.exceptions.DuplicatedPetNameException;
-import org.springframework.security.config.web.server.ServerHttpSecurity.OAuth2ClientSpec;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
