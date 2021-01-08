@@ -40,10 +40,13 @@
 						<td>${carrito.total}</td>
 						<td>${carrito.inOffer}</td>
 						<td>
-							<form th:action="@{/vender/quitar/} + ${iterador.index}"
+						<spring:url value="/shop/carrito/remove/${i.index}" var="delete"></spring:url>
+				
+				<a class="btn btn-danger" href="${fn:escapeXml(delete)}"> Delete </a>
+							<%-- <form th:action="@{/shop/carrito/remove/} + ${i.index}"
 								method="post">
 								<button type="submit" class="btn btn-danger">delete</button>
-							</form>
+							</form> --%>
 						</td>
 </tr>
 					</c:forEach>
@@ -55,9 +58,13 @@
         </div>
         
         
-				<spring:url value="/shop/carrito/complete" var="cart"></spring:url>
+				<spring:url value="/shop/carrito/complete" var="complete"></spring:url>
 				
-				<a class="btn btn-default" href="${fn:escapeXml(cart)}"> Purchase </a>
+				<a class="btn btn-success" href="${fn:escapeXml(complete)}"> Complete order </a>
+				
+				<spring:url value="/shop/carrito/reset" var="reset"></spring:url>
+				
+				<a class="btn btn-danger" href="${fn:escapeXml(reset)}"> Remove all </a>
 	
 	
 </petclinic:layout>

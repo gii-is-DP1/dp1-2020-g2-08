@@ -11,9 +11,11 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.model.Client;
+import org.springframework.samples.petclinic.model.Coupon;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.User;
 import org.springframework.samples.petclinic.repository.ClientRepository;
+import org.springframework.samples.petclinic.repository.CouponRepository;
 import org.springframework.samples.petclinic.repository.ProductRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,6 +31,8 @@ public class ClientService {
 	private UserService userService;
 	@Autowired
 	private AuthoritiesService authoritiesService;
+	@Autowired
+	private CouponRepository couponRepo;
 
 	@Autowired
 	public ClientService(ClientRepository clientRepository, UserService userService, AuthoritiesService authoritiesService) {
@@ -107,6 +111,24 @@ Client c = ( ((Collection<Client>) clientRepo.findAll()).stream().filter(x -> x.
 			return id;
 
 		}
+
+
+		
+		public boolean tieneCupon(Coupon coupon,int clientId) {
+			boolean res = true;
+			Client cliente = findById(clientId);
+			
+			if (cliente.getCoupons().contains(coupon)) {
+				res=true;
+			}
+			else {
+				res=false;
+			}
+				return res;
+			
+		}
+		
+
 
 
 }

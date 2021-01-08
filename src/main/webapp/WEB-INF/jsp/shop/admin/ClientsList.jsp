@@ -36,7 +36,10 @@
 					<td><c:out value="${client.nif}" /></td>
 					<td><c:out value="${client.telephone}" /></td>
 					<td><c:out value="${client.user.username}"/></td>
-					<td><c:out value="${clientCoupons}"/></td>
+					<td><spring:url value="/shop/admin/coupons/{clientId}"
+							var="clientId">
+							<spring:param name="clientId" value="${client.id}" />
+						</spring:url> <a href="${fn:escapeXml(clientId)}"> See coupons</a></td>
 
 
 				</tr>
