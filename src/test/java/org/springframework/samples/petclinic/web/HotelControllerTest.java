@@ -34,8 +34,6 @@ import org.springframework.test.web.servlet.MockMvc;
 public class HotelControllerTest {
 
 	
-	private static final int TEST_HOTEL_ID = 1;
-	
 	@Autowired 
 	private HotelController hotelController;
 	
@@ -59,39 +57,22 @@ public class HotelControllerTest {
 	@MockBean
 	private ReviewService reviewService;
 	
-	private Hotel h;
-	
-	
-//	@BeforeEach
-//	void setUp() {
-//		h = new Hotel();
-//		
-//		h.setId(TEST_HOTEL_ID);
-//		h.setCity("BILBAO");
-//		h.setOcupadas(35);
-//		h.setAforo(50);
-//		
-//		given(this.hotelService.findById(TEST_HOTEL_ID)).willReturn(h);
-//		
-//	}
 	
 	@WithMockUser(value = "spring")
     @Test
-    void testDevolverOwner() {
+    void testDevolverOwner() throws Exception{
 //		TODO
 	}
-	
+
 	@WithMockUser(value = "spring")
     @Test
-    void testListadoReservas() {
+    void testListadoReservas() throws Exception {
 //		TODO
+		mockMvc.perform(get("/hotel"))
+		.andExpect(status().isOk())
+		.andExpect(view().name("welcome"));
 	}
     
-	
-//	----------------------------------------------------------------------
-    
-	
-	
 	@WithMockUser(value = "spring")
     @Test
     void testListadoHoteles() throws Exception {
@@ -115,27 +96,39 @@ public class HotelControllerTest {
 	
 	@WithMockUser(value = "spring")
     @Test
-    void testListadoReservasPorOwner() {
+    void testListadoReservasPorOwner() throws Exception{
 //		TODO
+		mockMvc.perform(get("/hotel/owner/{ownerId}",1))
+		.andExpect(status().isOk())
+		.andExpect(view().name("hotel/misReservas"));
 	}
 	
 	@WithMockUser(value = "spring")
     @Test
-    void testCrearHotel() {
+    void testCrearHotel() throws Exception{
 //		TODO
-	}
-	
-	
-	@WithMockUser(value = "spring")
-    @Test
-    void testGuardarBooking() {
-//		TODO
+		mockMvc.perform(get("/hotel/new"))
+		.andExpect(status().isOk())
+		.andExpect(view().name("hotel/newHotel"));
 	}
 	
 	@WithMockUser(value = "spring")
     @Test
-    void testBorrarHotel() {
+    void testGuardarBooking() throws Exception {
 //		TODO
+//		mockMvc.perform(post())
+		
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testBorrarHotel() throws Exception{
+//		TODO
+		mockMvc.perform(get("/hotel/delete/{hotelId}",1))
+		.andExpect(status().isOk())
+		.andExpect(view().name("hotel/newHotel"));
+		
+		
 	}
 	
 	
