@@ -18,8 +18,9 @@
 				<th style="width: 120px">Order date</th>
 				<th style="width: 120px">Postal code</th>
 				<th style="width: 120px">State</th>
-				<th style="width: 120px">Products</th>			
-
+				<th style="width: 120px">Coupon</th>
+				<th style="width: 120px">Total(euros)</th>
+				<th style="width: 120px">Products</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -27,30 +28,28 @@
 
 			<c:forEach items="${orders}" var="order">
 				<tr>
-					<td><c:out value="${order.address}" /></a></td>
-					<td><c:out value="${order.city}" /></a></td>
+					<td><c:out value="${order.address}" /></td>
+					<td><c:out value="${order.city}" /></td>
 					<td><c:out value="${order.country}" /></td>
 					<td><c:out value="${order.deliveryDate}" /></td>
 					<td><c:out value="${order.orderDate}" /></td>
 					<td><c:out value="${order.postalCode}" /></td>
 					<td><c:out value="${order.state}" /></td>
+					<td><c:out value="${order.coupon.discount}%" /></td>
+					<td><c:out value="${order.priceOrder}" /></td>
 					<td><spring:url value="/shop/view/products/{orderId}"
 							var="orderId">
 							<spring:param name="orderId" value="${order.id}" />
-						</spring:url> <a href="${fn:escapeXml(orderId)}"> Products</a>
-					
+						</spring:url> <a href="${fn:escapeXml(orderId)}"> See products</a></tr>
 
-				</tr>
-				
 			</c:forEach>
-			
+
 			<h3>Number of orders: ${ordersNumber}</h3>
 			<%--  <h3>Hotel: ${hotel}</h3> --%>
-		
+
 		</tbody>
-			
+
 	</table>
-	
-	
+
+
 </petclinic:layout>
-	

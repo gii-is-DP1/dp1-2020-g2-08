@@ -32,7 +32,26 @@
 					<petclinic:inputField label="Postal Code" name="postalCode" />
                 <br>
                 <div class="control-group">
-                    <petclinic:selectField name="coupon" label="Coupon " names="${coupons}" size="2"/>
+                   <spring:bind path="coupon">  
+                  <label for="coupon">Your coupons:</label>
+                        <select name="coupon">
+   						 <c:forEach items="${coupons}" var="coupon">  
+   						 <option value="${coupon.id}">${coupon.discount}% discount	
+						
+						
+						
+						</c:forEach>
+						
+						
+    </select><div class="${cssGroup}">
+          <c:if test="${status.error}">
+                <span
+								class="glyphicon glyphicon-remove form-control-feedback"
+								aria-hidden="true"></span>
+                <span class="help-inline">${status.errorMessage}</span>
+            </c:if>
+					</div>
+				</spring:bind>
                 </div>
                
             </div>
