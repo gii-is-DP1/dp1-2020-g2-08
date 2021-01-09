@@ -28,14 +28,17 @@ import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(controllers=BookingController.class,excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class),excludeAutoConfiguration= SecurityConfiguration.class)
-public class BookingControllerTest {
+@WebMvcTest(controllers=ReviewController.class,excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class),excludeAutoConfiguration= SecurityConfiguration.class)
+public class ReviewControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
-
+	
 	@Autowired 
-	private BookingController bookingController;
+	private ReviewController reviewController;
+
+	@MockBean 
+	BookingController bookingController;
 	
 	@MockBean
 	HotelController hotelController;
@@ -61,47 +64,27 @@ public class BookingControllerTest {
 	private ReviewService reviewService;
 	
 	
-	@WithMockUser(value = "spring")
-    @Test
-    void elegirHotelTest() throws Exception{
-//		TODO
-		mockMvc.perform(get("/hotel/booking/new"))
-		.andExpect(status().isOk())
-		.andExpect(view().name("hotel/newBooking"));
-	}
+	
 	
 	@WithMockUser(value = "spring")
     @Test
-    void crearBookingTest() throws Exception{
+    void crearReviewHotelTest() throws Exception{
 //		TODO
-		mockMvc.perform(get("/hotel/booking/new/{hotelId}",1))
+		mockMvc.perform(get("/hotel/review"))
 		.andExpect(status().isOk())
-		.andExpect(view().name("welcome"));
-		
-	}
-	
-	@WithMockUser(value = "spring")
-    @Test
-    void editTest() throws Exception{
-//		TODO
-		mockMvc.perform(get("/hotel/booking/edit/{bookingId}",1))
-		.andExpect(status().isOk())
-		.andExpect(view().name("exception"));
-		
+		.andExpect(view().name("hotel/review"));
+//		
 	}
 	
 	
 	@WithMockUser(value = "spring")
     @Test
-    void borrarBookingTest() throws Exception{
+    void borrarReviewTest() throws Exception{
 //		TODO
-		mockMvc.perform(get("/hotel/booking/delete/{bookingId}/{ownerId}",1,1))
+		mockMvc.perform(get("/hotel/review/delete/{reviewId}",1))
 		.andExpect(status().isOk())
-		.andExpect(view().name("hotel/booking/delete/1/1"));
+		.andExpect(view().name("hotel/review/delete/1"));
 	}
-	
-
-	
 	
 }
 
