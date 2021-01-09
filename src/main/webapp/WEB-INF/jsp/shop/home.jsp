@@ -6,34 +6,76 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
 
 <petclinic:layout pageName="products">
+	<h2>Products List</h2>
+
+	<table id="productTable" class="table table-striped">
+		<thead>
+			<tr>
+				<th style="width: 150px;">Name</th>
+				<th style="width: 200px;">Category</th>
+				<th>Price</th>
+				<th style="width: 120px">In Offer</th>
+				<th>Actions</th>
+
+			</tr>
+		</thead>
+		<tbody>
 
 
+			<c:forEach items="${product}" var="product">
+				<tr>
+					<td><c:out value="${product.name}" /></a></td>
+
+					<td><c:out value="${product.category}" /></a></td>
+					<td><c:out value="${product.price}" /></td>
+					<td><c:out value="${product.inOffer}" /></td>
+
+					
+					<td><spring:url value="/shop/add/{productId}"
+								var="productId">
+								<spring:param name="productId" value="${product.id}" />
+							</spring:url> <a href="${fn:escapeXml(productId)}"> Add to cart</a>
+						
 	
-	<spring:url value="/shop/products/Pets" var="pets">
-	</spring:url>
-	<spring:url value="/shop/products/Food" var="food">
-	</spring:url>
-	<spring:url value="/shop/products/Toys" var="toys">
-	</spring:url>
-	<spring:url value="/shop/products/Accessories" var="accessories">
-	</spring:url>
-	
-	<sec:authorize access="hasAuthority('client')">
-	
-		<spring:url value="/shop/carrito" var="cart"></spring:url>
+						
+
+
+
+
+
+
+
+
+				</tr>
 				
-		<a class="btn btn-default" href="${fn:escapeXml(cart)}"> Cart </a>
+			</c:forEach>
+			
+			<h3>Number of products: ${productsNumber}</h3>
+			<%--  <h3>Hotel: ${hotel}</h3> --%>
 		
-	</sec: authorize>
+		</tbody>
+			
+	</table>
+
+	<spring:url value="/shop/products/Pets" var="Pets">
+	</spring:url>
+	<spring:url value="/shop/products/Food" var="Food">
+	</spring:url>
+	<spring:url value="/shop/products/Toys" var="Toys">
+	</spring:url>
+	<spring:url value="/shop/products/Accessories" var="Accessories">
+	</spring:url>
 	
-	<a class="btn btn-default" href="${fn:escapeXml(pets)}">Pets </a>
+			
+	
+	<a class="btn btn-default" href="${fn:escapeXml(Pets)}">Pets </a>
 
-	<a class="btn btn-default" href="${fn:escapeXml(toys)}">Toys </a>
+	<a class="btn btn-default" href="${fn:escapeXml(Toys)}">Toys </a>
 
-	<a class="btn btn-default" href="${fn:escapeXml(food)}">Food </a>
+	<a class="btn btn-default" href="${fn:escapeXml(Food)}">Food </a>
 
-	<a class="btn btn-default" href="${fn:escapeXml(accessories)}">Accessories</a>
-
+	<a class="btn btn-default" href="${fn:escapeXml(Accessories)}">Accessories</a>
+	
 	
 </petclinic:layout>
 	
