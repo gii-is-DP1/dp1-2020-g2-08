@@ -41,13 +41,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/shop").permitAll()
 				.antMatchers("/shop/carrito").hasAuthority("client")
 				.antMatchers("/shop/add/**").hasAuthority("client")
-				.antMatchers("/**").permitAll()
+//				.antMatchers("/**").permitAll()
 //				.antMatchers("/bookings").hasAnyAuthority("owner","admin")	
 //				.antMatchers("/bookings/**").hasAnyAuthority("owner","admin")
 				.antMatchers("/hotel").hasAnyAuthority("owner","admin")	
 				.antMatchers("/hotel/owner/**").hasAnyAuthority("owner","admin")	
-				.antMatchers("/hotel/booking/**").hasAnyAuthority("owner","admin")	
+			
 				.antMatchers("/hotel/myBookings/**").hasAnyAuthority("owner","admin")
+				
+				.antMatchers("/hotel/booking/**").hasAnyAuthority("owner","admin")		
 				.antMatchers("/hotel/review/**").hasAnyAuthority("owner","admin")	
 				.antMatchers("/hotel/**").hasAnyAuthority("admin")
 				.antMatchers("/admin/**").hasAnyAuthority("admin")
