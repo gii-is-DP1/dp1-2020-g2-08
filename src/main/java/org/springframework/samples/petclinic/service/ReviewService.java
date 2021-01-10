@@ -41,33 +41,38 @@ public class ReviewService {
 	 }
 	 
 	 @Transactional
+	 public void save(Review review) {
+
+	 	reviewRepo.save(review);
+	 	
+	 	
+	 }
+	 @Transactional
 	 public Optional<Review> findReviewById(int review){
 		 return reviewRepo.findById(review);
 	 }
-	 @Transactional
-	public void deleteById(int review) {
-		 reviewRepo.deleteById(review);
-		
-	}
+	 
+
 	 
 	 @Transactional
 		public void delete(Review review) {
 		 reviewRepo.delete(review);
 			
 		}
-	 
+//	 -------------------------------------------------
 	 @Transactional
 		public void deleteById(Integer reviewId) {
 		 reviewRepo.deleteById(reviewId);
 			
 		}
-@Transactional
-public void save(Review review) {
-
-	reviewRepo.save(review);
-	
-	
-}
+	 
+	 @Transactional
+		public void deleteById(int review) {
+			 reviewRepo.deleteById(review);
+			
+		}
+//	 --------------------------------------------------
+	 
 
 @Transactional
 public List<Review> findReviewByHotelId(Integer hotelId){

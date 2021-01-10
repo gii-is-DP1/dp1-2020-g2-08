@@ -29,6 +29,9 @@ public class HotelService {
 	 
 	 @Autowired
 	 private ReviewService reviewService;
+	 
+	 @Autowired
+	 private BookingService bookingService;
 	 @Transactional
 	 public int hotelCount() {
 		 
@@ -38,6 +41,9 @@ public class HotelService {
 	 public Iterable<Hotel> findAll(){
 		 return hotelRepo.findAll();
 	 }
+	 
+// ------------------------------------------------------------------------------------
+	 
 	 
 	 @Transactional
 	 public Hotel findById(Integer hotelId){
@@ -60,20 +66,25 @@ public class HotelService {
 		 }	
 
 
-@Transactional
-public void save(Hotel hotel) {
-	hotelRepo.save(hotel);
+	@Transactional
+	public void save(Hotel hotel) {
+		hotelRepo.save(hotel);
+		
+	}
 	
-}
-
-@Transactional
-public void delete(Hotel hotel) {	
-		hotelRepo.delete(hotel);	
-}
-
-@Transactional
-public void deleteById(Integer hotelId) {
-	hotelRepo.deleteById(hotelId);
+	@Transactional
+	public void delete(Hotel hotel) {	
+			hotelRepo.delete(hotel);	
+	}
 	
-}
+	
+	public void deleteById(Integer hotelId) {
+		
+		bookingService.eliminarBookingsPorHotel(hotelId);
+		reviewService.eliminarReviewsPorHotel(hotelId);
+		hotelRepo.deleteById(hotelId);
+		
+	}
+	
+	
 }

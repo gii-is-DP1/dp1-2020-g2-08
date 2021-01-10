@@ -11,7 +11,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Product;
 import org.springframework.samples.petclinic.repository.ProductRepository;
-import org.springframework.samples.petclinic.repository.ShopRepository;
 import org.springframework.samples.petclinic.service.exceptions.DuplicatedPetNameException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -22,8 +21,7 @@ public class ProductService {
 	@Autowired
 	private ProductRepository productRepo;
 
-	@Autowired
-	private ShopRepository shopRepo;
+	
 
 	@Transactional
 	public int productCount() {

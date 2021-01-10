@@ -67,9 +67,13 @@
 									<ul class="dropdown-menu">
 										<li><a href="/shop">Shop</a></li>
 										<sec:authorize access="hasAuthority('admin')">
-										<li><a href="/shop/admin/products">Product list</a></li>
+										<li><a href="/shop/admin/products">Products</a></li>
 										<li><a href="/shop/admin/sales">Sales</a></li>
-										<li><a href="/shop/admin/clients">Client list</a></li>
+										<li><a href="/shop/admin/clients">Clients</a></li>
+										<li><a href="/shop/admin/coupons">Coupons</a></li>
+										
+										
+										
 										</sec:authorize>
 									</ul>
 						</div>
@@ -95,11 +99,19 @@
 			<ul class="nav navbar-nav navbar-right">
 				<sec:authorize access="!isAuthenticated()">
 					<li><a href="<c:url value="/login" />">Login</a></li>
-					<li><a href="<c:url value="/users/new" />">Register</a></li>
+					
+					<li class="dropdown"><a href="/shop" class="dropdown-toggle"
+								data-toggle="dropdown">	 <span
+									class="glyphicon glyphicon"></span> <span>Register</span>
+
+									<ul class="dropdown-menu">
+										<li><a href="/users/new">Register owner</a></li>	
+										<li><a href="/users/new/client">Register shop client list</a></li>
+									</ul>
 				</sec:authorize>
 				<sec:authorize access="isAuthenticated()">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span>�
+						data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span>
 							<strong><sec:authentication property="name" /></strong> <span
 							class="glyphicon glyphicon-chevron-down"></span>
 					</a>
@@ -120,7 +132,15 @@
 												<a href="<c:url value="/logout" />"
 													class="btn btn-primary btn-block btn-sm">Logout</a>
 											</p>
+											<p class="text-left">
+												<a href="<c:url value="/shop/myOrders" />"
+													class="btn btn-primary btn-block btn-sm">My orders</a>
+											</p>
 										</div>
+										
+	
+										
+										
 									</div>
 								</div>
 							</li>
@@ -142,6 +162,11 @@
 -->
 						</ul></li>
 				</sec:authorize>
+					<petclinic:menuItem active="${name eq 'cart'}" url="/shop/carrito">
+					<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+				</petclinic:menuItem>
+									
+									</ul>
 			</ul>
 		</div>
 

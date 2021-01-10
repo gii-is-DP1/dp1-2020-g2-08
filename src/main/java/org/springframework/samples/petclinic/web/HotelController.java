@@ -1,10 +1,15 @@
 package org.springframework.samples.petclinic.web;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Booking;
 import org.springframework.samples.petclinic.model.Hotel;
@@ -42,6 +47,8 @@ public class HotelController {
 	@Autowired
 	private ReviewService reviewService;
 
+	
+	
 	@Autowired
 	public HotelController(HotelService hotelService, OwnerService ownerService, BookingService bookingService,
 			ReviewService reviewService) {
@@ -98,6 +105,7 @@ public class HotelController {
 			modelmap.addAttribute("hotel", hotel);
 		
 			
+			
 
 			// Manda todos los atributos a la vista listaReservas.jsp
 			return "hotel/listaReservas";
@@ -114,18 +122,26 @@ public class HotelController {
 	public String listadoHoteles(ModelMap modelmap) {
 
 		// Trae todas las reservas y reseñas
-		Iterable<Hotel> hoteles = hotelService.findAll();
-//		List<Hotel> hoteles = (List<Hotel>) hotels;
-//		Map<Hotel,List<Booking>> mapa = new TreeMap<Hotel, List<Booking>>();
-//		
-//		for (int i = 0; i < hoteles.size(); i++) {
-//			mapa.put(hoteles.get(i), bookingService.findBookingsByHotelId(hoteles.get(i).getId()));
-//			}
+		List<Hotel> hoteles = (List<Hotel>) hotelService.findAll();
+		List<Integer> numBookings= new ArrayList<Integer>();
+		List<Integer> numReviews= new ArrayList<Integer>();
+		
 		
 		
 
 		if (hoteles.iterator().hasNext()) {
+			
+			for (int i = 0; i < hoteles.size(); i++) {
+				
+				numBookings.add(bookingService.findBookingsByHotelId(hoteles.get(i).getId()).size())  ;
+				numReviews.add(reviewService.findReviewByHotelId(hoteles.get(i).getId()).size())  ;
+
+				
+				}
+			
 			modelmap.addAttribute("hoteles", hoteles);
+			modelmap.addAttribute("numBookings", numBookings);
+			modelmap.addAttribute("numReviews", numReviews);
 			return "hotel/listadoHoteles";
 
 		} else {
@@ -144,7 +160,7 @@ public class HotelController {
 			// Obtiene el id del owner para redirigir a la vista de reservas de ese owner
 			devolverOwner(modelmap);
 
-			return "redirect:owner/" + modelmap.getAttribute("ownerId");
+			return listadoReservasPorOwner((int) modelmap.getAttribute("ownerId"), modelmap);
 
 		} else {
 			modelmap.addAttribute("message", "Usted no está autenticado como owner");
@@ -163,6 +179,7 @@ public class HotelController {
 		// Pone las reservas en el modelmap para mandar a la vista
 		modelmap.addAttribute("bookings", bookings);
 		modelmap.addAttribute("owner", ownerService.findOwnerById(ownerId));
+		modelmap.addAttribute("ownerId", ownerId);
 
 		// Redirige a misReservas.jsp
 		return "hotel/misReservas";
@@ -199,10 +216,7 @@ public class HotelController {
 	@GetMapping(path = "/delete/{hotelId}")
 	public String borrarHotel(@PathVariable("hotelId") Integer hotelId, ModelMap modelmap) {
 
-		// Con estos metodos borramos reviews y bookings en caso de que los haya, para
-		// poder borrar el hotel
-		bookingService.eliminarBookingsPorHotel(hotelId);
-		reviewService.eliminarReviewsPorHotel(hotelId);
+		
 		// Llegados a este punto, para el hotel seleccionado se han borrado todas las
 		// reviews y bookings, por lo que procedemos a borrarlo
 		hotelService.deleteById(hotelId);

@@ -6,7 +6,7 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
 
 <petclinic:layout pageName="products">
-	<h2>Food List</h2>
+	<h2>Pets List</h2>
 
 	<table id="productTable" class="table table-striped">
 		<thead>
@@ -15,7 +15,11 @@
 				<th style="width: 200px;">Category</th>
 				<th>Price</th>
 				<th style="width: 120px">In Offer</th>
-				<th>Actions</th>
+				
+				<sec:authorize access="hasAuthority('admin')">
+					<th>Actions</th>
+				</sec:authorize>
+				
 
 			</tr>
 		</thead>
@@ -30,19 +34,12 @@
 					<td><c:out value="${product.price}" /></td>
 					<td><c:out value="${product.inOffer}" /></td>
 
-					<td><spring:url value=""
-							var="productId">
-							<spring:param name="productId" value="${product.id}" />
-						</spring:url> <a href="${fn:escapeXml(productId)}"> Add to cart</a>
-					
-						
-
-
-
-
-
-
-
+						<td><spring:url value="/shop/add/{productId}"
+								var="productId">
+								<spring:param name="productId" value="${product.id}" />
+							</spring:url> <a href="${fn:escapeXml(productId)}"> Add to cart</a>
+											
+						</td>		
 
 				</tr>
 				
@@ -54,29 +51,29 @@
 		</tbody>
 			
 	</table>
-	<spring:url value="/shop/products/pets" var="pets">
+	<spring:url value="/shop/products/Pets" var="Pets">
 	</spring:url>
-	<spring:url value="/shop/products/food" var="food">
+	<spring:url value="/shop/products/Food" var="Food">
 	</spring:url>
-	<spring:url value="/shop/products/toys" var="toys">
+	<spring:url value="/shop/products/Toys" var="Toys">
 	</spring:url>
-	<spring:url value="/shop/products/accessories" var="accessories">
+	<spring:url value="/shop/products/Accessories" var="Accessories">
 	</spring:url>
 	<spring:url value="/shop" var="back">
 	</spring:url>
 			
-	
-	<a class="btn btn-default" href="${fn:escapeXml(pets)}">Pets </a>
+	<a class="btn btn-default" href="${fn:escapeXml(Pets)}">Pets </a>
 			
-
-
-	<a class="btn btn-default" href="${fn:escapeXml(toys)}">Toys </a>
+	<a class="btn btn-default" href="${fn:escapeXml(Toys)}">Toys </a>
 			
-	<a class="btn btn-default" href="${fn:escapeXml(food)}">Food </a>
+	<a class="btn btn-default" href="${fn:escapeXml(Food)}">Food </a>
 		
-	<a class="btn btn-default" href="${fn:escapeXml(accessories)}">Accessories</a>
-			
+	<a class="btn btn-default" href="${fn:escapeXml(Accessories)}">Accessories</a>
+	
 	<a class="btn btn-default" href="${fn:escapeXml(back)}">Return</a>
 	
 	
+
+	
 </petclinic:layout>
+	

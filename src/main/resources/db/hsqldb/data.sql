@@ -84,24 +84,26 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (2, 8, '2013-01-02',
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03', 'neutered');
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04', 'spayed');
 
-INSERT INTO hotel(id,aforo,ocupadas,city) VALUES (1, 50, 0, 'Sevilla');
-INSERT INTO hotel(id,aforo,ocupadas,city) VALUES (2, 50, 0, 'Cordoba');
-INSERT INTO hotel(id,aforo,ocupadas,city) VALUES (3, 50, 0, 'Malaga');
+INSERT INTO hotel(id,aforo,ocupadas,city) VALUES (1, 4, 0, 'Sevilla');
+INSERT INTO hotel(id,aforo,ocupadas,city) VALUES (2, 5, 0, 'Cordoba');
+INSERT INTO hotel(id,aforo,ocupadas,city) VALUES (3, 10, 0, 'Malaga');
 
-INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (1, '2020-02-10', '2020-02-15',1,1,1);
-INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (2, '2020-02-10', '2020-02-16',1,2,2);
-INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (3, '2020-02-10', '2020-02-17',1,3,3);
+INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (1, '2020-12-10', '2020-12-11',1,1,1);
+INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (2, '2020-12-10', '2020-12-12',1,2,2);
+INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (3, '2020-12-10', '2020-12-13',1,3,3);
+INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (4, '2020-12-10', '2020-12-14',1,3,3);
+INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (5, '2020-12-10', '2020-12-15',1,3,3);
+INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (6, '2020-12-10', '2020-12-16',1,3,3);
+INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (7, '2020-12-10', '2020-12-17',1,3,3);
+INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (8, '2020-12-10', '2020-12-17',1,3,3);
 
-INSERT INTO shop(id, category) VALUES (1, 'Pets');
-INSERT INTO shop(id, category) VALUES (2, 'Toys');
-INSERT INTO shop(id, category) VALUES (3, 'Food');
-INSERT INTO shop(id, category) VALUES (4, 'Accessories');
 
 
-INSERT INTO products(id, category, in_offer, name, price, product_id) VALUES (1, 'Pets', 'No', 'Clown Fish', '6.0', 1);
-INSERT INTO products(id, category, in_offer, name, price, product_id) VALUES (2, 'Toys', 'Yes', 'Dog´s Ball', '8.75', null);
-INSERT INTO products(id, category, in_offer, name, price, product_id) VALUES (3, 'Food', 'Yes', 'Pipes for birds', '5.0', null);
-INSERT INTO products(id, category, in_offer, name, price, product_id) VALUES (4, 'Accessories', 'No', 'Dog´s belt', '12.0', null);
+
+INSERT INTO products(id, category, in_offer, name, price) VALUES (1, 'Pets', 'No', 'Clown Fish', '6.0');
+INSERT INTO products(id, category, in_offer, name, price ) VALUES (2, 'Toys', 'Yes', 'Dog´s Ball', '8.75');
+INSERT INTO products(id, category, in_offer, name, price ) VALUES (3, 'Food', 'Yes', 'Pipes for birds', '5.0');
+INSERT INTO products(id, category, in_offer, name, price) VALUES (4, 'Accessories', 'No', 'Dog´s belt', '12.0');
 
 
 
@@ -109,4 +111,23 @@ INSERT INTO reviews(id,description,review_date,stars,tittle,hotel_id,owner_id) V
 INSERT INTO reviews(id,description,review_date,stars,tittle,hotel_id,owner_id) VALUES (2, 'prueba descripcion 2','2020-03-10',4,'prueba de titulo 2',2,13);
 INSERT INTO reviews(id,description,review_date,stars,tittle,hotel_id,owner_id) VALUES (3, 'prueba descripcion 3','2020-04-10',1,'prueba de titulo 3',3,11);
 
+INSERT INTO users(username,password,enabled) VALUES ('mangarmar','mangarmar',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (10,'mangarmar','client');
+INSERT INTO clients VALUES (1, 'Manuel', 'Garcia', 'Domingo Molina', 'Sevilla','gmail@gmail.com','mangarmar','1111111','mangarmar','654321022','mangarmar');
+
+--
+--INSERT INTO orders VALUES(1, 'Prim', 'Sevilla', 'España', '2020-12-10',12, '2020-12-11','41410','In progress', 1);
+--INSERT INTO producto_vendido VALUES(1, 1, 'Dog´s Ball','8.75',1);
+--INSERT INTO producto_vendido VALUES(2, 1, 'Pipes for birds','5.0',1);
+
+
+INSERT INTO coupons VALUES(1,50,'2021-12-10');
+INSERT INTO coupons VALUES(2,60,'2022-10-10');
+INSERT INTO coupons VALUES(3,70,'2023-07-10');
+INSERT INTO coupons VALUES(4,80,'2024-03-10');
+
+INSERT INTO clients_coupons VALUES(1,1);
+INSERT INTO clients_coupons VALUES(1,2);
+
+--INSERT INTO product_reviews VALUES(1, 4, 1, 1);
 

@@ -55,7 +55,7 @@ public class AuthoritiesService {
 		Optional<User> user = userService.findUser(username);
 		if(user.isPresent()) {
 			authority.setUser(user.get());
-			authority.setAuthority(role);
+			 authority.setAuthority(role); 
 			//user.get().getAuthorities().add(authority);
 			authoritiesRepository.save(authority);
 		}else

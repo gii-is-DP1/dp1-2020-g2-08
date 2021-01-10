@@ -13,7 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
 
-@Data
+
 @Entity
 
 @Table(name = "reviews")
@@ -43,5 +43,53 @@ public class Review extends BaseEntity {
 	@ManyToOne
 	@JoinColumn(name = "hotel_id")
 	private Hotel hotel;
+
+	public Integer getStars() {
+		return stars;
+	}
+
+	public void setStars(Integer stars) {
+		this.stars = stars;
+	}
+
+	public String getTittle() {
+		return tittle;
+	}
+
+	public void setTittle(String tittle) {
+		this.tittle = tittle;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public LocalDate getReviewDate() {
+		return reviewDate;
+	}
+
+	public void setReviewDate(LocalDate reviewDate) {
+		this.reviewDate = reviewDate;
+	}
+
+	public Owner getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Owner owner) {
+		this.owner = owner;
+	}
+
+	public Hotel getHotel() {
+		return hotel;
+	}
+
+	public void setHotel(Hotel hotel) {
+		this.hotel = hotel;
+	}
 
 }

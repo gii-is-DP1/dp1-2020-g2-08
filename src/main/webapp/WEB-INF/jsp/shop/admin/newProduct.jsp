@@ -15,9 +15,11 @@
 
         <form:form modelAttribute="product" class="form-horizontal" action="save">
             <div class="form-group has-feedback">
-                <petclinic:inputField label="Name" name="name"/>
-                <petclinic:inputField label="Price" name="price"/>
-                <label for="category">Category:</label>
+            	<label for="name">Name:</label>
+                <input type="text" label="Name" name="name"/><br/>
+                <label for="price">Price:</label>
+				<input type="number" label="Price" name="price"></br>
+		                <label for="category">Category:</label>
                         <select name="category">
    						 	<c:forEach items="${categories}" var="category">  
    						 		<option value="${category}">${category} 						

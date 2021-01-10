@@ -63,24 +63,24 @@
 	</table>
 	<spring:url value="/shop/admin/products/add" var="products">
 	</spring:url>
-	<spring:url value="/shop/admin/products/pets" var="pets">
+	<spring:url value="/shop/admin/products/Pets" var="Pets">
 	</spring:url>
-	<spring:url value="/shop/admin/products/food" var="food">
+	<spring:url value="/shop/admin/products/Food" var="Food">
 	</spring:url>
-	<spring:url value="/shop/admin/products/toys" var="toys">
+	<spring:url value="/shop/admin/products/Toys" var="Toys">
 	</spring:url>
-	<spring:url value="/shop/admin/products/accessories" var="accessories">
+	<spring:url value="/shop/admin/products/Accessories" var="Accessories">
 	</spring:url>
 	
 			
 	
-	<a class="btn btn-default" href="${fn:escapeXml(pets)}">Pets </a>
+	<a class="btn btn-default" href="${fn:escapeXml(Pets)}">Pets </a>
 
-	<a class="btn btn-default" href="${fn:escapeXml(toys)}">Toys </a>
+	<a class="btn btn-default" href="${fn:escapeXml(Toys)}">Toys </a>
 
-	<a class="btn btn-default" href="${fn:escapeXml(food)}">Food </a>
+	<a class="btn btn-default" href="${fn:escapeXml(Food)}">Food </a>
 
-	<a class="btn btn-default" href="${fn:escapeXml(accessories)}">Accessories</a>
+	<a class="btn btn-default" href="${fn:escapeXml(Accessories)}">Accessories</a>
 	
 	<a class="btn btn-default" href="${fn:escapeXml(products)}">Add product</a>
 	

@@ -4,18 +4,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
-
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <petclinic:layout pageName="bookings">
 	<h1>Bookings</h1>
 
 	<table id="bookingsTable" class="table table-striped">
 		<thead>
 			<tr>
-				<th style="width: 150px;">Pet</th>
-				<th style="width: 120px">Owner</th>
-				<th style="width: 200px;">StartDate</th>
+				<th >Pet</th>
+				<th >Owner</th>
+				<th >StartDate</th>
 				<th>EndDate</th>
-				<th>City</th>
+				<th style="width: 200px;">City</th>
 				<sec:authorize access="hasAuthority('admin')">
 					<th>Actions</th>
 				</sec:authorize>
@@ -35,7 +36,7 @@
 					<td><c:out value="${booking.endDate}" /></td>
 					<td><c:out value="${booking.hotel.city}" /></td>
 					<sec:authorize access="hasAuthority('admin')">
-						<td><spring:url value="/hotel/booking/delete/${booking.id}/1"
+						<td><spring:url value="/hotel/booking/delete/${booking.id}/${booking.owner.id}"
 								var="bookingId">
 
 							</spring:url> <a href="${fn:escapeXml(bookingId)}"> Delete</a></td>
@@ -68,12 +69,12 @@
 		<thead>
 			<tr>
 				<th>Owner</th>
-				<th style="width: 150px;">Tittle</th>
-				<th style="width: 120px">Description</th>
-				<th style="width: 200px;">Review date</th>
+				<th  >Tittle</th>
+				<th  >Description</th>
+				<th  >Review date</th>
 				<th>Stars</th>
+				<th>City</th>
 				<th>Actions</th>
-				<th>Owner</th>
 				<th></th>
 			</tr>
 		</thead>

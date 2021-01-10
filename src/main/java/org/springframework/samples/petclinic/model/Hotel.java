@@ -71,4 +71,6 @@ public class Hotel extends BaseEntity {
 	public boolean removeReview(Review review) {
 		return getReviewsInternal().remove(review);
 	}
+	
+	
 }

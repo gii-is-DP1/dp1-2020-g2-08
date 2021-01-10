@@ -15,17 +15,26 @@
  */
 package org.springframework.samples.petclinic.web;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.model.Authorities;
+import org.springframework.samples.petclinic.model.Client;
 import org.springframework.samples.petclinic.model.Owner;
+import org.springframework.samples.petclinic.model.User;
 import org.springframework.samples.petclinic.service.AuthoritiesService;
+import org.springframework.samples.petclinic.service.ClientService;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.VetService;
 import org.springframework.samples.petclinic.service.UserService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -42,10 +51,19 @@ public class UserController {
 	private static final String VIEWS_OWNER_CREATE_FORM = "users/createOwnerForm";
 
 	private final OwnerService ownerService;
+	
+	private final ClientService clientService;
+	
+	private final UserService userService;
+	
+	private final AuthoritiesService authoritiesService;
 
 	@Autowired
-	public UserController(OwnerService clinicService) {
+	public UserController(OwnerService clinicService, ClientService clientService, AuthoritiesService authoritiesService, UserService userService) {
 		this.ownerService = clinicService;
+		this.clientService = clientService;
+		this.authoritiesService = authoritiesService;
+		this.userService = userService;
 	}
 
 	@InitBinder
@@ -68,6 +86,38 @@ public class UserController {
 		else {
 			//creating owner, user, and authority
 			this.ownerService.saveOwner(owner);
+			return "redirect:/";
+		}
+	}
+	
+	@InitBinder("client")
+	public void initPetBinder(WebDataBinder dataBinder) {
+		dataBinder.setValidator(new ClientValidator());
+	}
+
+	
+	@GetMapping(value = "/users/new/client")
+	public String initCreationClientForm(Map<String, Object> model) {
+		Client client = new Client();
+		model.put("client", client);
+		return "users/createClientForm";
+	}
+
+	@PostMapping(value = "/users/new/client")
+	public String processCreationClientForm(@Valid Client client,BindingResult result, ModelMap modelmap) {
+		
+		
+		if (result.hasErrors()) {
+			
+			modelmap.addAttribute("client", client);
+			modelmap.addAttribute("message", result.getAllErrors().stream().map(x->x.getDefaultMessage()).collect(Collectors.toList()));
+			return "users/createClientForm";
+		}
+		else {
+
+			this.clientService.saveClient(client);
+			
+
 			return "redirect:/";
 		}
 	}
