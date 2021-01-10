@@ -18,8 +18,8 @@ class ProductServiceTests {
 
 	@Test
 	void shouldFindProductWithCorrectId() {
-		Optional<Product> product2 = this.productService.findProductById(2);
-		assertThat(product2.get().getName()).startsWith("Dog´s Ball");
+		Optional<Product> product2 = this.productService.findProductById(1);
+		assertThat(product2.get().getName()).startsWith("Clown Fish");
 	}
 
 	@Test
