@@ -30,9 +30,9 @@ public class ProductReviewControllerTests {
 
 	@Autowired
 	private ProductReviewController productReviewController;
+	
 	@MockBean
 	private UserController userController;
-	
 	
 	@MockBean
 	private ClientService clientService;

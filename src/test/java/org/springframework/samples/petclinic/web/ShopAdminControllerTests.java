@@ -16,6 +16,8 @@ import org.springframework.samples.petclinic.model.Product;
 import org.springframework.samples.petclinic.repository.CouponRepository;
 import org.springframework.samples.petclinic.service.AuthoritiesService;
 import org.springframework.samples.petclinic.service.ClientService;
+import org.springframework.samples.petclinic.service.CouponService;
+import org.springframework.samples.petclinic.service.OrderService;
 import org.springframework.samples.petclinic.service.ProductService;
 import org.springframework.samples.petclinic.service.UserService;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
@@ -31,7 +33,13 @@ public class ShopAdminControllerTests {
 	private ShopAdminController adminController;
 	
 	@MockBean
+	private OrderService orderService;
+	
+	@MockBean
 	private CouponRepository couponRepository;
+	
+	@MockBean
+	private CouponService couponService;
 	
 	@MockBean
 	private ProductService productService;
