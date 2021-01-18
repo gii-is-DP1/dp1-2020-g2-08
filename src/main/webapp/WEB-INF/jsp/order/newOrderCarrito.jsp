@@ -6,7 +6,11 @@
 
 <petclinic:layout pageName="orders">
 	<jsp:attribute name="customScript">
-     
+     <script>
+     function unselect(){
+    	  document.querySelectorAll('[name=coupon]').forEach((x) => x.checked=false);
+    	}
+     </script>
     </jsp:attribute>
 	<jsp:body>
 	<h1>Your order summary</h1><br>
@@ -60,17 +64,20 @@
                 <div class="control-group">
                 
                  <spring:bind path="coupon">  
-                  <label for="coupon">Your coupons:</label>
-                        <select name="coupon">
-   						 <c:forEach items="${coupons}" var="coupon">  
-   						 <option value="${coupon.id}">${coupon.discount}% discount	
+                  <label for="coupon">Your coupons:</label><br>
+                         <c:forEach items="${coupons}" var="coupon">  
+   						 <input type="radio" name="coupon" value="${coupon.id}">${coupon.discount}% discount	<br>
+   						
 						
 						
 						
 						</c:forEach>
 						
 						
-    </select><div class="${cssGroup}">
+    </select>
+    						<a id="unselect" onclick="unselect()">Dont use</a>
+    
+    <div class="${cssGroup}">
           <c:if test="${status.error}">
                 <span
 								class="glyphicon glyphicon-remove form-control-feedback"

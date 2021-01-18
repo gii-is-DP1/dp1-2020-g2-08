@@ -188,6 +188,7 @@ public class OrderController {
 			o.setPostalCode(order.getPostalCode());
 			if (order.getCoupon()!=null) {
 			o.setCoupon(order.getCoupon());
+			client.getCoupons().remove(order.getCoupon()); // una vez usado el cupon, se elimina del cleinte (RN18)
 			}
 			orderRepo.save(o) ;
 
@@ -313,6 +314,7 @@ public class OrderController {
 			
 			if (order.getCoupon()!=null) {// precio=(precio*((100)-(order.getCoupon().getDiscount())))/100;
 				order.setPriceOrder( (producto.getPrice()*((100)-order.getCoupon().getDiscount()))/100 );
+				client.getCoupons().remove(order.getCoupon()); // una vez usado el cupon, se elimina del cleinte (RN18)
 			}
 			else {
 				order.setPriceOrder(producto.getPrice());
@@ -326,6 +328,7 @@ public class OrderController {
 
 			productoVendidoRepo.save(p);
 			modelmap.put("message", "Su pedido se ha completado con exito");
+	
 			return "shop/home";
 		}
 

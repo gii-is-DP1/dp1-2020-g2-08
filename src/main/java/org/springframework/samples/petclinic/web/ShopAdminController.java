@@ -305,14 +305,23 @@ public class ShopAdminController {
 	@GetMapping(path = "/clients/{clientId}/addCoupon/{couponId}" )
 	public String addCouponToClient(ModelMap modelmap,@PathVariable ("clientId") int clientId,@PathVariable ("couponId") int couponId) {
 		
+		
+		
 		Coupon coupon = couponRepository.findById(couponId).get();
 		
 		Client client = clientService.findById(clientId);
+		
+		if (client.getCoupons().contains(coupon)) {
+			modelmap.addAttribute("message", "No se pudo añadir porque el cliente ya tenia ese cupon");
+		}
+		else {
+			
+		
 		client.getCoupons().add(coupon);
 		clientService.saveClient(client);
 		modelmap.addAttribute("message", "El cupon se ha añadido al cliente");
-			
-		return clientCouponsList(modelmap, clientId);
+		}	
+		return clientCouponsList(modelmap, clientId); 
 
 	}
 	@GetMapping(path = "/clients/{clientId}/removeCoupon/{couponId}" )
