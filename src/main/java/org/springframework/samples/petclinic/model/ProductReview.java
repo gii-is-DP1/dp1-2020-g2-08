@@ -24,9 +24,9 @@ public class ProductReview extends BaseEntity{
 	@JoinColumn(name = "productVend_id")
 	 private ProductoVendido productoVendido;
 	
-//	@ManyToOne
-//	@JoinColumn(name = "product")
-//	 private Product product;
+	@ManyToOne
+	@JoinColumn(name = "product_id")
+	 private Product product;
 
 	public Integer getStars() {
 		return stars;
@@ -52,12 +52,13 @@ public class ProductReview extends BaseEntity{
 		this.productoVendido = productoVendido;
 	}
 
-//	public Product getProduct() {
-//		return product;
-//	}
-//
-//	public void setProduct(Product product) {
-//		this.product = product;
-//	}
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+
 
 }
