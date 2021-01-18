@@ -42,7 +42,7 @@ public class ShopClientController {
 		String view = "shop/home";
 		Iterable<Product> products = productService.findAll();
 		int productsNumber = productService.productCount();
-
+ 
 		modelmap.addAttribute("product", products);
 		modelmap.addAttribute("productsNumber", productsNumber);
 
