@@ -101,8 +101,8 @@ INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (8,
 
 
 INSERT INTO products(id, category, in_offer, name, price) VALUES (1, 'Pets', 'No', 'Clown Fish', '6.0');
-INSERT INTO products(id, category, in_offer, name, price ) VALUES (2, 'Toys', 'Yes', 'Dog´s Ball', '8.75');
-INSERT INTO products(id, category, in_offer, name, price ) VALUES (3, 'Food', 'Yes', 'Pipes for birds', '5.0');
+INSERT INTO products(id, category, in_offer, name, price) VALUES (2, 'Toys', 'Yes', 'Dog´s Ball', '8.75');
+INSERT INTO products(id, category, in_offer, name, price) VALUES (3, 'Food', 'Yes', 'Pipes for birds', '5.0');
 INSERT INTO products(id, category, in_offer, name, price) VALUES (4, 'Accessories', 'No', 'Dog´s belt', '12.0');
 
 
@@ -116,9 +116,7 @@ INSERT INTO authorities(id,username,authority) VALUES (10,'mangarmar','client');
 INSERT INTO clients VALUES (1, 'Manuel', 'Garcia', 'Domingo Molina', 'Sevilla','gmail@gmail.com','mangarmar','1111111','mangarmar','654321022','mangarmar');
 
 --
---INSERT INTO orders VALUES(1, 'Prim', 'Sevilla', 'España', '2020-12-10',12, '2020-12-11','41410','In progress', 1);
---INSERT INTO producto_vendido VALUES(1, 1, 'Dog´s Ball','8.75',1);
---INSERT INTO producto_vendido VALUES(2, 1, 'Pipes for birds','5.0',1);
+
 
 
 INSERT INTO coupons VALUES(1,50,'2021-12-10');
@@ -129,5 +127,24 @@ INSERT INTO coupons VALUES(4,80,'2024-03-10');
 INSERT INTO clients_coupons VALUES(1,1);
 INSERT INTO clients_coupons VALUES(1,2);
 
---INSERT INTO product_reviews VALUES(1, 4, 1, 1);
+INSERT INTO orders VALUES(1, 'Prim', 'Sevilla', 'España', '2020-12-10','2020-12-11','41410','12','In progress', 1, null);
+INSERT INTO producto_vendido VALUES(1, 1, 'Dog´s Ball','8.75',1);
+INSERT INTO producto_vendido VALUES(2, 1, 'Pipes for birds','5.0',1);
+INSERT INTO producto_vendido VALUES(3, 1, 'Dog´s Ball','8.75',1);
+INSERT INTO producto_vendido VALUES(4, 1, 'Pipes for birds','5.0',1);
+INSERT INTO producto_vendido VALUES(5, 1, 'Clown Fish','8.75',1);
+INSERT INTO producto_vendido VALUES(6, 1, 'Clown Fish','5.0',1);
+INSERT INTO producto_vendido VALUES(7, 1, 'Dog´s belt','8.75',1);
+INSERT INTO producto_vendido VALUES(8, 1, 'Dog´s belt','5.0',1);
+
+
+INSERT INTO product_reviews VALUES(1, 4, 1, 2, 1);
+INSERT INTO product_reviews VALUES(2, 2, 1, 3, 2);
+INSERT INTO product_reviews VALUES(3, 3, 1, 2, 3);
+INSERT INTO product_reviews VALUES(4, 4, 1, 3, 4);
+INSERT INTO product_reviews VALUES(5, 5, 1, 1, 5);
+INSERT INTO product_reviews VALUES(6, 4, 1, 1, 6);
+INSERT INTO product_reviews VALUES(7, 5, 1, 4, 7);
+INSERT INTO product_reviews VALUES(8, 5, 1, 4, 8);
+
 

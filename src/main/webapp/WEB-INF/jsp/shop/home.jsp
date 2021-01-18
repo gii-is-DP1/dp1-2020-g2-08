@@ -15,6 +15,7 @@
 				<th style="width: 200px;">Category</th>
 				<th>Price</th>
 				<th style="width: 120px">In Offer</th>
+				<th style="width: 120px">Rate</th>
 				<th>Actions</th>
 
 			</tr>
@@ -29,6 +30,7 @@
 					<td><c:out value="${product.category}" /></a></td>
 					<td><c:out value="${product.price}" /></td>
 					<td><c:out value="${product.inOffer}" /></td>
+					<td><c:out value="${product.average}" /></td>
 
 					
 					<td><spring:url value="/shop/add/{productId}"

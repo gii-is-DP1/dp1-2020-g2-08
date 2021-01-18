@@ -88,10 +88,13 @@ public class ProductReviewController {
 			int clientId = clientService.devolverClientId();
 			Client client = clientService.findById(clientId);
 			ProductoVendido prodVend = prodVendService.findById(productId).get();
+			Product prod = prodService.findProductByName(prodVend.getNombre());
 			review.setClient(client);
 			review.setProductoVendido(prodVend);
 			modelmap.addAttribute("productId", productId);
+			review.setProduct(prod);
 			prodReviewService.save(review);
+//			prodService.addRate(review);
 
 			modelmap.addAttribute("message", "The product review has been created successfully");
 				return "shop/home";

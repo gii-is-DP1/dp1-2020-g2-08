@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Client;
 import org.springframework.samples.petclinic.model.Hotel;
+import org.springframework.samples.petclinic.model.Product;
 import org.springframework.samples.petclinic.model.ProductReview;
 import org.springframework.samples.petclinic.model.Review;
 import org.springframework.samples.petclinic.repository.BookingRepository;
@@ -76,12 +77,19 @@ public class ProductReviewService {
 	 
 
 @Transactional
-public List<ProductReview> findProductReviewByProductId(Integer productId){
+public List<Integer> findProductReviewByProductName(String name){
 	 List<ProductReview> productReviews = (List<ProductReview>) prodReviewRepo.findAll();
-	 	return productReviews.stream().filter(x->x.getProductoVendido().getId().equals(productId)).collect(Collectors.toList());
+	 	return productReviews.stream().filter(x->x.getProductoVendido().getNombre().startsWith(name)).map(x->x.getStars()).collect(Collectors.toList());
 }
-	 
 
+public Double average(Product product) {
+	if(product.getReviews().size()==0) {
+		return 0.0;
+	}else {
+	Double average = product.getReviews().stream().mapToDouble(x->x.getStars()).average().getAsDouble();
+	return average;
+	}
+}	
 
 
 //@Transactional
