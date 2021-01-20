@@ -148,3 +148,11 @@ INSERT INTO product_reviews VALUES(7, 5, 1, 4, 7);
 INSERT INTO product_reviews VALUES(8, 5, 1, 4, 8);
 
 
+INSERT INTO shelter(id,aforo,ocupadas,city) VALUES (1, 4, 0, 'Sevilla');
+INSERT INTO shelter(id,aforo,ocupadas,city) VALUES (2, 4, 0, 'Sevilla');
+INSERT INTO shelter(id,aforo,ocupadas,city) VALUES (3, 4, 0, 'Sevilla');
+
+INSERT INTO animals(id,name,birth_date,type_id,shelter_id) VALUES (1, 'Sterling', '2013-02-11', 2, 1);
+INSERT INTO animals(id,name,birth_date,type_id,shelter_id) VALUES (2, 'Kanté', '2013-02-11', 2, 1);
+INSERT INTO animals(id,name,birth_date,type_id,shelter_id) VALUES (3, 'Van dijk', '2013-02-11', 2, 1);
+
