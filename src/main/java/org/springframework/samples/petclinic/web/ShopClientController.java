@@ -10,7 +10,10 @@ import javax.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Hotel;
 import org.springframework.samples.petclinic.model.Product;
+import org.springframework.samples.petclinic.model.ProductReview;
+import org.springframework.samples.petclinic.model.ProductoVendido;
 import org.springframework.samples.petclinic.model.Review;
+import org.springframework.samples.petclinic.service.ProductReviewService;
 import org.springframework.samples.petclinic.service.ProductService;
 
 import org.springframework.stereotype.Controller;
@@ -27,14 +30,17 @@ public class ShopClientController {
 
 	@Autowired
 	private ProductService productService;
+	@Autowired
+	private ProductReviewService productReviewService;
 
 
 	private static List<String> categoryList = Arrays.asList("Pets", "Food", "Toys", "Accessories");
 	private static List<String> offerOptions = Arrays.asList("Yes", "No");
 
-	public ShopClientController(ProductService productService) {
+	public ShopClientController(ProductService productService, ProductReviewService productReviewService) {
 
 		this.productService = productService;
+		this.productReviewService = productReviewService;
 	}
 
 	@GetMapping()
@@ -42,7 +48,10 @@ public class ShopClientController {
 		String view = "shop/home";
 		Iterable<Product> products = productService.findAll();
 		int productsNumber = productService.productCount();
+
  
+		
+
 		modelmap.addAttribute("product", products);
 		modelmap.addAttribute("productsNumber", productsNumber);
 
