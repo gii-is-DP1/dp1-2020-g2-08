@@ -131,3 +131,11 @@ INSERT INTO clients_coupons VALUES(1,2);
 
 --INSERT INTO product_reviews VALUES(1, 4, 1, 1);
 
+INSERT INTO shelter(id,aforo,ocupadas,city) VALUES (1, 4, 0, 'Sevilla');
+INSERT INTO shelter(id,aforo,ocupadas,city) VALUES (2, 4, 0, 'Sevilla');
+INSERT INTO shelter(id,aforo,ocupadas,city) VALUES (3, 4, 0, 'Sevilla');
+
+INSERT INTO animals(id,name,birth_date,type_id,shelter_id) VALUES (1, 'Sterling', '2013-02-11', 2, 1);
+INSERT INTO animals(id,name,birth_date,type_id,shelter_id) VALUES (2, 'Kanté', '2013-02-11', 2, 1);
+INSERT INTO animals(id,name,birth_date,type_id,shelter_id) VALUES (3, 'Van dijk', '2013-02-11', 2, 1);
+
