@@ -1,0 +1,46 @@
+package org.springframework.samples.petclinic.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.model.Hotel;
+import org.springframework.samples.petclinic.model.Shelter;
+import org.springframework.samples.petclinic.repository.AnimalRepository;
+import org.springframework.samples.petclinic.repository.ShelterRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+public class ShelterService {
+	@Autowired
+	private ShelterRepository shelterRepo;
+	@Transactional
+	public int shelterCount() {
+		return (int) shelterRepo.count();
+	}
+	@Transactional
+	public Iterable<Shelter> findAll() {
+		return shelterRepo.findAll();
+	}
+	
+	@Transactional
+	public Shelter findById(Integer shelterId){
+		 return shelterRepo.findById(shelterId).get();
+	 }
+	
+	@Transactional
+	public void save(Shelter shelter) {
+		shelterRepo.save(shelter);
+		
+	}
+	
+	@Transactional
+	public void delete(Shelter shelter) {	
+			shelterRepo.delete(shelter);	
+	}
+	
+	
+	public void deleteById(Integer shelterId) {
+		
+		shelterRepo.deleteById(shelterId);
+		
+	}
+}
