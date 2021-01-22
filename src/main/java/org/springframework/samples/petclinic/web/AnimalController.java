@@ -7,9 +7,13 @@ import javax.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Animal;
+import org.springframework.samples.petclinic.model.Booking;
+import org.springframework.samples.petclinic.model.Hotel;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
+import org.springframework.samples.petclinic.model.Review;
+import org.springframework.samples.petclinic.model.Shelter;
 import org.springframework.samples.petclinic.service.AnimalService;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.ShelterService;
@@ -28,15 +32,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import net.bytebuddy.description.modifier.Ownership;
 
 @Controller
-@RequestMapping("/shelter/{shelterId}")
+@RequestMapping("/shelter/animals")
 public class AnimalController {
 	
 	private static final String VIEW_ANIMALS_CREATE_OR_UPDATE_FORM = "animals/createOrUpdateAnimalForm";
+	@Autowired
 	private final AnimalService animalService;
 	private final OwnerService ownerService;
+	@Autowired
+	private final ShelterService shelterService;
 	
 	@Autowired
 	public AnimalController(AnimalService animalService, OwnerService ownerService) {
+		this.shelterService = new ShelterService();
 		this.animalService = animalService;
 		this.ownerService = ownerService;
 	}
@@ -46,10 +54,10 @@ public class AnimalController {
 		return this.animalService.findPetTypes();
 	}
 	
-	@ModelAttribute("owner")
-	public Owner findShelter(@PathVariable("shelterId") int ownerId) {
-		return this.ownerService.findOwnerById(ownerId);
-	}
+//	@ModelAttribute("owner")
+//	public Owner findShelter(@PathVariable("shelterId") int ownerId) {
+//		return this.ownerService.findOwnerById(ownerId);
+//	}
 	
 	@InitBinder("owner")
 	public void initOwnerBinder(WebDataBinder dataBinder) {
@@ -61,14 +69,38 @@ public class AnimalController {
 		dataBinder.setValidator(new AnimalValidator());
 	}
 	
-	@GetMapping(value = "/animals/new")
+	
+	// LISTADO DE TODOS LOS ANIMALES
+		@GetMapping()
+		public String listadoReservas(ModelMap modelmap) {
+
+			// Trae todos los refugios
+			Iterable<Shelter> shelters = shelterService.findAll();
+
+			if (shelters.iterator().hasNext()) {
+				// Mete todos los refugios en el modelmap para mostrarlos en la vista
+				
+				modelmap.addAttribute("shelters", shelters);
+				// Manda todos los atributos a la vista listaReservas.jsp
+				return "animals/listadoAnimales";
+
+			} else {
+				modelmap.addAttribute("message", "No hay refugios disponibles en este momento");
+				return "welcome";
+			}
+
+		}
+	
+	
+	
+	@GetMapping(value = "/new")
 	public String initCreationForm(Owner owner, ModelMap model) {
 		Animal animal = new Animal();
 		model.put("animal", animal);
 		return VIEW_ANIMALS_CREATE_OR_UPDATE_FORM;
 	}
 
-	@PostMapping(value = "/animals/new")
+	@PostMapping(value = "/new")
 	public String processCreationForm(Owner owner, @Valid Animal animal, BindingResult result, ModelMap model) {		
 		if (result.hasErrors()) {
 			model.put("animal", animal);
@@ -85,7 +117,7 @@ public class AnimalController {
 		}
 	}
 
-	@GetMapping(value = "/animals/{animalId}/edit")
+	@GetMapping(value = "/{animalId}/edit")
 	public String initUpdateForm(@PathVariable("animalId") int animalId, ModelMap model) {
 		Animal animal = this.animalService.findAnimalById(animalId);
 		model.put("animal", animal);
@@ -102,7 +134,7 @@ public class AnimalController {
      * @param model
      * @return
      */
-        @PostMapping(value = "/animals/{animalId}/edit")
+        @PostMapping(value = "/{animalId}/edit")
 	public String processUpdateForm(@Valid Animal animal, BindingResult result, Owner owner,@PathVariable("animalId") int animalId, ModelMap model) {
 		if (result.hasErrors()) {
 			model.put("animal", animal);
