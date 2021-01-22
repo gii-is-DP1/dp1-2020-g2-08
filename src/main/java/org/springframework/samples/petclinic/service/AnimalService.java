@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.service;
 
+import java.time.LocalDate;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,12 @@ public class AnimalService {
 	@Transactional(readOnly = true)
 	public Animal findAnimalById(int id) throws DataAccessException {
 		return animalRepository.findById(id);
+	}
+	
+	@Transactional
+	public void save(Animal animal) {
+		animal.setShelterDate(LocalDate.now());
+		 animalRepository.save(animal);
 	}
 	
 	@Transactional(rollbackFor = DuplicatedPetNameException.class)

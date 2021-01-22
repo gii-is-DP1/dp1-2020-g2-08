@@ -1,6 +1,7 @@
 package org.springframework.samples.petclinic.model;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,6 +30,10 @@ public class Animal extends NamedEntity{
 	@JoinColumn(name = "shelter_id")
 	private Shelter shelter;
 	
+	@Column(name = "shelter_date")        
+	@DateTimeFormat(pattern = "yyyy/MM/dd")
+	private LocalDate shelterDate;
+	
 	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
 	}
@@ -48,7 +53,24 @@ public class Animal extends NamedEntity{
 	public void setType(PetType type) {
 		this.type = type;
 	}
+
 	
+
+	public LocalDate getShelterDate() {
+		return shelterDate;
+	}
+
+	public void setShelterDate(LocalDate shelterDate) {
+		this.shelterDate = shelterDate;
+	}
+
+	public void setShelter(Shelter shelter) {
+		this.shelter = shelter;
+	}
+	
+	public Integer diasEnRefugio() {
+		return Period.between(this.getShelterDate(), LocalDate.now()).getDays();
+	}
 
 
 }
