@@ -2,7 +2,6 @@ package org.springframework.samples.petclinic.service;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -12,11 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.model.Client;
 import org.springframework.samples.petclinic.model.Coupon;
-import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.User;
 import org.springframework.samples.petclinic.repository.ClientRepository;
-import org.springframework.samples.petclinic.repository.CouponRepository;
-import org.springframework.samples.petclinic.repository.ProductRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,8 +27,6 @@ public class ClientService {
 	private UserService userService;
 	@Autowired
 	private AuthoritiesService authoritiesService;
-	@Autowired
-	private CouponRepository couponRepo;
 
 	@Autowired
 	public ClientService(ClientRepository clientRepository, UserService userService, AuthoritiesService authoritiesService) {
@@ -57,9 +51,6 @@ public class ClientService {
 	}
 	
 		public void saveClient(Client client) throws DataAccessException {
-		
-			
-			
 			User user = new User();
 			
 			user.setUsername(client.getNameuser());
@@ -71,14 +62,10 @@ public class ClientService {
 			User user2 = user = userService.findUser(client.getNameuser()).get();
 			client.setUser(user2);
 			clientRepo.save(client);
-			
-			
-			
-
-
 	}
-		@Transactional
-		public boolean esClient() throws DataAccessException {
+		
+	@Transactional
+	public boolean esClient() throws DataAccessException {
 		boolean res= false;
 			
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -86,49 +73,40 @@ public class ClientService {
 		UserDetails us = null;
 		if (sesion instanceof UserDetails) {
 			us = (UserDetails) sesion;
-	}
+		}
 		if (us.getAuthorities().iterator().next().getAuthority().equals("client")) {
 			res=true;
 		}
 		return res;
+	}
 		
-		
+	public Integer devolverClientId() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Object sesion = auth.getPrincipal();
+		UserDetails us = null;
+		if (sesion instanceof UserDetails) {
+			us = (UserDetails) sesion;
 		}
-		
-		public Integer devolverClientId() {
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			Object sesion = auth.getPrincipal();
-			UserDetails us = null;
-			if (sesion instanceof UserDetails) {
-				us = (UserDetails) sesion;
-			}
-			String res = us.getUsername();		
-Client c = ( ((Collection<Client>) clientRepo.findAll()).stream().filter(x -> x.getUser().getUsername().equals(res))).collect(Collectors.toList()).get(0);
+		String res = us.getUsername();		
+		Client c = ( ((Collection<Client>) clientRepo.findAll()).stream().filter(x -> x.getUser().getUsername().equals(res))).collect(Collectors.toList()).get(0);
 			
-			Integer id =c.getId();
+		Integer id =c.getId();
 				
-				
-			return id;
-
-		}
+		return id;
+	}
 
 
 		
-		public boolean tieneCupon(Coupon coupon,int clientId) {
-			boolean res = true;
-			Client cliente = findById(clientId);
+	public boolean tieneCupon(Coupon coupon,int clientId) {
+		boolean res = true;
+		Client cliente = findById(clientId);
 			
-			if (cliente.getCoupons().contains(coupon)) {
-				res=true;
-			}
-			else {
-				res=false;
-			}
-				return res;
-			
+		if (cliente.getCoupons().contains(coupon)) {
+			res=true;
 		}
-		
-
-
-
+		else {
+			res=false;
+		}
+			return res;
+		}
 }
