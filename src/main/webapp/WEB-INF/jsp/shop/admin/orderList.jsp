@@ -50,6 +50,11 @@
 							<spring:param name="orderId" value="${order.id}" />
 						</spring:url> <a href="${fn:escapeXml(orderId)}"> Confirm</a>
 						
+						<spring:url value="/shop/admin/orders/inProgress/{orderId}"
+							var="orderId">
+							<spring:param name="orderId" value="${order.id}" />
+						</spring:url> <a href="${fn:escapeXml(orderId)}"> In Progress</a>
+						
 						</td>
 					
 
