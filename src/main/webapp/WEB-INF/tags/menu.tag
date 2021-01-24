@@ -71,6 +71,7 @@
 										<li><a href="/shop/admin/sales">Sales</a></li>
 										<li><a href="/shop/admin/clients">Clients</a></li>
 										<li><a href="/shop/admin/coupons">Coupons</a></li>
+										<li><a href="/shop/admin/orders">Orders</a></li>
 										
 										
 										
@@ -132,10 +133,12 @@
 												<a href="<c:url value="/logout" />"
 													class="btn btn-primary btn-block btn-sm">Logout</a>
 											</p>
+											<sec:authorize access="hasAuthority('client')">
 											<p class="text-left">
 												<a href="<c:url value="/shop/myOrders" />"
 													class="btn btn-primary btn-block btn-sm">My orders</a>
 											</p>
+											</sec:authorize>
 										</div>
 										
 	
