@@ -112,11 +112,11 @@ public class OrderControllerTests {
 //    @Test
 //    void testProcesarPedidoLleno() throws Exception {
 //		mockMvc.perform(get("/shop/carrito/complete").
-//				param("id", "5").
-//				param("name", "Product 1").
-//				param("price", "10.0").
-//				param("inOffer", "Yes").
-//				param("category", "Toys").
+//				param("id", "1").
+//				param("name", "Clown Fish").
+//				param("price", "6.0").
+//				param("inOffer", "No").
+//				param("category", "Pets").
 //				param("cantidad", "5")).
 //			andExpect(status().isOk()).
 //			andExpect(view().name("order/newOrderCarrito"));
@@ -193,4 +193,18 @@ public class OrderControllerTests {
 //				param("cantidad", "5")).
 //			andExpect(view().name("/shop/carrito/carrito"));
 //	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testCancelarVenta() throws Exception {
+		mockMvc.perform(get("/shop/carrito/reset")).
+			andExpect(status().isOk());
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testQuitarDelCarrito() throws Exception {
+		mockMvc.perform(get("/shop/carrito/remove/{indice}", 1)).
+			andExpect(status().isOk());
+	}
 }
