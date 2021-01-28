@@ -43,7 +43,7 @@ public class Animal extends NamedEntity{
 	private LocalDate shelterDate;
 	
 	 @Transient
-	 private int diasEnRefugio;
+	 private Integer diasEnRefugio;
 	
 	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
@@ -83,7 +83,7 @@ public class Animal extends NamedEntity{
 		return Period.between(this.getShelterDate(), LocalDate.now()).getDays();
 	}
 
-	public int getDiasEnRefugio() throws ParseException {
+	public Integer getDiasEnRefugio() throws ParseException {
 		
 		LocalDate inicial = this.shelterDate;
 		ZoneId defaultZoneId = ZoneId.systemDefault();

@@ -11,11 +11,12 @@
 
 
 
+ <h1>Mas tiempo en el refugio: ${masViejo.name} (${masViejo.diasEnRefugio} dias)</h2><br>
 
 
 
     <h2>All our animals for adoptions</h2><br>
-
+    
 <c:forEach items="${shelters}" var="shelter" varStatus="i">
 <h2> ${shelter.city}'s shelter</h2>
     

@@ -1,7 +1,12 @@
 package org.springframework.samples.petclinic.service;
 
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.OptionalInt;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -48,6 +53,28 @@ public class AnimalService {
             }else
                animalRepository.save(animal);                
 	}
+	Comparator comparador = new Comparator(){
+	    public int compare(Animal p1, Animal p2) throws ParseException {
+	        return (p1.diasEnRefugio()-p2.getDiasEnRefugio());
+	    }
 
+		@Override
+		public int compare(Object o1, Object o2) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+	};
+	
+	
+	//Saca el animal que mas dias lleva en el refugio (Hay que hacerlo para cada refugio tambien)
+	public Animal masTiempoEnRefugio() {
+		
+	@SuppressWarnings("unchecked")
+	Animal res =	Collections.max(animalRepository.findAllAnimals(),comparador);
+		
+	
+		return res;
+	}
+	
 
 }

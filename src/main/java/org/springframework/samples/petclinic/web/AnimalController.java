@@ -72,8 +72,10 @@ public class AnimalController {
 	
 	// LISTADO DE TODOS LOS ANIMALES
 		@GetMapping()
-		public String listadoReservas(ModelMap modelmap) {
+		public String listadoAnimales(ModelMap modelmap) {
 
+			
+			modelmap.addAttribute("masViejo", animalService.masTiempoEnRefugio());
 			// Trae todos los refugios
 			Iterable<Shelter> shelters = shelterService.findAll();
 
