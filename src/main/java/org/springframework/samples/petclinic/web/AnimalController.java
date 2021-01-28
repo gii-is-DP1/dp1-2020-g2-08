@@ -14,6 +14,7 @@ import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.model.Review;
 import org.springframework.samples.petclinic.model.Shelter;
+import org.springframework.samples.petclinic.repository.AnimalRepository;
 import org.springframework.samples.petclinic.service.AnimalService;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.ShelterService;
@@ -41,9 +42,13 @@ public class AnimalController {
 	private final OwnerService ownerService;
 	@Autowired
 	private final ShelterService shelterService;
+	@Autowired
+	private final AnimalRepository animalRepo;
+	
 	
 	@Autowired
-	public AnimalController(AnimalService animalService, OwnerService ownerService) {
+	public AnimalController(AnimalService animalService, OwnerService ownerService, AnimalRepository animalRepo) {
+		this.animalRepo = animalRepo;
 		this.shelterService = new ShelterService();
 		this.animalService = animalService;
 		this.ownerService = ownerService;
@@ -75,19 +80,25 @@ public class AnimalController {
 		public String listadoAnimales(ModelMap modelmap) {
 
 			
-			modelmap.addAttribute("masViejo", animalService.masTiempoEnRefugio());
+			
 			// Trae todos los refugios
 			Iterable<Shelter> shelters = shelterService.findAll();
 
 			if (shelters.iterator().hasNext()) {
 				// Mete todos los refugios en el modelmap para mostrarlos en la vista
-				
 				modelmap.addAttribute("shelters", shelters);
+				if (animalRepo.findAllAnimals().isEmpty()) {
+					modelmap.addAttribute("message", "No hay animales disponibles en este momento");
+					
+				}
+				else {
+				modelmap.addAttribute("masViejo", animalService.masTiempoEnRefugio());
+				}
 				// Manda todos los atributos a la vista listaReservas.jsp
 				return "animals/listadoAnimales";
 
 			} else {
-				modelmap.addAttribute("message", "No hay refugios disponibles en este momento");
+				modelmap.addAttribute("message", "No hay animales disponibles en este momento");
 				return "welcome";
 			}
 

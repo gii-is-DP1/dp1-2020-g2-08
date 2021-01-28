@@ -51,7 +51,7 @@
                 
           
                 <td><spring:url value="/shelter/delete/${shelter.id}"
-							var="borrarRefugio">
+							var="borrarShelter">
 							
 						</spring:url> <a href="${fn:escapeXml(borrarShelter)}"> Delete</a></td>
       
