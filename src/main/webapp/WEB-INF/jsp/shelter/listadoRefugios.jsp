@@ -15,6 +15,7 @@
         <th>City</th>
         <th >Occupation</th>
             <th>Capacity </th>
+            <th>Oldest animal </th>
             
             
             <th>Actions</th>
@@ -35,7 +36,15 @@
                
                
                 
+                <td>
                 
+                <spring:url value="/shelter/${shelter.id}/animal/${shelter.animalMasViejo}"
+							var="verAnimal">
+							
+						</spring:url> <a href="${fn:escapeXml(verAnimal)}"> ${shelter.animalMasViejo}</a>
+                
+                    
+                </td>
                 
                 
                 

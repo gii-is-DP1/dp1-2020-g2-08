@@ -11,7 +11,7 @@
 
 
 
- <h1>Mas tiempo en el refugio: ${masViejo.name} (${masViejo.diasEnRefugio} dias)</h2><br>
+ <h1>More time at all shelters: ${masViejo.name} (${masViejo.diasEnRefugio} days)</h2><br>
 
 
 
