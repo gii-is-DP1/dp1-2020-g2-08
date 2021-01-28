@@ -14,7 +14,7 @@ import com.sun.istack.NotNull;
 
 import lombok.Data;
 
-@Data
+
 @Entity
 @Table(name = "shelter")
 public class Shelter extends BaseEntity{
@@ -23,9 +23,7 @@ public class Shelter extends BaseEntity{
 	@Column(name = "aforo")
 	private Integer aforo;
 
-	@NotNull
-	@Column(name = "ocupadas")
-	private Integer ocupadas;
+	
 
 	@NotNull
 	@Column(name = "city")
@@ -53,4 +51,32 @@ public class Shelter extends BaseEntity{
 		return null;
 	}
 
+	public Integer getAforo() {
+		return aforo;
+	}
+
+	public void setAforo(Integer aforo) {
+		this.aforo = aforo;
+	}
+
+	
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public Set<Animal> getAnimals() {
+		return animals;
+	}
+
+	public void setAnimals(Set<Animal> animals) {
+		this.animals = animals;
+	}
+
+	
+	
 }

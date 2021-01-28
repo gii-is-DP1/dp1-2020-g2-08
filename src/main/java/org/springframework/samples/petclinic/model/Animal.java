@@ -34,6 +34,8 @@ public class Animal extends NamedEntity{
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	private LocalDate shelterDate;
 	
+
+	
 	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
 	}
@@ -72,5 +74,8 @@ public class Animal extends NamedEntity{
 		return Period.between(this.getShelterDate(), LocalDate.now()).getDays();
 	}
 
+
+
+	
 
 }

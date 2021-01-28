@@ -12,24 +12,28 @@
     <table id="sheltersTable" class="table table-striped">
         <thead>
         <tr>
-            <th style="width: 150px;">Aforo</th>
-            <th style="width: 200px;">Ocupacion</th>
-            <th>City</th>
+        <th>City</th>
+        <th >Occupation</th>
+            <th>Capacity </th>
+            
+            
             <th>Actions</th>
         </tr>
         </thead>
         <tbody>
         <c:forEach items="${refugios}" var="shelter" varStatus="i">
             <tr>
+             <td>
+                    <c:out value="${shelter.city}"/>
+                </td>
+                 <td>
+                    <c:out value="${shelter.animals.size()}"/>
+                </td>
                 <td>
                     <c:out value="${shelter.aforo}"/>
                 </td>
-                <td>
-                    <c:out value="${shelter.ocupadas}"/>
-                </td>
-                <td>
-                    <c:out value="${shelter.city}"/>
-                </td>
+               
+               
                 
                 
                 

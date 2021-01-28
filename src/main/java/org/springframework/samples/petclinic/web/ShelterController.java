@@ -25,7 +25,7 @@ public class ShelterController {
 	private ShelterService shelterService;
 	
 	@Autowired
-	private OwnerService ownerService;
+	private OwnerService ownerService; 
 	
 	@Autowired
 	public ShelterController(ShelterService shelterService, OwnerService ownerService) {
