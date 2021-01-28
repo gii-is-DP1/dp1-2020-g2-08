@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.sun.istack.NotNull;
 
@@ -58,8 +59,8 @@ public class Shelter extends BaseEntity{
 	public void setAforo(Integer aforo) {
 		this.aforo = aforo;
 	}
-
-	
+ 
+	 
 
 	public String getCity() {
 		return city;

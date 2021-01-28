@@ -34,7 +34,7 @@ import net.bytebuddy.description.modifier.Ownership;
 @Controller
 @RequestMapping("/shelter/animals")
 public class AnimalController {
-	
+	 
 	private static final String VIEW_ANIMALS_CREATE_OR_UPDATE_FORM = "animals/createOrUpdateAnimalForm";
 	@Autowired
 	private final AnimalService animalService;
