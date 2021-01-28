@@ -43,4 +43,10 @@ public class ShelterService {
 		shelterRepo.deleteById(shelterId);
 		
 	}
+	public Integer numeroAnimales(int shelterId) {
+		
+		Integer num = shelterRepo.findById(shelterId).get().getAnimals().size();
+		
+		return num;
+	}
 }

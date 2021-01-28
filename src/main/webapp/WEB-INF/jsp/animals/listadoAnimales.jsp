@@ -5,21 +5,18 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
-<script>
 
-function dateDiffInDays() {
-	var now = LocalDate().now;
-	var date1=new Date('December 21, 2019');
-    // round to the nearest whole number
-    var res = Math.round((now-date1)/(1000*60*60*24));
-    document.write('Voy a ser un genio en JavaScript');
-}
-var daysDiff=dateDiffInDays(new Date('December 21, 2019')); //4 days till XMAS
-</script>
 
 <petclinic:layout pageName="refugios">
-    <h2>All our animals for adoptions</h2><br>
 
+
+
+ <h1>More time at all shelters: ${masViejo.name} (${masViejo.diasEnRefugio} days)</h2><br>
+
+
+
+    <h2>All our animals for adoptions</h2><br>
+    
 <c:forEach items="${shelters}" var="shelter" varStatus="i">
 <h2> ${shelter.city}'s shelter</h2>
     
@@ -46,8 +43,8 @@ var daysDiff=dateDiffInDays(new Date('December 21, 2019')); //4 days till XMAS
                 <td>
                     <c:out value="${animal.birthDate}"/>
                 </td>
-                 <td> <a onclick="dateDiffInDays()"> ver dias</p></a>
-                    <c:out value="${animal.shelterDate}"/>
+                 <td>
+                    <c:out value="${animal.diasEnRefugio}"/>
                 </td>
         </tr></c:forEach>
         </tbody>
@@ -56,4 +53,5 @@ var daysDiff=dateDiffInDays(new Date('December 21, 2019')); //4 days till XMAS
 							
 							
 						</c:forEach><br><br>
+						
 </petclinic:layout>

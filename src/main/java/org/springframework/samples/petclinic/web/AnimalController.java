@@ -34,7 +34,7 @@ import net.bytebuddy.description.modifier.Ownership;
 @Controller
 @RequestMapping("/shelter/animals")
 public class AnimalController {
-	
+	 
 	private static final String VIEW_ANIMALS_CREATE_OR_UPDATE_FORM = "animals/createOrUpdateAnimalForm";
 	@Autowired
 	private final AnimalService animalService;
@@ -72,8 +72,10 @@ public class AnimalController {
 	
 	// LISTADO DE TODOS LOS ANIMALES
 		@GetMapping()
-		public String listadoReservas(ModelMap modelmap) {
+		public String listadoAnimales(ModelMap modelmap) {
 
+			
+			modelmap.addAttribute("masViejo", animalService.masTiempoEnRefugio());
 			// Trae todos los refugios
 			Iterable<Shelter> shelters = shelterService.findAll();
 
