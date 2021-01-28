@@ -286,7 +286,7 @@ public class ShopAdminController {
 		Order order =  orderService.findOrderById(orderId).get();
 		order.setState("Cancelled");
 		orderService.save(order);
-		modelmap.addAttribute("message", "El pedido se ha cancelado con éxito");
+		modelmap.addAttribute("message", "The order is now cancelled");
 			
 		return ordersList(modelmap);
 
@@ -296,11 +296,23 @@ public class ShopAdminController {
 		Order order =  orderService.findOrderById(orderId).get();
 		order.setState("Confirmed");
 		orderService.save(order);
-		modelmap.addAttribute("message", "El pedido se ha confirmado con éxito");
+		modelmap.addAttribute("message", "The order is now confirm");
 			
 		return ordersList(modelmap);
 
 	}
+	
+	@GetMapping(path = "/orders/inProgress/{orderId}" )
+	public String InProgressOrder(ModelMap modelmap,@PathVariable ("orderId") int orderId) {
+		Order order =  orderService.findOrderById(orderId).get();
+		order.setState("In Progress");
+		orderService.save(order);
+		modelmap.addAttribute("message", "The order is now in progress");
+			
+		return ordersList(modelmap);
+
+	}
+	
 	
 	@GetMapping(path = "/clients/{clientId}/addCoupon/{couponId}" )
 	public String addCouponToClient(ModelMap modelmap,@PathVariable ("clientId") int clientId,@PathVariable ("couponId") int couponId) {

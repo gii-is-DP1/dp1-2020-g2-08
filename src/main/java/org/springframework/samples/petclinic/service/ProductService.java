@@ -1,27 +1,25 @@
 package org.springframework.samples.petclinic.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Product;
-import org.springframework.samples.petclinic.model.ProductReview;
 import org.springframework.samples.petclinic.repository.ProductRepository;
-import org.springframework.samples.petclinic.service.exceptions.DuplicatedPetNameException;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 @Service
 public class ProductService {
 
 	@Autowired
 	private ProductRepository productRepo;
+
+	@Autowired
+	public ProductService(ProductRepository productRepository) {
+		this.productRepo = productRepository;
+	}
 
 	@Transactional
 	public int productCount() {

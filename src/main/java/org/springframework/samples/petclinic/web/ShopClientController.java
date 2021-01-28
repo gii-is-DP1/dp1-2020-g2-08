@@ -1,27 +1,18 @@
 package org.springframework.samples.petclinic.web;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.validation.Valid;
-import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.model.Hotel;
 import org.springframework.samples.petclinic.model.Product;
-import org.springframework.samples.petclinic.model.ProductReview;
-import org.springframework.samples.petclinic.model.ProductoVendido;
 import org.springframework.samples.petclinic.model.Review;
-import org.springframework.samples.petclinic.service.ProductReviewService;
 import org.springframework.samples.petclinic.service.ProductService;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -30,17 +21,10 @@ public class ShopClientController {
 
 	@Autowired
 	private ProductService productService;
-	@Autowired
-	private ProductReviewService productReviewService;
 
-
-	private static List<String> categoryList = Arrays.asList("Pets", "Food", "Toys", "Accessories");
-	private static List<String> offerOptions = Arrays.asList("Yes", "No");
-
-	public ShopClientController(ProductService productService, ProductReviewService productReviewService) {
+	public ShopClientController(ProductService productService) {
 
 		this.productService = productService;
-		this.productReviewService = productReviewService;
 	}
 
 	@GetMapping()
@@ -59,7 +43,7 @@ public class ShopClientController {
 
 	}
 
-	@GetMapping(path = "/products/{category}") // {category}
+	@GetMapping(path = "/products/{category}")
 	public String petList(@PathVariable (value="category") String category, ModelMap modelmap) {
 		String view = "shop/products/productByCategory";
 		List<Product> products = (List<Product>) productService.findAll();
