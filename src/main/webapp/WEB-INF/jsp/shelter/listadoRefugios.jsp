@@ -38,7 +38,7 @@
                 
                 <td>
                 
-                <spring:url value="/shelter/${shelter.id}/animal/${shelter.animalMasViejo}"
+                <spring:url value="/shelter/animals/${shelter.id}/animal/${shelter.animalMasViejo}"
 							var="verAnimal">
 							
 						</spring:url> <a href="${fn:escapeXml(verAnimal)}"> ${shelter.animalMasViejo}</a>
