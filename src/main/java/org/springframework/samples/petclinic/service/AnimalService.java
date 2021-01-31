@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.OptionalInt;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -69,8 +71,9 @@ public class AnimalService {
 	//Saca el animal que mas dias lleva en el refugio (Hay que hacerlo para cada refugio tambien)
 	public Animal masTiempoEnRefugio() {
 		
+		List<Animal> animales = animalRepository.findAllAnimals().stream().filter(x->x.getState().equals("avaible")).collect(Collectors.toList());
 	@SuppressWarnings("unchecked")
-	Animal res =	Collections.max(animalRepository.findAllAnimals(),comparador);
+	Animal res =	Collections.max(animales,comparador);
 		
 	
 		return res;

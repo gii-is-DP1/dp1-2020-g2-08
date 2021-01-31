@@ -79,7 +79,23 @@ public class ClientService {
 		}
 		return res;
 	}
-		
+	@Transactional
+	public boolean esAdminShop() throws DataAccessException {
+		boolean res= false;
+			
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Object sesion = auth.getPrincipal();
+		UserDetails us = null;
+		if (sesion instanceof UserDetails) {
+			us = (UserDetails) sesion;
+		}
+		if (us.getAuthorities().iterator().next().getAuthority().equals("adminShop")) {
+			res=true;
+		}
+		return res;
+	}	
+	
+	
 	public Integer devolverClientId() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Object sesion = auth.getPrincipal();

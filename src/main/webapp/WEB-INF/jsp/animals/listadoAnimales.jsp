@@ -33,7 +33,12 @@
         <c:forEach items="${shelter.animals}" var="animal"
 							varStatus="i">
 							
-        <tr>
+							<c:choose>
+    <c:when test="${animal.state=='avaible'}">
+       
+    
+							
+        <tr> 
         
         <td>
                 
@@ -54,7 +59,19 @@
                  <td>
                     <c:out value="${animal.diasEnRefugio}"/>
                 </td>
-        </tr></c:forEach>
+        </tr>
+        
+        
+        </c:when>    
+    <c:otherwise>
+        
+        <br />
+    </c:otherwise>
+</c:choose>
+        
+        
+        
+        </c:forEach>
         </tbody>
     </table>
 							
