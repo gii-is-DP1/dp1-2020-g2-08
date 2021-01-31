@@ -69,10 +69,10 @@ public class AnimalController {
 		dataBinder.setDisallowedFields("id");
 	}
 	
-	@InitBinder("animal")
-	public void initPetBinder(WebDataBinder dataBinder) {
-		dataBinder.setValidator(new AnimalValidator());
-	}
+//	@InitBinder("animal")
+//	public void initPetBinder(WebDataBinder dataBinder) {
+//		dataBinder.setValidator(new AnimalValidator());
+//	}
 	
 	
 	// LISTADO DE TODOS LOS ANIMALES
@@ -89,7 +89,7 @@ public class AnimalController {
 				modelmap.addAttribute("shelters", shelters);
 				if (animalRepo.findAllAnimals().isEmpty()) {
 					modelmap.addAttribute("message", "No hay animales disponibles en este momento");
-					
+					return "welcome";
 				}
 				else {
 				modelmap.addAttribute("masViejo", animalService.masTiempoEnRefugio());
@@ -105,7 +105,15 @@ public class AnimalController {
 		}
 	
 	
-	
+	// /shelter/1/animal/Sterling
+		@GetMapping("{shelterId}/animal/{animalName}")
+		public String animalDetails(@PathVariable("shelterId") Integer shelterId, ModelMap model,@PathVariable("animalName") String animalName) {
+			Animal animal = shelterService.findAnimalByName(animalName, shelterId);
+			model.put("animal", animal);
+			return "animals/animalDetails";
+		}
+		
+		
 	@GetMapping(value = "/new")
 	public String initCreationForm(Owner owner, ModelMap model) {
 		Animal animal = new Animal();

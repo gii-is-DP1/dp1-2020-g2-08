@@ -34,9 +34,17 @@
 							varStatus="i">
 							
         <tr>
-                <td>
-                    <c:out value="${animal.name}"/>
+        
+        <td>
+                
+                <spring:url value="/shelter/animals/${shelter.id}/animal/${animal.name}"
+							var="verAnimal">
+							
+						</spring:url> <a href="${fn:escapeXml(verAnimal)}"> ${animal.name}</a>
+                
+                    
                 </td>
+                
                 <td>
                     <c:out value="${animal.type}"/>
                 </td>

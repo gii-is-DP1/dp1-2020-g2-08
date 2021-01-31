@@ -26,6 +26,15 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Table(name = "animals")
 public class Animal extends NamedEntity{
 	
+	@Column(name = "sex")        
+	private String sex;
+	
+	@Column(name = "description",  length=1024)        
+	private String description;
+	
+	@Column(name = "image_url",  length=1024)        
+	private String imageUrl;
+	
 	@Column(name = "birth_date")        
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	private LocalDate birthDate;
@@ -100,6 +109,30 @@ public class Animal extends NamedEntity{
 
 	public void setDiasEnRefugio(int diasEnRefugio) {
 		this.diasEnRefugio = diasEnRefugio;
+	}
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 
