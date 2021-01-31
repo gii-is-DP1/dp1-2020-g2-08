@@ -53,7 +53,7 @@ public class ShelterService {
 	
 	public Animal findAnimalByName(String name, Integer shelterId) {
 		
-		return findById(shelterId).getAnimals().stream().filter(x->x.getName().startsWith(name)).findFirst().get();
+		return findById(shelterId).getAnimals().stream().filter(x->x.getName().equalsIgnoreCase(name)).findFirst().get();
 		
 		
 	}

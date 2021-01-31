@@ -6,7 +6,7 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
-<!--  >%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%-->
+<!--  >%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%--> <!--  glyphicon-tree-conifer -->
 <%@ attribute name="name" required="true" rtexprvalue="true"
 	description="Name of the active menu: home, owners, vets or error"%>
 
@@ -78,6 +78,23 @@
 										</sec:authorize>
 									</ul>
 						</div>
+						
+						<div class="nav navbar-nav navbar-right">
+
+
+					<li class="dropdown"><a href="/hotel" class="dropdown-toggle"
+						data-toggle="dropdown"> <span
+							class="glyphicon glyphicon glyphicon-tree-conifer"></span> <span>Shelter</span>
+
+							<ul class="dropdown-menu">
+							<sec:authorize access="hasAuthority('admin')">	<li><a href="/shelter/listadoRefugios">All shelters</a></li>
+								<li><a href="/shelter/new">New Shelter</a></li></sec:authorize>
+								<li><a href="/shelter/animals">Animals</a></li>
+								
+									
+
+							</ul>
+				</div>
 								
 				
 				
