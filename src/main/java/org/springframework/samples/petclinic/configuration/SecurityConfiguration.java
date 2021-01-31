@@ -40,9 +40,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/shop/admin/**").hasAnyAuthority("adminShop")
 				.antMatchers("/shop/products/**").permitAll()
 				.antMatchers("/shop").permitAll()
-				.antMatchers("/shop/carrito/**").hasAuthority("client")
-				.antMatchers("/shop/add/**").hasAuthority("client")
-				.antMatchers("/shop/**").hasAuthority("client")
+				.antMatchers("/shop/carrito/**").hasAnyAuthority("client","owner")
+				.antMatchers("/shop/add/**").hasAnyAuthority("client","owner")
+				.antMatchers("/shop/**").hasAnyAuthority("client","owner")
 //				.antMatchers("/**").permitAll()
 //				.antMatchers("/bookings").hasAnyAuthority("owner","admin")	
 //				.antMatchers("/bookings/**").hasAnyAuthority("owner","admin") 
@@ -57,7 +57,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/hotel/**").hasAnyAuthority("admin")
 				
 				.antMatchers("/shelter/listadoRefugios").hasAnyAuthority("owner","admin","adminShop","adminShelter")	
-					
+				
+				.antMatchers("/shelter/new").hasAnyAuthority("adminShelter")
+				.antMatchers("/shelter/save").hasAnyAuthority("adminShelter")
 				.antMatchers("/shelter/animals").hasAnyAuthority("admin","adminShop","adminShelter","owner")
 				.antMatchers("/shelter/animals/**").hasAnyAuthority("admin","adminShop","adminShelter","owner")
 				

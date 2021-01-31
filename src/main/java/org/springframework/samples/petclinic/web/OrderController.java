@@ -99,6 +99,8 @@ public class OrderController {
 	@GetMapping(value = "shop/add/{productId}")
 	public String addProductToCart(ModelMap model, HttpServletRequest request,
 			@PathVariable("productId") int productId) {
+		
+		if (clientService.esClient()) {
 		añadeCarrito(request, productId);
 		double total = 0.0;
 		List<ProductoParaVenta> carrito = this.obtenerCarrito(request);
@@ -107,10 +109,22 @@ public class OrderController {
 		model.addAttribute("total", total);
 		model.addAttribute("carrito", carrito);
 		return "shop/carrito/carrito";
+			
+		}
+		
+		
+		
+		else {
+			model.addAttribute("message", "Para hacer eso tienes que estar logueado como cliente de la tienda");
+			return "shop/home";
+		}
+			
 	}
 
 	@GetMapping(value = "shop/carrito")
 	public String mostrarCarrito(ModelMap model, HttpServletRequest request) {
+		
+		if (clientService.esClient()) {
 
 		double total = 0.0;
 		List<ProductoParaVenta> carrito = this.obtenerCarrito(request);
@@ -118,11 +132,17 @@ public class OrderController {
 			total += p.getTotal();
 		model.addAttribute("total", total);
 
-		return "shop/carrito/carrito";
+		return "shop/carrito/carrito";}
+		else {
+			model.addAttribute("message", "Para hacer eso tienes que estar logueado como cliente de la tienda");
+			return "shop/home";
+		}
 	}
 
 	
 	private void añadeCarrito(HttpServletRequest request, int productId) {
+		
+		if (clientService.esClient()) {
 		Product productoActual = productService.findProductById(productId).get();
 		List<ProductoParaVenta> res = obtenerCarrito(request);
 		ProductoParaVenta p = new ProductoParaVenta();
@@ -136,6 +156,11 @@ public class OrderController {
 		res.add(p);
 
 		guardarCarrito(res, request);
+		}
+		else {
+			
+			
+		}
 
 	}
 	
@@ -143,6 +168,9 @@ public class OrderController {
 	
 	@GetMapping(value = "shop/carrito/complete")
 	public String procesarPedido(HttpServletRequest request, ModelMap modelmap) {
+		
+		
+		if (clientService.esClient()) {
 		List<ProductoParaVenta> carrito = this.obtenerCarrito(request);
 		// Si no hay carrito o está vacío, regresamos inmediatamente
 		if (carrito == null || carrito.size() <= 0) {
@@ -155,11 +183,15 @@ public class OrderController {
 		modelmap.put("coupons",coupons);
 		return "order/newOrderCarrito";
 	}
-	
+		else {
+			modelmap.addAttribute("message", "Para hacer eso tienes que estar logueado como cliente de la tienda");
+			return "shop/home";
+		}
+	}
 	
 	@PostMapping(value = "shop/carrito/complete")
 	public String terminarPedido(HttpServletRequest request, ModelMap modelmap,  Order order,BindingResult result) {
-		
+		if (clientService.esClient()) {	
 		
 		if (result.hasErrors()) {
 			modelmap.put("message", "No se ha podido procesar el pedido");
@@ -219,49 +251,18 @@ public class OrderController {
 			modelmap.put("message", "Pedido realizado con exito");
 			return "shop/home";
 		}
+		
+	}
+		
+		
+		else {
+			modelmap.addAttribute("message", "Para hacer eso tienes que estar logueado como cliente de la tienda");
+			return "shop/home";
+		}
 		}
 			
 		
-		
 
-	
-	
-	
-	
-	
-	
-//	@GetMapping(value = "shop/addCarrito")
-//	public String generaCarrito(ModelMap model, HttpServletRequest request) {
-//		añadeCarritoAutomatico(request);
-//		double total = 0.0;
-//		List<ProductoParaVenta> carrito = this.obtenerCarrito(request);
-//		for (ProductoParaVenta p : carrito)
-//			total += p.getTotal();
-//		model.addAttribute("total", total);
-//		model.addAttribute("carrito", carrito);
-//		return "shop/carrito/carrito";
-//	}
-
-//	
-//	private void añadeCarritoAutomatico(HttpServletRequest request) {
-//		List<Product> products = (List<Product>) productService.findAll();
-//		List<ProductoParaVenta> res = obtenerCarrito(request);
-//
-//		for (int i = 0; i < products.size(); i++) {
-//			Product productoActual = products.get(i);
-//			ProductoParaVenta p = new ProductoParaVenta();
-//			p.setCantidad(1);
-//			p.setCategory(productoActual.getCategory());
-//			p.setInOffer(productoActual.getInOffer());
-//			p.setName(productoActual.getName());
-//			p.setPrice(productoActual.getPrice());
-//
-//			res.add(p);
-//
-//		}
-//		guardarCarrito(res, request);
-//
-//	}
 
 	// Para comprar 1 solo articulo sin añadir al carro /shop/buy/(productId)
 	@GetMapping(path = "/shop/buy/{productId}")
@@ -276,10 +277,9 @@ public class OrderController {
 			modelmap.put("coupons",coupons);
 			return "order/newOrder";
 
-		} else {
-			modelmap.put("message", "Para hacer compras en la tiendas tienes que iniciar sesion como cliente");
-			return "users/createOwnerForm";
-
+		}else {
+			modelmap.addAttribute("message", "Para hacer eso tienes que estar logueado como cliente de la tienda");
+			return "shop/home";
 		}
 
 	}
@@ -335,6 +335,8 @@ public class OrderController {
 	}
 	@GetMapping(path = "/shop/myOrders")
 	private String myOrderList(ModelMap modelmap) {
+		
+		if (clientService.esClient()) {
 		String view = "shop/myOrders";
 		Integer clientId = clientService.devolverClientId();
 		List<Order> ordersByClientId = orderService.findOrderByClientId(clientId);
@@ -345,27 +347,46 @@ public class OrderController {
 		
 		return view;
 	}
+		
+		else {
+			modelmap.addAttribute("message", "Para hacer eso tienes que estar logueado como cliente de la tienda");
+			return "shop/home";
+		}
+	}
 	
 	@GetMapping(path = "/shop/view/products/{orderId}")
 	private String productsByOrder	(@PathVariable (value="orderId") Integer orderId, ModelMap modelmap) {
+		
+		if (clientService.esClient() || clientService.esAdminShop()) {
 		String view = "shop/productsByOrder";
 		List<ProductoVendido> productsByOrder = orderService.findProductsByOrder(orderId);
 		Integer productsNumber = productsByOrder.size();
 		modelmap.addAttribute("products", productsByOrder);
 		modelmap.addAttribute("productsNumber",productsNumber);
-		return view;
+		return view;}
+		else {
+			modelmap.addAttribute("message", "No tienes permiso para hacer eso");
+			return "shop/home";
+		}
 	}
 	
 	@GetMapping(value = "/shop/carrito/reset")
+	
 	public String cancelarVenta(HttpServletRequest request, ModelMap modelmap) {
+		if (clientService.esClient()) {
 	    this.limpiarCarrito(request);
 	   modelmap.addAttribute("message", "Se han eliminado todos los productos del carrito");
 	            
 	    return mostrarCarrito(modelmap, request);
 	    }
-
+	else {
+		modelmap.addAttribute("message", "Para hacer eso tienes que estar logueado como cliente de la tienda");
+		return "shop/home";
+	}
+}
 @GetMapping(value = "/shop/carrito/remove/{indice}")
 public String quitarDelCarrito(@PathVariable int indice, HttpServletRequest request, ModelMap modelmap) {
+	if (clientService.esClient()) {
     List<ProductoParaVenta> carrito = this.obtenerCarrito(request);
     if (carrito != null && carrito.size() > 0 && carrito.get(indice) != null) {
         carrito.remove(indice);
@@ -373,5 +394,12 @@ public String quitarDelCarrito(@PathVariable int indice, HttpServletRequest requ
         modelmap.addAttribute("message", "Se ha eliminado el producto del carrito");
     }
     return mostrarCarrito(modelmap, request);
+    
+}
+    else {
+		modelmap.addAttribute("message", "Para hacer eso tienes que estar logueado como cliente de la tienda");
+		return "shop/home";
+	}
+    
 }
 }
