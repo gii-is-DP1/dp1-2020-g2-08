@@ -183,9 +183,11 @@
 -->
 						</ul></li>
 				</sec:authorize>
+				
+				<sec:authorize access="hasAuthority('client')">
 					<petclinic:menuItem active="${name eq 'cart'}" url="/shop/carrito">
 					<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
-				</petclinic:menuItem>
+				</petclinic:menuItem></sec:authorize>
 									
 									</ul>
 			</ul>

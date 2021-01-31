@@ -29,6 +29,9 @@ public class Animal extends NamedEntity{
 	@Column(name = "sex")        
 	private String sex;
 	
+	@Column(name = "state")        
+	private String state;
+	
 	@Column(name = "description",  length=1024)        
 	private String description;
 	
@@ -133,6 +136,14 @@ public class Animal extends NamedEntity{
 
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
 	}
 
 
