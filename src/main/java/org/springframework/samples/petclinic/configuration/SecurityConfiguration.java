@@ -35,9 +35,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 				.antMatchers("/resources/**","/webjars/**","/h2-console/**").permitAll()
 				.antMatchers(HttpMethod.GET, "/","/oups").permitAll()
-				.antMatchers("/shop/view/products/**").hasAuthority("admin")
+				.antMatchers("/shop/view/products/**").hasAuthority("adminShop")
 				.antMatchers("/users/new/**").permitAll()
-				.antMatchers("/shop/admin/**").hasAnyAuthority("admin")
+				.antMatchers("/shop/admin/**").hasAnyAuthority("adminShop")
 				.antMatchers("/shop/products/**").permitAll()
 				.antMatchers("/shop").permitAll()
 				.antMatchers("/shop/carrito/**").hasAuthority("client")
@@ -46,18 +46,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //				.antMatchers("/**").permitAll()
 //				.antMatchers("/bookings").hasAnyAuthority("owner","admin")	
 //				.antMatchers("/bookings/**").hasAnyAuthority("owner","admin") 
-				.antMatchers("/hotel").hasAnyAuthority("owner","admin")	
-				.antMatchers("/hotel/owner/**").hasAnyAuthority("owner","admin")	 
+				.antMatchers("/hotel").hasAnyAuthority("owner","admin","adminShop","adminShelter")	
+				.antMatchers("/hotel/owner/**").hasAnyAuthority("owner","admin","adminShop","adminShelter")	 
+				 
 			
-				.antMatchers("/hotel/myBookings/**").hasAnyAuthority("owner","admin")
+				.antMatchers("/hotel/myBookings/**").hasAnyAuthority("owner","admin","adminShop","adminShelter")
 				
-				.antMatchers("/hotel/booking/**").hasAnyAuthority("owner","admin")		
-				.antMatchers("/hotel/review/**").hasAnyAuthority("owner","admin")	
+				.antMatchers("/hotel/booking/**").hasAnyAuthority("owner","admin","adminShop","adminShelter")		
+				.antMatchers("/hotel/review/**").hasAnyAuthority("owner","admin","adminShop","adminShelter")	
 				.antMatchers("/hotel/**").hasAnyAuthority("admin")
 				
-				.antMatchers("/shelter").hasAnyAuthority("owner","admin")	
-				.antMatchers("/shelter/owner/**").hasAnyAuthority("owner","admin")		
-				.antMatchers("/shelter/**").hasAnyAuthority("admin")
+				.antMatchers("/shelter/listadoRefugios").hasAnyAuthority("owner","admin","adminShop","adminShelter")	
+					
+				.antMatchers("/shelter/animals").hasAnyAuthority("admin","adminShop","adminShelter","owner")
+				.antMatchers("/shelter/animals/**").hasAnyAuthority("admin","adminShop","adminShelter","owner")
 				
 				.antMatchers("/admin/**").hasAnyAuthority("admin")
 				.antMatchers("/owners/**").hasAnyAuthority("owner","admin")				

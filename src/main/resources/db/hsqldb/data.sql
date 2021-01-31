@@ -1,6 +1,16 @@
 -- One admin user, named admin1 with passwor 4dm1n and authority admin
 INSERT INTO users(username,password,enabled) VALUES ('admin1','4dm1n',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (1,'admin1','admin');
+
+-- One admin user, named admin1 with passwor 4dm1n and authority admin
+INSERT INTO users(username,password,enabled) VALUES ('adminShelter','admin',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (8,'adminShelter','adminShelter');
+
+-- One admin user, named admin1 with passwor 4dm1n and authority admin
+INSERT INTO users(username,password,enabled) VALUES ('adminShop','admin',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (9,'adminShop','adminShop');
+
+
 -- One owner user, named owner1 with passwor 0wn3r
 INSERT INTO users(username,password,enabled) VALUES ('owner1','0wn3r',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (2,'owner1','owner');

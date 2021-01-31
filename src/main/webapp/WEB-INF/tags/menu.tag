@@ -66,7 +66,7 @@
 
 									<ul class="dropdown-menu">
 										<li><a href="/shop">Shop</a></li>
-										<sec:authorize access="hasAuthority('admin')">
+										<sec:authorize access="hasAuthority('adminShop')">
 										<li><a href="/shop/admin/products">Products</a></li>
 										<li><a href="/shop/admin/sales">Sales</a></li>
 										<li><a href="/shop/admin/clients">Clients</a></li>
@@ -87,8 +87,9 @@
 							class="glyphicon glyphicon glyphicon-tree-conifer"></span> <span>Shelter</span>
 
 							<ul class="dropdown-menu">
-							<sec:authorize access="hasAuthority('admin')">	<li><a href="/shelter/listadoRefugios">All shelters</a></li>
-								<li><a href="/shelter/new">New Shelter</a></li></sec:authorize>
+							<sec:authorize access="hasAuthority('adminShelter')">	<li><a href="/shelter/listadoRefugios">All shelters</a></li>
+								<li><a href="/shelter/new">New Shelter</a></li>
+								<li><a href="/shelter/adoptionsList">Adoptions list</a></li></sec:authorize>
 								<li><a href="/shelter/animals">Animals</a></li>
 								
 									
