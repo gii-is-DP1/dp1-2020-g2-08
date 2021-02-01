@@ -68,10 +68,10 @@ public class OrderController {
 
 	}
 
-//	@InitBinder("order")
-//	public void initPetBinder(WebDataBinder dataBinder) {
-//		dataBinder.setValidator(new OrderValidator());
-//	}
+	@InitBinder("order")
+	public void initPetBinder(WebDataBinder dataBinder) {
+		dataBinder.setValidator(new OrderValidator());
+	}
 
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
@@ -190,12 +190,13 @@ public class OrderController {
 	}
 	
 	@PostMapping(value = "shop/carrito/complete")
-	public String terminarPedido(HttpServletRequest request, ModelMap modelmap,  Order order,BindingResult result) {
+	public String terminarPedido(HttpServletRequest request, ModelMap modelmap, @Valid Order order,BindingResult result) {
 		if (clientService.esClient()) {	
-		
+			List<Coupon> coupons = couponService.findCouponByClientIdList(clientService.devolverClientId());
 		if (result.hasErrors()) {
 			modelmap.put("message", "No se ha podido procesar el pedido");
 			modelmap.put("order",order);
+			modelmap.put("coupons",coupons);
 			return "order/newOrderCarrito";
 		}
 		else {
