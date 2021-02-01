@@ -60,12 +60,7 @@ public class ShopAdminController {
 	private static List<String> categoryList = Arrays.asList("Pets", "Food", "Toys", "Accessories");
 	private static List<String> offerOptions = Arrays.asList("Yes", "No");
 	
-	@InitBinder("product")
-	public void initPetBinder(WebDataBinder dataBinder) {
 
-		dataBinder.setValidator(new ProductValidator());
-
-	}
 
 	@Autowired
 	public ShopAdminController(ProductService productService, UserService userService, AuthoritiesService authoritiesService) {
@@ -87,6 +82,12 @@ public class ShopAdminController {
 
 	}
 
+	@InitBinder("product")
+	public void initPetBinder(WebDataBinder dataBinder) {
+		dataBinder.setValidator(new ProductValidator());
+
+	}
+	
 	@GetMapping(path = "/products/add")
 	public String addProduct(ModelMap modelmap) {
 		String view = "shop/admin/newProduct";

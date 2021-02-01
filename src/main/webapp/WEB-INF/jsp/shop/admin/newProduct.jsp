@@ -1,10 +1,10 @@
 <%@ page session="false" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-
 
 
 <petclinic:layout pageName="Products">
@@ -15,11 +15,10 @@
 
         <form:form modelAttribute="product" class="form-horizontal" action="save">
             <div class="form-group has-feedback">
-            	<label for="name">Name:</label>
-                <input type="text" label="Name" name="name"/><br/>
-                <label for="price">Price:</label>
-				<input type="number" label="Price" name="price"></br>
-		                <label for="category">Category:</label>
+            
+            <petclinic:inputField label="Name" name="name"/>
+            <petclinic:inputField label="Price" name="price"/>
+          <label for="category">Category:</label>
                         <select name="category">
    						 	<c:forEach items="${categories}" var="category">  
    						 		<option value="${category}">${category} 						
@@ -32,6 +31,10 @@
 						 	</c:forEach>  
    						 </select>   
             </div>
+				
+				
+				
+		                
 
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">

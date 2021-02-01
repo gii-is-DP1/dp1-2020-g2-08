@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.samples.petclinic.service.ProductService;
@@ -34,6 +35,7 @@ public class Product extends BaseEntity {
 
 	
 	@NotNull
+	@Digits(fraction = 0, integer = 10000)
 	@Column(name = "price")
 	private Double price;
 	
