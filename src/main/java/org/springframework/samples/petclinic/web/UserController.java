@@ -110,7 +110,6 @@ public class UserController {
 		if (result.hasErrors()) {
 			
 			modelmap.addAttribute("client", client);
-			modelmap.addAttribute("message", result.getAllErrors().stream().map(x->x.getDefaultMessage()).collect(Collectors.toList()));
 			return "users/createClientForm";
 		}
 		else {
