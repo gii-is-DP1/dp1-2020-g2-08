@@ -55,8 +55,7 @@ public class ShopAdminController {
 	private CouponService couponService;
 	@Autowired
 	private CouponRepository couponRepository;
-	@Autowired
-	private ProductoVendidoRepository productoVendrepo;
+
 	@Autowired
 	private ClientService clientService;
 	@Autowired
