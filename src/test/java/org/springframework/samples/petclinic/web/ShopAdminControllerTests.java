@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.web;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -111,6 +112,17 @@ public class ShopAdminControllerTests {
 		andExpect(view().name("redirect:/shop/admin/products"));
     	}
     }
+    
+    @WithMockUser(value = "spring")
+    @Test
+    void testProcessUpdateFormHasErrors() throws Exception {
+    	mockMvc.perform(post("/shop/admin/products/edit/{productId}", 1)
+				.with(csrf()))
+	.andExpect(status().isOk())
+	.andExpect(model().attributeHasErrors("product"))
+	.andExpect(model().attributeHasFieldErrors("product", "name"))
+	.andExpect(view().name("shop/admin/editProduct"));
+    }
 
     @WithMockUser(value = "spring")
     @Test
@@ -139,7 +151,8 @@ public class ShopAdminControllerTests {
     @WithMockUser(value = "spring")
     @Test
     void testSaveCoupon() throws Exception {
-    	mockMvc.perform(post("/shop/admin/coupons/save").with(csrf())).
+    	mockMvc.perform(post("/shop/admin/coupons/save").
+    			with(csrf())).
 		andExpect(status().isOk());
     }
     

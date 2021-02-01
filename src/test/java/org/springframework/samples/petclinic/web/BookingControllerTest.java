@@ -1,15 +1,11 @@
 package org.springframework.samples.petclinic.web;
 
-
-import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.BDDMockito.given;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -17,54 +13,37 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.samples.petclinic.configuration.SecurityConfiguration;
-import org.springframework.samples.petclinic.model.Hotel;
 import org.springframework.samples.petclinic.service.BookingService;
 import org.springframework.samples.petclinic.service.HotelService;
 import org.springframework.samples.petclinic.service.OwnerService;
-import org.springframework.samples.petclinic.service.PetService;
-import org.springframework.samples.petclinic.service.ReviewService;
-import org.springframework.samples.petclinic.service.UserService;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(controllers=BookingController.class,excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class),excludeAutoConfiguration= SecurityConfiguration.class)
+@WebMvcTest(controllers=BookingController.class,
+excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class),
+excludeAutoConfiguration= SecurityConfiguration.class)
 public class BookingControllerTest {
-
-	@Autowired
-	private MockMvc mockMvc;
 
 	@Autowired 
 	private BookingController bookingController;
 	
 	@MockBean
-	HotelController hotelController;
-	
-	
-//	Mockeamos los servicios 
+	private HotelController hotelController;
+	@MockBean
+	private OwnerService ownerService;
+	@MockBean
+	private BookingService bookingService;
 	@MockBean
 	private HotelService hotelService;
 	
-	@MockBean
-	private BookingService bookingService;
-	
-	@MockBean
-	private PetService petService;
-	
-	@MockBean
-	private OwnerService ownerService;
-	
-	@MockBean
-	private UserService userService;
-	
-	@MockBean
-	private ReviewService reviewService;
+	@Autowired
+	private MockMvc mockMvc;
 	
 	
 	@WithMockUser(value = "spring")
     @Test
-    void elegirHotelTest() throws Exception{
-//		TODO
+    void testElegirHotel() throws Exception{
 		mockMvc.perform(get("/hotel/booking/new"))
 		.andExpect(status().isOk())
 		.andExpect(view().name("hotel/newBooking"));
@@ -72,36 +51,61 @@ public class BookingControllerTest {
 	
 	@WithMockUser(value = "spring")
     @Test
-    void crearBookingTest() throws Exception{
-//		TODO
-		mockMvc.perform(get("/hotel/booking/new/{hotelId}",1))
-		.andExpect(status().isOk())
-		.andExpect(view().name("welcome"));
-		
+    void testCrearBooking() throws Exception{
+		if(hotelService.findAll().iterator().hasNext()) {
+			if(ownerService.esOwner()) {
+				mockMvc.perform(get("/hotel/booking/new/{hotelId}",1))
+				.andExpect(status().isOk())
+				.andExpect(view().name("hotel/editBooking"));
+			} else {
+				mockMvc.perform(get("/hotel/booking/new/{hotelId}",1))
+				.andExpect(status().isOk());
+			}
+		} else {
+			mockMvc.perform(get("/hotel/booking/new/{hotelId}",1))
+			.andExpect(status().isOk())
+			.andExpect(view().name("welcome"));
+		}
 	}
 	
 	@WithMockUser(value = "spring")
     @Test
-    void editTest() throws Exception{
-//		TODO
-		mockMvc.perform(get("/hotel/booking/edit/{bookingId}",1))
-		.andExpect(status().isOk())
-		.andExpect(view().name("exception"));
-		
+    void testGuargarBooking() throws Exception{
+		mockMvc.perform(post("/hotel/booking/new/{hotelId}",1).
+				param("ownerId", "1").
+				with(csrf())).
+		andExpect(status().isOk());
 	}
-	
 	
 	@WithMockUser(value = "spring")
     @Test
-    void borrarBookingTest() throws Exception{
-//		TODO
+    void testEdit() throws Exception{
+		if(ownerService.esOwner()) {
+			mockMvc.perform(get("/hotel/booking/edit/{bookingId}",1)).
+			andExpect(status().isOk()).
+			andExpect(view().name("hotel/editBooking"));
+		}
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testProcessUpdateForm() throws Exception{
+		if(ownerService.esOwner()) {
+			mockMvc.perform(post("/hotel/booking/edit/{bookingId}",1).
+					param("ownerId", "1").
+					with(csrf())).
+			andExpect(status().isOk()).
+			andExpect(view().name("hotel/editBooking"));
+		}
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testBorrarBooking() throws Exception{
 		mockMvc.perform(get("/hotel/booking/delete/{bookingId}/{ownerId}",1,1))
 		.andExpect(status().isOk())
 		.andExpect(view().name("hotel/booking/delete/1/1"));
 	}
-	
-
-	
 	
 }
 

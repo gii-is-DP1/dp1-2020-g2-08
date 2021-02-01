@@ -2,7 +2,6 @@ package org.springframework.samples.petclinic.web;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -20,8 +19,6 @@ import org.springframework.samples.petclinic.model.Review;
 import org.springframework.samples.petclinic.service.BookingService;
 import org.springframework.samples.petclinic.service.HotelService;
 import org.springframework.samples.petclinic.service.OwnerService;
-import org.springframework.samples.petclinic.service.PetService;
-import org.springframework.samples.petclinic.service.exceptions.DuplicatedPetNameException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -38,26 +35,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class BookingController {
 
 	@Autowired
-	HotelController hotelController;
+	private HotelController hotelController;
 
 	@Autowired
 	private OwnerService ownerService;
-	@Autowired
-	private PetService petService;
-	@Autowired
-	private BookingService bookingService;
-	@Autowired
-	HotelService hotelService;
 
 	@Autowired
-	public BookingController(PetService petService, OwnerService ownerService, BookingService bookingService,
+	private BookingService bookingService;
+	
+	@Autowired
+	private HotelService hotelService;
+
+	@Autowired
+	public BookingController(OwnerService ownerService, BookingService bookingService,
 			HotelService hotelService) {
 
 		this.ownerService = ownerService;
-		this.petService = petService;
 		this.bookingService = bookingService;
 		this.hotelService = hotelService;
-
 	}
 
 	@ModelAttribute("hoteles")
