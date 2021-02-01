@@ -42,7 +42,7 @@ public class OrderServiceTest {
 		Collection<Order> pedidos = (Collection<Order>) this.orderService.findAll();
 		
 		Order order = new Order();
-		order.setId(2);
+		order.setId(5);
 		order.setAddress("");
 		order.setCity("");
 		order.setCountry("");
