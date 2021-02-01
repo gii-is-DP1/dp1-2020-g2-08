@@ -2,13 +2,9 @@ package org.springframework.samples.petclinic.web;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Client;
@@ -193,73 +189,73 @@ public class OrderController {
 	public String terminarPedido(HttpServletRequest request, ModelMap modelmap,  Order order,BindingResult result) {
 		if (clientService.esClient()) {	
 		
-		if (result.hasErrors()) {
-			modelmap.put("message", "No se ha podido procesar el pedido");
-			modelmap.put("order",order);
-			return "order/newOrderCarrito";
-		}
-		else {
-			double precio=0.0;
-			int clientId = clientService.devolverClientId();
-			Client client = clientService.findById(clientId);
-			List<ProductoParaVenta> carrito = this.obtenerCarrito(request);
-			// Si no hay carrito o está vacío, regresamos inmediatamente
-			if (carrito == null || carrito.size() <= 0) {
-				modelmap.put("message", "El carrito esta vacio");
-				return "/shop/carrito/carrito";
-			}
-			Order o = new Order();
-			o.setClient(client);
-			o.setDeliveryDate(LocalDate.now().plusDays(7));
-			o.setOrderDate(LocalDate.now());
-			o.setState("In Progress");
+			if (result.hasErrors()) {
+				modelmap.put("message", "No se ha podido procesar el pedido");
+				modelmap.put("order",order);
+				return "order/newOrderCarrito";
+			} else {
+				double precio=0.0;
+				int clientId = clientService.devolverClientId();
+				Client client = clientService.findById(clientId);
+				List<ProductoParaVenta> carrito = this.obtenerCarrito(request);
+				
+				// Si no hay carrito o está vacío, regresamos inmediatamente
+				if (carrito == null || carrito.size() <= 0) {
+					modelmap.put("message", "El carrito esta vacio");
+					return "/shop/carrito/carrito";
+				}
+				
+				Order o = new Order();
+				o.setClient(client);
+				o.setDeliveryDate(LocalDate.now().plusDays(7));
+				o.setOrderDate(LocalDate.now());
+				o.setState("In Progress");
 			
-			o.setAddress(order.getAddress());
-			o.setCity(order.getCity());
-			o.setCountry(order.getCountry());
-			o.setPostalCode(order.getPostalCode());
-			if (order.getCoupon()!=null) {
-			o.setCoupon(order.getCoupon());
-			client.getCoupons().remove(order.getCoupon()); // una vez usado el cupon, se elimina del cleinte (RN18)
-			}
-			orderRepo.save(o) ;
+				o.setAddress(order.getAddress());
+				o.setCity(order.getCity());
+				o.setCountry(order.getCountry());
+				o.setPostalCode(order.getPostalCode());
+				
+				if (order.getCoupon()!=null) {
+					o.setCoupon(order.getCoupon());
+					client.getCoupons().remove(order.getCoupon()); // una vez usado el cupon, se elimina del cleinte (RN18)
+				}
+				
+				orderRepo.save(o) ;
 
-			// Recorrer el carrito
-			for (ProductoParaVenta productoParaVender : carrito) {
+				// Recorrer el carrito
+				for (ProductoParaVenta productoParaVender : carrito) {
 
-				// Creamos un nuevo producto que será el que se guarda junto con la venta
-				ProductoVendido productoVendido = new ProductoVendido();
-				productoVendido.setCantidad(productoParaVender.getCantidad());
-				productoVendido.setNombre(productoParaVender.getName());
-				productoVendido.setPrecio(productoParaVender.getPrice());
-				productoVendido.setOrder(o);
-				precio+=productoVendido.getPrecio();
-				// Y lo guardamos
-				productoVendidoRepo.save(productoVendido);
-			}
-			//Se aplica el cupon de descuento
-			if (order.getCoupon()!=null) {
+					// Creamos un nuevo producto que será el que se guarda junto con la venta
+					ProductoVendido productoVendido = new ProductoVendido();
+					productoVendido.setCantidad(productoParaVender.getCantidad());
+					productoVendido.setNombre(productoParaVender.getName());
+					productoVendido.setPrecio(productoParaVender.getPrice());
+					productoVendido.setOrder(o);
+					precio+=productoVendido.getPrecio();
+					// Y lo guardamos
+					productoVendidoRepo.save(productoVendido);
+				}
+				//Se aplica el cupon de descuento
+				if (order.getCoupon()!=null) {
 				precio=(precio*((100)-(order.getCoupon().getDiscount())))/100;
-			}
+				}
 			
-			Order orderPrice =orderService.findOrderById(o.getId()).get();
-			orderPrice.setPriceOrder(precio);
-			orderRepo.save(orderPrice);
-			// Al final limpiamos el carrito
-			this.limpiarCarrito(request);
-			// e indicamos una venta exitosa
-			modelmap.put("message", "Pedido realizado con exito");
-			return "shop/home";
-		}
+				Order orderPrice =orderService.findOrderById(o.getId()).get();
+				orderPrice.setPriceOrder(precio);
+				orderRepo.save(orderPrice);
+				// Al final limpiamos el carrito
+				this.limpiarCarrito(request);
+				// e indicamos una venta exitosa
+				modelmap.put("message", "Pedido realizado con exito");
+				return "shop/home";
+			}
 		
-	}
-		
-		
-		else {
+		} else {
 			modelmap.addAttribute("message", "Para hacer eso tienes que estar logueado como cliente de la tienda");
 			return "shop/home";
 		}
-		}
+	}
 			
 		
 
@@ -374,32 +370,30 @@ public class OrderController {
 	
 	public String cancelarVenta(HttpServletRequest request, ModelMap modelmap) {
 		if (clientService.esClient()) {
-	    this.limpiarCarrito(request);
-	   modelmap.addAttribute("message", "Se han eliminado todos los productos del carrito");
+			this.limpiarCarrito(request);
+			modelmap.addAttribute("message", "Se han eliminado todos los productos del carrito");
 	            
-	    return mostrarCarrito(modelmap, request);
+			return mostrarCarrito(modelmap, request);
+	    } else {
+	    	modelmap.addAttribute("message", "Para hacer eso tienes que estar logueado como cliente de la tienda");
+	    	return "shop/home";
 	    }
-	else {
-		modelmap.addAttribute("message", "Para hacer eso tienes que estar logueado como cliente de la tienda");
-		return "shop/home";
 	}
-}
-@GetMapping(value = "/shop/carrito/remove/{indice}")
-public String quitarDelCarrito(@PathVariable int indice, HttpServletRequest request, ModelMap modelmap) {
-	if (clientService.esClient()) {
-    List<ProductoParaVenta> carrito = this.obtenerCarrito(request);
-    if (carrito != null && carrito.size() > 0 && carrito.get(indice) != null) {
-        carrito.remove(indice);
-        this.guardarCarrito(carrito, request);
-        modelmap.addAttribute("message", "Se ha eliminado el producto del carrito");
-    }
-    return mostrarCarrito(modelmap, request);
+	
+	@GetMapping(value = "/shop/carrito/remove/{indice}")
+	public String quitarDelCarrito(@PathVariable int indice, HttpServletRequest request, ModelMap modelmap) {
+		if (clientService.esClient()) {
+			List<ProductoParaVenta> carrito = this.obtenerCarrito(request);
+			if (carrito != null && carrito.size() > 0 && carrito.get(indice) != null) {
+				carrito.remove(indice);
+				this.guardarCarrito(carrito, request);
+				modelmap.addAttribute("message", "Se ha eliminado el producto del carrito");
+			}
+			return mostrarCarrito(modelmap, request);
     
-}
-    else {
-		modelmap.addAttribute("message", "Para hacer eso tienes que estar logueado como cliente de la tienda");
-		return "shop/home";
+		} else {
+			modelmap.addAttribute("message", "Para hacer eso tienes que estar logueado como cliente de la tienda");
+			return "shop/home";
+		}
 	}
-    
-}
 }
