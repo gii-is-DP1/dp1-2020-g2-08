@@ -68,7 +68,7 @@
 										<li><a href="/shop">Shop</a></li>
 										<sec:authorize access="hasAuthority('adminShop')">
 										<li><a href="/shop/admin/products">Products</a></li>
-										<li><a href="/shop/admin/sales">Sales</a></li>
+										<li><a href="/shop/admin/sales/total">Sales</a></li>
 										<li><a href="/shop/admin/clients">Clients</a></li>
 										<li><a href="/shop/admin/coupons">Coupons</a></li>
 										<li><a href="/shop/admin/orders">Orders</a></li>

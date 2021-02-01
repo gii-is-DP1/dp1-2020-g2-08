@@ -1,5 +1,9 @@
 package org.springframework.samples.petclinic.web;
 
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.Period;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -16,7 +20,9 @@ import org.springframework.samples.petclinic.model.Client;
 import org.springframework.samples.petclinic.model.Coupon;
 import org.springframework.samples.petclinic.model.Order;
 import org.springframework.samples.petclinic.model.Product;
+import org.springframework.samples.petclinic.model.ProductoVendido;
 import org.springframework.samples.petclinic.repository.CouponRepository;
+import org.springframework.samples.petclinic.repository.ProductoVendidoRepository;
 import org.springframework.samples.petclinic.service.AuthoritiesService;
 import org.springframework.samples.petclinic.service.ClientService;
 import org.springframework.samples.petclinic.service.CouponService;
@@ -49,7 +55,8 @@ public class ShopAdminController {
 	private CouponService couponService;
 	@Autowired
 	private CouponRepository couponRepository;
-	
+	@Autowired
+	private ProductoVendidoRepository productoVendrepo;
 	@Autowired
 	private ClientService clientService;
 	@Autowired
@@ -351,4 +358,50 @@ public class ShopAdminController {
 
 	}
 
+	@GetMapping(path = "/sales/{date}" )
+	public String salesByDate(ModelMap modelmap, @PathVariable("date") String date) {
+		String view = "shop/admin/sales";
+		List<Order> orderList = (List<Order>) orderService.findAll();
+		Double sales = 0.0;
+		Month month = LocalDate.now().getMonth().minus(1); 
+
+		int year = LocalDate.now().getYear();
+		if(date.equals("total")) {
+			sales = orderList.stream().mapToDouble(x->x.getPriceOrder()).sum();
+			List<ProductoVendido> products = new ArrayList<>();
+			for (int i = 0; i < orderList.size(); i++) {
+			 Integer orderId = orderList.get(i).getId();
+			 products.addAll(orderService.findProductsByOrder(orderId));
+			}
+			modelmap.addAttribute("products", products);
+			modelmap.addAttribute("sales", sales);
+		}
+		if(date.equals("today")) {
+			List<Order> todayList = orderList.stream().filter(x->x.getOrderDate().equals(LocalDate.now())).collect(Collectors.toList());
+			sales = orderList.stream().filter(x->x.getOrderDate().equals(LocalDate.now())).mapToDouble(x->x.getPriceOrder()).sum();
+			List<ProductoVendido> products = new ArrayList<>();
+			for (int i = 0; i < todayList.size(); i++) {
+			 Integer orderId = todayList.get(i).getId();
+			 products.addAll(orderService.findProductsByOrder(orderId));
+			}
+			modelmap.addAttribute("products", products);
+			modelmap.addAttribute("sales", sales);			
+		}
+		if(date.equals("lastMonth")) {
+			List<Order> lastMonthList = orderList.stream().filter(x->x.getOrderDate().getMonth().equals(month) && x.getOrderDate().getYear()==year).collect(Collectors.toList());
+			sales = orderList.stream().filter(x->x.getOrderDate().getMonth().equals(month) && x.getOrderDate().getYear()==year).mapToDouble(x->x.getPriceOrder()).sum();
+			List<ProductoVendido> products = new ArrayList<>();
+			for (int i = 0; i < lastMonthList.size(); i++) {
+			 Integer orderId = lastMonthList.get(i).getId();
+			 products.addAll(orderService.findProductsByOrder(orderId));
+			}
+			modelmap.addAttribute("products", products);
+			modelmap.addAttribute("sales", sales);
+		}
+
+		return view;
+	}
+	
+
+	
 }
