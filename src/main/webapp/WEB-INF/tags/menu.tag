@@ -6,7 +6,7 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
-<!--  >%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%-->
+<!--  >%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%--> <!--  glyphicon-tree-conifer -->
 <%@ attribute name="name" required="true" rtexprvalue="true"
 	description="Name of the active menu: home, owners, vets or error"%>
 
@@ -66,17 +66,36 @@
 
 									<ul class="dropdown-menu">
 										<li><a href="/shop">Shop</a></li>
-										<sec:authorize access="hasAuthority('admin')">
+										<sec:authorize access="hasAuthority('adminShop')">
 										<li><a href="/shop/admin/products">Products</a></li>
 										<li><a href="/shop/admin/sales">Sales</a></li>
 										<li><a href="/shop/admin/clients">Clients</a></li>
 										<li><a href="/shop/admin/coupons">Coupons</a></li>
+										<li><a href="/shop/admin/orders">Orders</a></li>
 										
 										
 										
 										</sec:authorize>
 									</ul>
 						</div>
+						
+						<div class="nav navbar-nav navbar-right">
+
+
+					<li class="dropdown"><a href="/hotel" class="dropdown-toggle"
+						data-toggle="dropdown"> <span
+							class="glyphicon glyphicon glyphicon-tree-conifer"></span> <span>Shelter</span>
+
+							<ul class="dropdown-menu">
+							<sec:authorize access="hasAuthority('adminShelter')">	<li><a href="/shelter/listadoRefugios">All shelters</a></li>
+								<li><a href="/shelter/new">New Shelter</a></li>
+								<li><a href="/shelter/adoptionsList">Adoptions list</a></li></sec:authorize>
+								<li><a href="/shelter/animals">Animals</a></li>
+								
+									
+
+							</ul>
+				</div>
 								
 				
 				
@@ -132,10 +151,12 @@
 												<a href="<c:url value="/logout" />"
 													class="btn btn-primary btn-block btn-sm">Logout</a>
 											</p>
+											<sec:authorize access="hasAuthority('client')">
 											<p class="text-left">
 												<a href="<c:url value="/shop/myOrders" />"
 													class="btn btn-primary btn-block btn-sm">My orders</a>
 											</p>
+											</sec:authorize>
 										</div>
 										
 	
@@ -162,9 +183,11 @@
 -->
 						</ul></li>
 				</sec:authorize>
+				
+				<sec:authorize access="hasAuthority('client')">
 					<petclinic:menuItem active="${name eq 'cart'}" url="/shop/carrito">
 					<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
-				</petclinic:menuItem>
+				</petclinic:menuItem></sec:authorize>
 									
 									</ul>
 			</ul>

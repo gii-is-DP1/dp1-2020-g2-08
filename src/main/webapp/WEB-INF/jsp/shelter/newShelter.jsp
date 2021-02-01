@@ -18,7 +18,7 @@
 			
             <div class="form-group has-feedback">
                 <petclinic:inputField label="Aforo" name="aforo" />
-                <petclinic:inputField label="Ocupadas" name="ocupadas" />
+             
                  <petclinic:inputField label="City" name="city" />          
             </div>
 

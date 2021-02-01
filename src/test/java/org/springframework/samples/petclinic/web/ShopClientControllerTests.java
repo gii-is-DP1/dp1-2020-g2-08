@@ -1,7 +1,6 @@
 package org.springframework.samples.petclinic.web;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -13,7 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.samples.petclinic.configuration.SecurityConfiguration;
 import org.springframework.samples.petclinic.service.AuthoritiesService;
-import org.springframework.samples.petclinic.service.OwnerService;
+import org.springframework.samples.petclinic.service.ClientService;
 import org.springframework.samples.petclinic.service.ProductService;
 import org.springframework.samples.petclinic.service.UserService;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
@@ -30,6 +29,9 @@ public class ShopClientControllerTests {
 
 	@MockBean
 	private ProductService productService;
+	
+	@MockBean
+	private ClientService clientService;
         
     @MockBean
 	private UserService userService;
@@ -43,17 +45,31 @@ public class ShopClientControllerTests {
 	
 	@WithMockUser(value = "spring")
     @Test
+    void testProductList() throws Exception {
+		mockMvc.perform(get("/shop")).
+			andExpect(status().isOk()).
+			andExpect(view().name("shop/home"));
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
     void testPetList() throws Exception {
 		mockMvc.perform(get("/shop/products/{category}", 1)).
 			andExpect(status().isOk()).
 			andExpect(view().name("shop/products/productByCategory"));
 	}
 	
-	@WithMockUser(value = "spring")
+	@WithMockUser(value = "spring", authorities = "client")
     @Test
-    void testProuctReview() throws Exception {
-		mockMvc.perform(get("/shop/products/review/{productId}", 1)).
+    void testProductReview() throws Exception {
+		if(clientService.esClient()) {
+			mockMvc.perform(get("/shop/products/review/{productId}", 1)).
 			andExpect(status().isOk()).
 			andExpect(view().name("reviews/newProductReview"));
+		} else {
+		mockMvc.perform(get("/shop/products/review/{productId}", 1)).
+			andExpect(status().isOk()).
+			andExpect(view().name("shop/home"));
+		}
 	}
 }

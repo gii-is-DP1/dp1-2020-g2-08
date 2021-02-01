@@ -1,6 +1,16 @@
 -- One admin user, named admin1 with passwor 4dm1n and authority admin
 INSERT INTO users(username,password,enabled) VALUES ('admin1','4dm1n',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (1,'admin1','admin');
+
+-- One admin user, named admin1 with passwor 4dm1n and authority admin
+INSERT INTO users(username,password,enabled) VALUES ('adminShelter','admin',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (8,'adminShelter','adminShelter');
+
+-- One admin user, named admin1 with passwor 4dm1n and authority admin
+INSERT INTO users(username,password,enabled) VALUES ('adminShop','admin',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (9,'adminShop','adminShop');
+
+
 -- One owner user, named owner1 with passwor 0wn3r
 INSERT INTO users(username,password,enabled) VALUES ('owner1','0wn3r',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (2,'owner1','owner');
@@ -101,8 +111,8 @@ INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (8,
 
 
 INSERT INTO products(id, category, in_offer, name, price) VALUES (1, 'Pets', 'No', 'Clown Fish', '6.0');
-INSERT INTO products(id, category, in_offer, name, price ) VALUES (2, 'Toys', 'Yes', 'Dog´s Ball', '8.75');
-INSERT INTO products(id, category, in_offer, name, price ) VALUES (3, 'Food', 'Yes', 'Pipes for birds', '5.0');
+INSERT INTO products(id, category, in_offer, name, price) VALUES (2, 'Toys', 'Yes', 'Dog´s Ball', '8.75');
+INSERT INTO products(id, category, in_offer, name, price) VALUES (3, 'Food', 'Yes', 'Pipes for birds', '5.0');
 INSERT INTO products(id, category, in_offer, name, price) VALUES (4, 'Accessories', 'No', 'Dog´s belt', '12.0');
 
 
@@ -116,9 +126,7 @@ INSERT INTO authorities(id,username,authority) VALUES (10,'mangarmar','client');
 INSERT INTO clients VALUES (1, 'Manuel', 'Garcia', 'Domingo Molina', 'Sevilla','gmail@gmail.com','mangarmar','1111111','mangarmar','654321022','mangarmar');
 
 --
---INSERT INTO orders VALUES(1, 'Prim', 'Sevilla', 'España', '2020-12-10',12, '2020-12-11','41410','In progress', 1);
---INSERT INTO producto_vendido VALUES(1, 1, 'Dog´s Ball','8.75',1);
---INSERT INTO producto_vendido VALUES(2, 1, 'Pipes for birds','5.0',1);
+
 
 
 INSERT INTO coupons VALUES(1,50,'2021-12-10');
@@ -129,13 +137,32 @@ INSERT INTO coupons VALUES(4,80,'2024-03-10');
 INSERT INTO clients_coupons VALUES(1,1);
 INSERT INTO clients_coupons VALUES(1,2);
 
---INSERT INTO product_reviews VALUES(1, 4, 1, 1);
+INSERT INTO orders VALUES(1, 'Prim', 'Sevilla', 'España', '2020-12-10','2020-12-11','41410','12','In progress', 1, null);
+INSERT INTO producto_vendido VALUES(1, 1, 'Dog´s Ball','8.75',1);
+INSERT INTO producto_vendido VALUES(2, 1, 'Pipes for birds','5.0',1);
+INSERT INTO producto_vendido VALUES(3, 1, 'Dog´s Ball','8.75',1);
+INSERT INTO producto_vendido VALUES(4, 1, 'Pipes for birds','5.0',1);
+INSERT INTO producto_vendido VALUES(5, 1, 'Clown Fish','8.75',1);
+INSERT INTO producto_vendido VALUES(6, 1, 'Clown Fish','5.0',1);
+INSERT INTO producto_vendido VALUES(7, 1, 'Dog´s belt','8.75',1);
+INSERT INTO producto_vendido VALUES(8, 1, 'Dog´s belt','5.0',1);
 
-INSERT INTO shelter(id,aforo,ocupadas,city) VALUES (1, 4, 0, 'Sevilla');
-INSERT INTO shelter(id,aforo,ocupadas,city) VALUES (2, 4, 0, 'Sevilla');
-INSERT INTO shelter(id,aforo,ocupadas,city) VALUES (3, 4, 0, 'Sevilla');
 
-INSERT INTO animals(id,name,birth_date,type_id,shelter_id) VALUES (1, 'Sterling', '2013-02-11', 2, 1);
-INSERT INTO animals(id,name,birth_date,type_id,shelter_id) VALUES (2, 'Kanté', '2013-02-11', 2, 1);
-INSERT INTO animals(id,name,birth_date,type_id,shelter_id) VALUES (3, 'Van dijk', '2013-02-11', 2, 1);
+INSERT INTO product_reviews VALUES(1, 4, 1, 2, 1);
+INSERT INTO product_reviews VALUES(2, 2, 1, 3, 2);
+INSERT INTO product_reviews VALUES(3, 3, 1, 2, 3);
+INSERT INTO product_reviews VALUES(4, 4, 1, 3, 4);
+INSERT INTO product_reviews VALUES(5, 5, 1, 1, 5);
+INSERT INTO product_reviews VALUES(6, 4, 1, 1, 6);
+INSERT INTO product_reviews VALUES(7, 5, 1, 4, 7);
+INSERT INTO product_reviews VALUES(8, 5, 1, 4, 8);
+
+
+INSERT INTO shelter(id,aforo,city) VALUES (1, 4,  'Sevilla');
+INSERT INTO shelter(id,aforo,city) VALUES (2, 4,  'Malaga');
+INSERT INTO shelter(id,aforo,city) VALUES (3, 4,  'Cordoba');
+
+INSERT INTO animals(id,name,birth_date,type_id,shelter_id,shelter_date, description, sex,image_url,state) VALUES (1, 'Sterling', '2013-02-11', 2, 1,'2020-02-11','Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.','male','https://www.losanimales.org/wp-content/uploads/2018/03/Perros.jpg', 'avaible');
+INSERT INTO animals(id,name,birth_date,type_id,shelter_id,shelter_date, description, sex,image_url,state) VALUES (2, 'Kanté', '2013-02-11', 2, 1,'2020-02-15','Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.','female','https://static.wikia.nocookie.net/religion-del-celio/images/8/8d/Que-comen-los-perros.jpg/revision/latest?cb=20180128073558&path-prefix=es', 'avaible');
+INSERT INTO animals(id,name,birth_date,type_id,shelter_id,shelter_date, description, sex,image_url,state) VALUES (3, 'Van dijk', '2013-02-11', 2, 1,'2020-02-18','Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.','female','https://www.wikipets.es/wp-content/uploads/sites/default/files/library/dogo_argentino_-_razas_de_perro-320x214.jpg', 'avaible');
 

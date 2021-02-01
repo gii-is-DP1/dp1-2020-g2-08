@@ -1,6 +1,7 @@
 package org.springframework.samples.petclinic.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.model.Animal;
 import org.springframework.samples.petclinic.model.Hotel;
 import org.springframework.samples.petclinic.model.Shelter;
 import org.springframework.samples.petclinic.repository.AnimalRepository;
@@ -43,4 +44,18 @@ public class ShelterService {
 		shelterRepo.deleteById(shelterId);
 		
 	}
+	public Integer numeroAnimales(int shelterId) {
+		
+		Integer num = shelterRepo.findById(shelterId).get().getAnimals().size();
+		
+		return num;
+	}
+	
+	public Animal findAnimalByName(String name, Integer shelterId) {
+		
+		return findById(shelterId).getAnimals().stream().filter(x->x.getName().equalsIgnoreCase(name)).findFirst().get();
+		
+		
+	}
+	
 }

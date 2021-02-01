@@ -60,12 +60,7 @@ public class ShopAdminController {
 	private static List<String> categoryList = Arrays.asList("Pets", "Food", "Toys", "Accessories");
 	private static List<String> offerOptions = Arrays.asList("Yes", "No");
 	
-	@InitBinder("product")
-	public void initPetBinder(WebDataBinder dataBinder) {
 
-		dataBinder.setValidator(new ProductValidator());
-
-	}
 
 	@Autowired
 	public ShopAdminController(ProductService productService, UserService userService, AuthoritiesService authoritiesService) {
@@ -87,6 +82,12 @@ public class ShopAdminController {
 
 	}
 
+	@InitBinder("product")
+	public void initPetBinder(WebDataBinder dataBinder) {
+		dataBinder.setValidator(new ProductValidator());
+
+	}
+	
 	@GetMapping(path = "/products/add")
 	public String addProduct(ModelMap modelmap) {
 		String view = "shop/admin/newProduct";
@@ -286,7 +287,7 @@ public class ShopAdminController {
 		Order order =  orderService.findOrderById(orderId).get();
 		order.setState("Cancelled");
 		orderService.save(order);
-		modelmap.addAttribute("message", "El pedido se ha cancelado con éxito");
+		modelmap.addAttribute("message", "The order is now cancelled");
 			
 		return ordersList(modelmap);
 
@@ -296,23 +297,44 @@ public class ShopAdminController {
 		Order order =  orderService.findOrderById(orderId).get();
 		order.setState("Confirmed");
 		orderService.save(order);
-		modelmap.addAttribute("message", "El pedido se ha confirmado con éxito");
+		modelmap.addAttribute("message", "The order is now confirm");
 			
 		return ordersList(modelmap);
 
 	}
 	
+	@GetMapping(path = "/orders/inProgress/{orderId}" )
+	public String InProgressOrder(ModelMap modelmap,@PathVariable ("orderId") int orderId) {
+		Order order =  orderService.findOrderById(orderId).get();
+		order.setState("In Progress");
+		orderService.save(order);
+		modelmap.addAttribute("message", "The order is now in progress");
+			
+		return ordersList(modelmap);
+
+	}
+	
+	
 	@GetMapping(path = "/clients/{clientId}/addCoupon/{couponId}" )
 	public String addCouponToClient(ModelMap modelmap,@PathVariable ("clientId") int clientId,@PathVariable ("couponId") int couponId) {
+		
+		
 		
 		Coupon coupon = couponRepository.findById(couponId).get();
 		
 		Client client = clientService.findById(clientId);
+		
+		if (client.getCoupons().contains(coupon)) {
+			modelmap.addAttribute("message", "No se pudo añadir porque el cliente ya tenia ese cupon");
+		}
+		else {
+			
+		
 		client.getCoupons().add(coupon);
 		clientService.saveClient(client);
 		modelmap.addAttribute("message", "El cupon se ha añadido al cliente");
-			
-		return clientCouponsList(modelmap, clientId);
+		}	
+		return clientCouponsList(modelmap, clientId); 
 
 	}
 	@GetMapping(path = "/clients/{clientId}/removeCoupon/{couponId}" )

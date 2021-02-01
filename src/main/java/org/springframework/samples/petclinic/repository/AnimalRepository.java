@@ -4,6 +4,7 @@ import java.util.List;
 
 
 import org.springframework.samples.petclinic.model.Animal;
+import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.dao.DataAccessException;
@@ -18,4 +19,7 @@ public interface AnimalRepository extends Repository<Animal, Integer>{
 	Animal findById(int id) throws DataAccessException;
 	
 	void save(Animal animal) throws DataAccessException;
+	
+	@Query("SELECT animal FROM Animal animal ")
+	List<Animal> findAllAnimals() throws DataAccessException;
 }

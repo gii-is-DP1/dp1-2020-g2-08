@@ -121,7 +121,7 @@ public class Order extends BaseEntity{
 			this.state = state;
 		}
 
-		public String getAddress() {
+		public String coupon() {
 			return address;
 		}
 
@@ -183,6 +183,10 @@ public class Order extends BaseEntity{
 
 		public void setCoupon(Coupon coupon) {
 			this.coupon = coupon;
+		}
+
+		public String getAddress() {
+			return address;
 		}
 		 
 		 

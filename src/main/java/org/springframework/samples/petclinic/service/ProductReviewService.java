@@ -7,81 +7,79 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.model.Client;
-import org.springframework.samples.petclinic.model.Hotel;
+import org.springframework.samples.petclinic.model.Product;
 import org.springframework.samples.petclinic.model.ProductReview;
-import org.springframework.samples.petclinic.model.Review;
-import org.springframework.samples.petclinic.repository.BookingRepository;
-import org.springframework.samples.petclinic.repository.HotelRepository;
 import org.springframework.samples.petclinic.repository.ProductReviewRepository;
-import org.springframework.samples.petclinic.repository.ProductoVendidoRepository;
-import org.springframework.samples.petclinic.repository.ReviewRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ProductReviewService {
 	
 	@Autowired
-	private ClientService clientService;	
-	@Autowired
-	private ProductService productService;
-	@Autowired
-	private ProductoVendidoRepository prodVendRepo; 
-	@Autowired
 	private ProductReviewRepository prodReviewRepo;
 	
-	 @Transactional
-	 public int reviewCount() {
+	@Autowired
+	public ProductReviewService(ProductReviewRepository productReviewRepository) {
+		this.prodReviewRepo = productReviewRepository;
+	}
+
+	@Transactional
+	public int reviewCount() {
 		 
-		 return (int) prodReviewRepo.count();
-	 }
+		return (int) prodReviewRepo.count();
+	}
 	 
-	 @Transactional
-	 public Iterable<ProductReview> findAll(){
-		 return prodReviewRepo.findAll();
-	 }
+	@Transactional
+	public Iterable<ProductReview> findAll(){
+		return prodReviewRepo.findAll();
+	}
 	 
-	 @Transactional
-	 public void save(ProductReview prodReview) {
+	@Transactional
+	public void save(ProductReview prodReview) {
 
-	 	prodReviewRepo.save(prodReview);
+		prodReviewRepo.save(prodReview);
 	 	
 	 	
-	 }
-	 @Transactional
-	 public Optional<ProductReview> findProductReviewById(int prodReview){
-		 return prodReviewRepo.findById(prodReview);
-	 }
+	}
+	@Transactional
+	public Optional<ProductReview> findProductReviewById(int prodReview){
+		return prodReviewRepo.findById(prodReview);
+	}
 	 
 
 	 
-	 @Transactional
-		public void delete(ProductReview prodReview) {
-		 prodReviewRepo.delete(prodReview);
+	@Transactional
+	public void delete(ProductReview prodReview) {
+		prodReviewRepo.delete(prodReview);
 			
-		}
+	}
 //	 -------------------------------------------------
-	 @Transactional
-		public void deleteById(Integer prodReviewId) {
-		 prodReviewRepo.deleteById(prodReviewId);
-			
-		}
+	@Transactional
+	public void deleteById(Integer prodReviewId) {
+		prodReviewRepo.deleteById(prodReviewId);
+	}
 	 
-	 @Transactional
-		public void deleteById(int prodReview) {
-			 prodReviewRepo.deleteById(prodReview);
-			
-		}
+	@Transactional
+	public void deleteById(int prodReview) {
+			prodReviewRepo.deleteById(prodReview);
+	}
 //	 --------------------------------------------------
 	 
 
-@Transactional
-public List<ProductReview> findProductReviewByProductId(Integer productId){
-	 List<ProductReview> productReviews = (List<ProductReview>) prodReviewRepo.findAll();
-	 	return productReviews.stream().filter(x->x.getProductoVendido().getId().equals(productId)).collect(Collectors.toList());
-}
-	 
+	@Transactional
+	public List<Integer> findProductReviewByProductName(String name){
+		List<ProductReview> productReviews = (List<ProductReview>) prodReviewRepo.findAll();
+	 	return productReviews.stream().filter(x->x.getProductoVendido().getNombre().startsWith(name)).map(x->x.getStars()).collect(Collectors.toList());
+	}
 
+	public Double average(Product product) {
+		if(product.getReviews().size()==0) {
+			return 0.0;
+		}else {
+			Double average = product.getReviews().stream().mapToDouble(x->x.getStars()).average().getAsDouble();
+			return average;
+		}
+	}	
 
 
 //@Transactional
