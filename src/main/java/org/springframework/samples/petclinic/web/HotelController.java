@@ -1,26 +1,18 @@
 package org.springframework.samples.petclinic.web;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Booking;
 import org.springframework.samples.petclinic.model.Hotel;
 import org.springframework.samples.petclinic.model.Owner;
-import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Review;
-import org.springframework.samples.petclinic.repository.HotelRepository;
 import org.springframework.samples.petclinic.service.BookingService;
 import org.springframework.samples.petclinic.service.HotelService;
 import org.springframework.samples.petclinic.service.OwnerService;
-import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.ReviewService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -99,14 +91,10 @@ public class HotelController {
 
 		if (hotel.iterator().hasNext()) {
 			// Mete todos los datos en el modelmap para mostrarlos en la vista
-			
 			modelmap.addAttribute("reviews", reviews);
 			modelmap.addAttribute("bookings", bookings);
 			modelmap.addAttribute("hotel", hotel);
-		
 			
-			
-
 			// Manda todos los atributos a la vista listaReservas.jsp
 			return "hotel/listaReservas";
 
@@ -125,9 +113,6 @@ public class HotelController {
 		List<Hotel> hoteles = (List<Hotel>) hotelService.findAll();
 		List<Integer> numBookings= new ArrayList<Integer>();
 		List<Integer> numReviews= new ArrayList<Integer>();
-		
-		
-		
 
 		if (hoteles.iterator().hasNext()) {
 			
@@ -135,8 +120,6 @@ public class HotelController {
 				
 				numBookings.add(bookingService.findBookingsByHotelId(hoteles.get(i).getId()).size())  ;
 				numReviews.add(reviewService.findReviewByHotelId(hoteles.get(i).getId()).size())  ;
-
-				
 				}
 			
 			modelmap.addAttribute("hoteles", hoteles);

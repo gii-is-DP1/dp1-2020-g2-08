@@ -13,7 +13,6 @@ import org.springframework.samples.petclinic.model.Order;
 import org.springframework.samples.petclinic.model.Product;
 import org.springframework.samples.petclinic.model.ProductoParaVenta;
 import org.springframework.samples.petclinic.model.ProductoVendido;
-import org.springframework.samples.petclinic.repository.CouponRepository;
 import org.springframework.samples.petclinic.repository.OrderRepository;
 import org.springframework.samples.petclinic.repository.ProductoVendidoRepository;
 import org.springframework.samples.petclinic.service.ClientService;
@@ -34,15 +33,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class OrderController {
 
 	@Autowired
-	private ProductoVendidoRepository productoVendidoRepository;
-	
-	@Autowired
-	private CouponRepository couponRepository;
-	@Autowired
 	private OrderService orderService;
 
 	@Autowired
 	private OrderRepository orderRepo;
+	
 	@Autowired
 	private ProductoVendidoRepository productoVendidoRepo;
 
