@@ -22,6 +22,10 @@ public class ReviewService {
 	@Autowired
 	private ReviewRepository reviewRepo;
 	 
+	public ReviewService(ReviewRepository reviewRepository) {
+		this.reviewRepo = reviewRepository;
+	}
+
 	@Transactional
 	public int reviewCount() {
 		return (int) reviewRepo.count();

@@ -20,7 +20,11 @@ public class HotelService {
 	 @Autowired
 	 private BookingService bookingService;
 	 
-	 @Transactional
+	 public HotelService(HotelRepository hotelRepository) {
+		 this.hotelRepo = hotelRepository;
+	}
+
+	@Transactional
 	 public int hotelCount() {
 		 return (int) hotelRepo.count();
 	 }
