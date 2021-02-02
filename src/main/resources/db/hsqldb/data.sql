@@ -139,15 +139,15 @@ INSERT INTO clients_coupons VALUES(1,2);
 
 INSERT INTO orders VALUES(1, 'Prim', 'Sevilla', 'España', '2020-12-10','2020-12-11','41410','12','In progress', 1, null);
 INSERT INTO orders VALUES(2, 'Prim', 'Sevilla', 'España', '2020-04-10','2020-04-11','41410','50','In progress', 1, null);
-INSERT INTO orders VALUES(3, 'Prim', 'Sevilla', 'España', '2021-01-10','2021-01-11','41410','28','In progress', 1, null);
+INSERT INTO orders VALUES(3, 'Prim', 'Sevilla', 'España', '2021-01-10','2021-01-11','41410','5','In progress', 1, null);
 INSERT INTO orders VALUES(4, 'Prim', 'Sevilla', 'España', '2021-02-01','2021-02-01','41410','15','In progress', 1, null);
 INSERT INTO producto_vendido VALUES(1, 1, 'Dog´s Ball','8.75',1);
 INSERT INTO producto_vendido VALUES(2, 1, 'Pipes for birds','5.0',1);
 INSERT INTO producto_vendido VALUES(3, 1, 'Dog´s Ball','8.75',1);
 INSERT INTO producto_vendido VALUES(4, 1, 'Pipes for birds','5.0',1);
 INSERT INTO producto_vendido VALUES(5, 1, 'Clown Fish','8.75',1);
-INSERT INTO producto_vendido VALUES(6, 1, 'Clown Fish','5.0',1);
-INSERT INTO producto_vendido VALUES(7, 1, 'Dog´s belt','8.75',1);
+INSERT INTO producto_vendido VALUES(6, 1, 'Clown Fish','5.0',2);
+INSERT INTO producto_vendido VALUES(7, 1, 'Dog´s belt','8.75',2);
 INSERT INTO producto_vendido VALUES(8, 1, 'Dog´s belt','5.0',3);
 INSERT INTO producto_vendido VALUES(9, 1, 'Dog´s belt','8.75',4);
 INSERT INTO producto_vendido VALUES(10, 1, 'Dog´s belt','5.0',4);
