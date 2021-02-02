@@ -51,6 +51,18 @@ public class ProductReviewServiceTest {
 	
 	@Test
 	@Transactional
+	public void shouldDeleteRevieswByProductId() {
+		List<ProductReview> productReviews= (List<ProductReview>) productReviewService.findAll();
+		
+		productReviewService.deleteById(1);
+		
+		List<ProductReview> productReviews2= (List<ProductReview>) productReviewService.findAll();
+		
+		assertThat(productReviews2.size()== productReviews.size()-1);
+	}
+	
+	@Test
+	@Transactional
 	public void shouldDeleteProductReview() {
 		
 		List<ProductReview> productReviews= (List<ProductReview>) productReviewService.findAll();
@@ -65,14 +77,9 @@ public class ProductReviewServiceTest {
 	
 	@Test
 	@Transactional
-	public void shouldDeleteRevieswByProductId() {
-		List<ProductReview> productReviews= (List<ProductReview>) productReviewService.findAll();
-		
-		productReviewService.deleteById(1);
-		
-		List<ProductReview> productReviews2= (List<ProductReview>) productReviewService.findAll();
-		
-		assertThat(productReviews2.size()== productReviews.size()-1);
+	public void shouldFindProductReviewByProductName() {
+		List<Integer> review = this.productReviewService.findProductReviewByProductName("Dog");
+		assertNotNull(review);
 	}
 	
 	@Test
