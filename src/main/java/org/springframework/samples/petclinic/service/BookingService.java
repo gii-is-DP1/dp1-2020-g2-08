@@ -24,6 +24,10 @@ public class BookingService {
 	@Autowired
 	private BookingRepository bookingRepo;
 
+	public BookingService(BookingRepository bookingRepository) {
+		this.bookingRepo = bookingRepository;
+	}
+
 	@Transactional
 	public int bookingCount() {
 
