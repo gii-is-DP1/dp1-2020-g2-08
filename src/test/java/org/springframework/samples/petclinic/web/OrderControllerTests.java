@@ -60,45 +60,56 @@ public class OrderControllerTests {
 	
 	@WithMockUser(value = "spring")
     @Test
-    void testAddProductToCart() throws Exception {
+    void testAddProductToCartEsClient() throws Exception {
 		if(clientService.esClient()) {
 		mockMvc.perform(get("/shop/add/{productId}",2)).
 			andExpect(status().isOk()).
 			andExpect(view().name("shop/carrito/carrito"));
-		} else {
+		} 
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testAddProductToCartNoEsClient() throws Exception {
 		mockMvc.perform(get("/shop/add/{productId}",2)).
 			andExpect(status().isOk()).
 			andExpect(view().name("shop/home"));
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testMostrarCarritoEsClient() throws Exception {
+		if(clientService.esClient()) {
+			mockMvc.perform(get("/shop/carrito")).
+			andExpect(status().isOk()).
+			andExpect(view().name("shop/carrito/carrito"));
 		}
 	}
 	
 	@WithMockUser(value = "spring")
     @Test
-    void testMostrarCarrito() throws Exception {
-		if(clientService.esClient()) {
-			mockMvc.perform(get("/shop/carrito")).
-			andExpect(status().isOk()).
-			andExpect(view().name("shop/carrito/carrito"));
-		} else {
+    void testMostrarCarritoNoEsClient() throws Exception {
 			mockMvc.perform(get("/shop/carrito")).
 			andExpect(status().isOk()).
 			andExpect(view().name("shop/home"));
-		}
-		
 	}
 	
 	@WithMockUser(value = "spring")
     @Test
-    void testProcesarPedido() throws Exception {
+    void testProcesarPedidoEsClient() throws Exception {
 		if(clientService.esClient()) {
 			mockMvc.perform(get("/shop/carrito/complete")).
 			andExpect(status().isOk()).
 			andExpect(view().name("/shop/carrito/carrito"));
-		} else {
+		}
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testProcesarPedidoNoEsClient() throws Exception {
 			mockMvc.perform(get("/shop/carrito/complete")).
 			andExpect(status().isOk()).
 			andExpect(view().name("shop/home"));
-		}
 	}
 	
 	@WithMockUser(value = "spring")
@@ -114,16 +125,20 @@ public class OrderControllerTests {
 	
 	@WithMockUser(value = "spring")
     @Test
-    void testCompraProducto() throws Exception {
+    void testCompraProductoEsClient() throws Exception {
 		if(clientService.esClient()) {
 			mockMvc.perform(get("/shop/buy/{productId}", 1)).
 			andExpect(status().isOk()).
 			andExpect(view().name("order/newOrder"));	
-		} else {
+		}
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testCompraProductoNoEsClient() throws Exception {
 			mockMvc.perform(get("/shop/buy/{productId}", 1)).
 			andExpect(status().isOk()).
 			andExpect(view().name("shop/home"));
-		}
 	}
 
 	@WithMockUser(value = "spring", username = "mangarmar", password = "mangarmar", roles = "client")
@@ -136,57 +151,71 @@ public class OrderControllerTests {
 	
 	@WithMockUser(value = "spring")
     @Test
-    void testMyOrderList() throws Exception {
+    void testMyOrderListEsClient() throws Exception {
 		if(clientService.esClient()) {
 			mockMvc.perform(get("/shop/myOrders")).
 			andExpect(status().isOk()).
 			andExpect(view().name("shop/myOrders"));
-		} else {
-			mockMvc.perform(get("/shop/myOrders")).
-			andExpect(status().isOk()).
-			andExpect(view().name("shop/home"));
 		}
-		
 	}
 	
 	@WithMockUser(value = "spring")
     @Test
-    void testProductsByOrder() throws Exception {
+    void testMyOrderListNoEsClient() throws Exception {
+			mockMvc.perform(get("/shop/myOrders")).
+			andExpect(status().isOk()).
+			andExpect(view().name("shop/home"));
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testProductsByOrderEsClientEsAdminShop() throws Exception {
 		if(clientService.esClient() || clientService.esAdminShop()) {
 			mockMvc.perform(get("/shop/view/products/{orderId}", 1)).
 			andExpect(status().isOk()).
 			andExpect(view().name("shop/productsByOrder"));
-		} else {
+		}
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testProductsByOrderNoEsClientNoEsAdminShop() throws Exception {
 			mockMvc.perform(get("/shop/view/products/{orderId}", 1)).
 			andExpect(status().isOk()).
 			andExpect(view().name("shop/home"));
-		}
-		
 	}
 	
 	@WithMockUser(value = "spring")
     @Test
-    void testCancelarVenta() throws Exception {
+    void testCancelarVentaEsClient() throws Exception {
 		if(clientService.esClient()) {
 			mockMvc.perform(get("/shop/carrito/reset")).
 			andExpect(status().isOk());
-		} else {
-			mockMvc.perform(get("/shop/carrito/reset")).
-			andExpect(status().isOk()).
-			andExpect(view().name("shop/home"));
 		}
 	}
 	
 	@WithMockUser(value = "spring")
     @Test
-    void testQuitarDelCarrito() throws Exception {
+    void testCancelarVentaNoEsClient() throws Exception {
+			mockMvc.perform(get("/shop/carrito/reset")).
+			andExpect(status().isOk()).
+			andExpect(view().name("shop/home"));
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testQuitarDelCarritoEsClient() throws Exception {
 		if(clientService.esClient()) {
 			mockMvc.perform(get("/shop/carrito/remove/{indice}", 1)).
 			andExpect(status().isOk());
-		} else {
+		}
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testQuitarDelCarritoNoEsClient() throws Exception {
 			mockMvc.perform(get("/shop/carrito/remove/{indice}", 1)).
 			andExpect(status().isOk()).
 			andExpect(view().name("shop/home"));
-		}
 	}
 }

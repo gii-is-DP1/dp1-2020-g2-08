@@ -48,58 +48,84 @@ public class ReviewControllerTest {
 	
 	@WithMockUser(value = "spring")
     @Test
-    void testCrearReviewHotel() throws Exception{
+    void testCrearReviewHotelEsOwner() throws Exception{
 		if(ownerService.esOwner()) {
 			mockMvc.perform(get("/hotel/review")).
 			andExpect(status().isOk()).
 			andExpect(view().name("reviews/newReview"));
-		} else {
-			if(hotelService.findAll().iterator().hasNext()) {
-				mockMvc.perform(get("/hotel/review")).
-				andExpect(status().isOk()).
-				andExpect(view().name("hotel/listaReservas"));
-			} else {
-				mockMvc.perform(get("/hotel/review")).
-				andExpect(status().isOk()).
-				andExpect(view().name("hotel/review"));
-			}
 		}
 	}
 	
 	@WithMockUser(value = "spring")
     @Test
-    void testGuardarReview() throws Exception {
+    void testCrearReviewHotel() throws Exception{
+		if(hotelService.findAll().iterator().hasNext()) {
+			mockMvc.perform(get("/hotel/review")).
+			andExpect(status().isOk()).
+			andExpect(view().name("hotel/listaReservas"));
+		} 
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testCrearReviewHotelNoHotel() throws Exception{
+		if(!hotelService.findAll().iterator().hasNext()) {
+			mockMvc.perform(get("/hotel/review")).
+			andExpect(status().isOk()).
+			andExpect(view().name("hotel/review"));
+		}
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testGuardarReviewEsOwner() throws Exception {
 		if(ownerService.esOwner()) {
 			mockMvc.perform(post("/hotel/review/saveReview/{ownerId}",1).
 					with(csrf())).
 			andExpect(status().isOk()).
 			andExpect(model().attributeHasErrors("owner")).
 			andExpect(view().name("reviews/newReview"));
-		} else {
-			if(hotelService.findAll().iterator().hasNext()) {
-				mockMvc.perform(post("/hotel/review/saveReview/{ownerId}",1).
-						with(csrf())).
-				andExpect(status().isOk()).
-				andExpect(view().name("hotel/listaReservas"));
-			} else {
-				mockMvc.perform(post("/hotel/review/saveReview/{ownerId}",1).
-						with(csrf())).
-				andExpect(status().isOk());
-			}
+		} 
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testGuardarReview() throws Exception {
+		if(hotelService.findAll().iterator().hasNext()) {
+			mockMvc.perform(post("/hotel/review/saveReview/{ownerId}",1).
+					with(csrf())).
+			andExpect(status().isOk()).
+			andExpect(view().name("hotel/listaReservas"));
 		}
 	}
 	
 	@WithMockUser(value = "spring")
     @Test
-    void testBorrarReview() throws Exception{
+    void testGuardarReviewNoHotel() throws Exception {
+		if(!hotelService.findAll().iterator().hasNext()) {
+			mockMvc.perform(post("/hotel/review/saveReview/{ownerId}",1).
+					with(csrf())).
+			andExpect(status().isOk());
+		}
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testBorrarReviewHotel() throws Exception{
 		if(hotelService.findAll().iterator().hasNext()) {
-			mockMvc.perform(get("/hotel/review/delete/{reviewId}",1))
-			.andExpect(status().isOk())
-			.andExpect(view().name("hotel/listaReservas"));
-		} else {
-			mockMvc.perform(get("/hotel/review/delete/{reviewId}",1))
-			.andExpect(status().isOk())
-			.andExpect(view().name("hotel/review/delete/1"));
+			mockMvc.perform(get("/hotel/review/delete/{reviewId}",1)).
+			andExpect(status().isOk()).
+			andExpect(view().name("hotel/listaReservas"));
+		}
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testBorrarReviewNoHotel() throws Exception{
+		if(!hotelService.findAll().iterator().hasNext()) {
+			mockMvc.perform(get("/hotel/review/delete/{reviewId}",1)).
+			andExpect(status().isOk()).
+			andExpect(view().name("hotel/review/delete/1"));
 		}
 	}
 	

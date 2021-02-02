@@ -221,4 +221,13 @@ public class ShopAdminControllerTests {
     	mockMvc.perform(get("/shop/admin/clients/{clientId}/removeCoupon/{couponId}",1,1)).
     		andExpect(status().isOk());
     }
+    
+    @WithMockUser(value = "spring")
+    @Test
+    void testSalesByDate() throws Exception {
+    	mockMvc.perform(get("/shop/admin/sales/{date}","today")).
+    		andExpect(status().isOk()).
+    		andExpect(view().name("shop/admin/sales"));
+    }
+    
 }

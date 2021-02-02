@@ -53,7 +53,13 @@ public class HotelControllerTest {
 			mockMvc.perform(get("/hotel"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("hotel/listaReservas"));
-		} else {
+		} 
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testListadoReservasNoHotel() throws Exception {
+		if(!hotelService.findAll().iterator().hasNext()) {
 			mockMvc.perform(get("/hotel"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("welcome"));
@@ -67,27 +73,46 @@ public class HotelControllerTest {
 			mockMvc.perform(get("/hotel/listadoHoteles"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("hotel/listadoHoteles"));
-		} else {
+		}
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testListadoHotelesNoHotel() throws Exception {
+		if(!hotelService.findAll().iterator().hasNext()) {
 			mockMvc.perform(get("/hotel/listadoHoteles"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("hotel/newHotel"));
 		}
 	}
 
-	
 	@WithMockUser(value = "spring")
     @Test
-    void testListadoMisReservas() throws Exception {
+    void testListadoMisReservasEsOwner() throws Exception {
 		if(ownerService.esOwner()) {
 			mockMvc.perform(get("/hotel/myBookings"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("hotel/misReservas"));
-		} else {
+		} 
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testListadoMisReservasHotel() throws Exception {
+		if(!ownerService.esOwner()) {
 			if(hotelService.findAll().iterator().hasNext()) {
 				mockMvc.perform(get("/hotel/myBookings"))
 				.andExpect(status().isOk())
 				.andExpect(view().name("hotel/listaReservas"));
-			} else {
+			} 
+		}
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testListadoMisReservasNoHotel() throws Exception {
+		if(!ownerService.esOwner()) {
+			if(hotelService.findAll().iterator().hasNext()) {
 				mockMvc.perform(get("/hotel/myBookings"))
 				.andExpect(status().isOk())
 				.andExpect(view().name("welcome"));
@@ -119,7 +144,13 @@ public class HotelControllerTest {
 					with(csrf())).
 			andExpect(status().isOk()).
 			andExpect(view().name("hotel/listadoHoteles"));
-		} else {
+		} 
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testGuardarBookingNoHotel() throws Exception {
+		if(!hotelService.findAll().iterator().hasNext()) {
 			mockMvc.perform(post("/hotel/save").
 					with(csrf())).
 			andExpect(status().isOk()).
@@ -134,7 +165,13 @@ public class HotelControllerTest {
 			mockMvc.perform(get("/hotel/delete/{hotelId}",1))
 			.andExpect(status().isOk())
 			.andExpect(view().name("hotel/listadoHoteles"));
-		} else {
+		} 
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testBorrarHotelNoHotel() throws Exception{
+		if(!hotelService.findAll().iterator().hasNext()) {
 			mockMvc.perform(get("/hotel/delete/{hotelId}",1))
 			.andExpect(status().isOk())
 			.andExpect(view().name("hotel/newHotel"));
