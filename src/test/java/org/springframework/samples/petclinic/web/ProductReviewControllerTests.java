@@ -55,32 +55,39 @@ public class ProductReviewControllerTests {
 	
 	@WithMockUser(value = "spring")
     @Test
-    void testAddProductReview() throws Exception {
+    void testAddProductReviewEsClient() throws Exception {
 		if(clientService.esClient()) {
 			mockMvc.perform(get("")).
 			andExpect(status().isOk()).
 			andExpect(view().name("reviews/newProductReview"));
-		} else {
-			mockMvc.perform(get("")).
-			andExpect(status().isOk()).
-			andExpect(view().name("/users/createClientForm"));
 		}
-	
 	}
 	
 	@WithMockUser(value = "spring")
     @Test
-    void testSaveReview() throws Exception {
+    void testAddProductReviewNoEsClient() throws Exception {
+			mockMvc.perform(get("")).
+			andExpect(status().isOk()).
+			andExpect(view().name("/users/createClientForm"));
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testSaveReviewEsClient() throws Exception {
 		if(clientService.esClient()) {
 			mockMvc.perform(post("/shop/products/review/{productId}", 1).
 					with(csrf())).
 			andExpect(status().isOk()).
 			andExpect(view().name("shop/home"));
-		} else {
+		}
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testSaveReviewNoEsClient() throws Exception {
 			mockMvc.perform(post("/shop/products/review/{productId}", 1).
 					with(csrf())).
 			andExpect(status().isOk()).
 			andExpect(view().name("/shop/home"));
-		}
 	}
 }

@@ -49,19 +49,52 @@ public class BookingControllerTest {
 		.andExpect(view().name("hotel/newBooking"));
 	}
 	
+//	@WithMockUser(value = "spring")
+//    @Test
+//    void testCrearBooking() throws Exception{
+//		if(hotelService.findAll().iterator().hasNext()) {
+//			if(ownerService.esOwner()) {
+//				mockMvc.perform(get("/hotel/booking/new/{hotelId}",1))
+//				.andExpect(status().isOk())
+//				.andExpect(view().name("hotel/editBooking"));
+//			} else {
+//				mockMvc.perform(get("/hotel/booking/new/{hotelId}",1))
+//				.andExpect(status().isOk());
+//			}
+//		} else {
+//			mockMvc.perform(get("/hotel/booking/new/{hotelId}",1))
+//			.andExpect(status().isOk())
+//			.andExpect(view().name("welcome"));
+//		}
+//	}
+	
 	@WithMockUser(value = "spring")
     @Test
-    void testCrearBooking() throws Exception{
+    void testCrearBookingEsOwner() throws Exception{
 		if(hotelService.findAll().iterator().hasNext()) {
 			if(ownerService.esOwner()) {
 				mockMvc.perform(get("/hotel/booking/new/{hotelId}",1))
 				.andExpect(status().isOk())
 				.andExpect(view().name("hotel/editBooking"));
-			} else {
+			} 
+		} 
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testCrearBookingNoEsOwner() throws Exception{
+		if(hotelService.findAll().iterator().hasNext()) {
+			if(!ownerService.esOwner()) {
 				mockMvc.perform(get("/hotel/booking/new/{hotelId}",1))
 				.andExpect(status().isOk());
 			}
-		} else {
+		}
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testCrearBookingNoHotel() throws Exception{
+		if(!hotelService.findAll().iterator().hasNext()) {
 			mockMvc.perform(get("/hotel/booking/new/{hotelId}",1))
 			.andExpect(status().isOk())
 			.andExpect(view().name("welcome"));
@@ -108,37 +141,3 @@ public class BookingControllerTest {
 	}
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
