@@ -50,18 +50,18 @@ public class ClientService {
 		return (int) clientRepo.count();
 	}
 	
-		public void saveClient(Client client) throws DataAccessException {
-			User user = new User();
+	public void saveClient(Client client) throws DataAccessException {
+		User user = new User();
 			
-			user.setUsername(client.getNameuser());
-			user.setPassword(client.getPass());
+		user.setUsername(client.getNameuser());
+		user.setPassword(client.getPass());
 			
-			userService.saveUser(user);	
-			authoritiesService.saveAuthorities(user.getUsername(), "client");
+		userService.saveUser(user);	
+		authoritiesService.saveAuthorities(user.getUsername(), "client");
 			
-			User user2 = user = userService.findUser(client.getNameuser()).get();
-			client.setUser(user2);
-			clientRepo.save(client);
+		User user2 = user = userService.findUser(client.getNameuser()).get();
+		client.setUser(user2);
+		clientRepo.save(client);
 	}
 		
 	@Transactional

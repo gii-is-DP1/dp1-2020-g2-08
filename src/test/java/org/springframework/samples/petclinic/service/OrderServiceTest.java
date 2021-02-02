@@ -6,10 +6,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -30,10 +30,45 @@ public class OrderServiceTest {
 	
 	@Test
 	@Transactional
-	public void shouldFindProductsWhithCorrectOrderId() {
+	public void findOrderById() {
+		Optional<Order> productList = this.orderService.findOrderById(1);
+		assertNotNull(productList);
+		assertThat(productList.get().getCity()).isEqualTo("Sevilla");
+	}
+	
+	@Test
+	@Transactional
+	public void findOrderByClientId() {
+		List<Order> productList = this.orderService.findOrderByClientId(1);
+		assertNotNull(productList);
+		assertThat(productList.get(0).getCity()).isEqualTo("Sevilla");
+	}
+	
+	@Test
+	@Transactional
+	public void findProductsWhithCorrectOrderId() {
 
 		List<ProductoVendido> productList = this.orderService.findProductsByOrder(1);
 		assertNotNull(productList);
+	}
+
+	@Test
+	@Transactional
+	public void deleteById() {
+		Collection<Order> pedidos = (Collection<Order>) this.orderService.findAll();
+		this.orderService.deleteById(2);
+		Collection<Order> pedidos2 = (Collection<Order>) this.orderService.findAll();
+		assertThat(pedidos.size()-1).isEqualTo(pedidos2.size());
+	}
+	
+	@Test
+	@Transactional
+	public void delete() {
+		Collection<Order> pedidos = (Collection<Order>) this.orderService.findAll();
+		Order order = this.orderService.findOrderById(2).get();
+		this.orderService.delete(order);
+		Collection<Order> pedidos2 = (Collection<Order>) this.orderService.findAll();
+		assertThat(pedidos.size()-1).isEqualTo(pedidos2.size());
 	}
 	
 	@Test
@@ -42,7 +77,7 @@ public class OrderServiceTest {
 		Collection<Order> pedidos = (Collection<Order>) this.orderService.findAll();
 		
 		Order order = new Order();
-		order.setId(2);
+		order.setId(5);
 		order.setAddress("");
 		order.setCity("");
 		order.setCountry("");
@@ -74,7 +109,5 @@ public class OrderServiceTest {
 //        	this.orderService.save(order);
 //        });
 //	}
-	
-
 	
 }

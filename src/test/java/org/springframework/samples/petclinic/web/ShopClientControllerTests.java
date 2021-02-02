@@ -12,6 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.samples.petclinic.configuration.SecurityConfiguration;
 import org.springframework.samples.petclinic.service.AuthoritiesService;
+import org.springframework.samples.petclinic.service.ClientService;
 import org.springframework.samples.petclinic.service.ProductService;
 import org.springframework.samples.petclinic.service.UserService;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
@@ -28,6 +29,9 @@ public class ShopClientControllerTests {
 
 	@MockBean
 	private ProductService productService;
+	
+	@MockBean
+	private ClientService clientService;
         
     @MockBean
 	private UserService userService;
@@ -41,17 +45,35 @@ public class ShopClientControllerTests {
 	
 	@WithMockUser(value = "spring")
     @Test
+    void testProductList() throws Exception {
+		mockMvc.perform(get("/shop")).
+			andExpect(status().isOk()).
+			andExpect(view().name("shop/home"));
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
     void testPetList() throws Exception {
 		mockMvc.perform(get("/shop/products/{category}", 1)).
 			andExpect(status().isOk()).
 			andExpect(view().name("shop/products/productByCategory"));
 	}
 	
-	@WithMockUser(value = "spring")
+	@WithMockUser(value = "spring", authorities = "client")
     @Test
-    void testProuctReview() throws Exception {
-		mockMvc.perform(get("/shop/products/review/{productId}", 1)).
+    void testProductReviewEsClient() throws Exception {
+		if(clientService.esClient()) {
+			mockMvc.perform(get("/shop/products/review/{productId}", 1)).
 			andExpect(status().isOk()).
 			andExpect(view().name("reviews/newProductReview"));
+		}
+	}
+	
+	@WithMockUser(value = "spring", authorities = "client")
+    @Test
+    void testProductReviewNoEsClient() throws Exception {
+		mockMvc.perform(get("/shop/products/review/{productId}", 1)).
+			andExpect(status().isOk()).
+			andExpect(view().name("shop/home"));
 	}
 }

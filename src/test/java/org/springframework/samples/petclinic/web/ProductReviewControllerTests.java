@@ -1,8 +1,8 @@
 package org.springframework.samples.petclinic.web;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -52,27 +52,42 @@ public class ProductReviewControllerTests {
 	@Autowired
 	private MockMvc mockMvc;
 	
-//	@WithMockUser(value = "spring")
-//    @Test
-//    void testAddProductReviewExito() throws Exception {
-//	mockMvc.perform(get("")).
-//		andExpect(status().isOk()).
-//		andExpect(view().name("reviews/newProductReview"));
-//	}
 	
 	@WithMockUser(value = "spring")
     @Test
-    void testAddProductReviewFallo() throws Exception {
-	mockMvc.perform(get("")).
-		andExpect(status().isOk()).
-		andExpect(view().name("/users/createClientForm"));
+    void testAddProductReviewEsClient() throws Exception {
+		if(clientService.esClient()) {
+			mockMvc.perform(get("")).
+			andExpect(status().isOk()).
+			andExpect(view().name("reviews/newProductReview"));
+		}
 	}
 	
-//	@WithMockUser(value = "spring")
-//    @Test
-//    void testSaveReview() throws Exception {
-//	mockMvc.perform(post("shop/products/review/{productId}", 1)).
-//		andExpect(status().isOk()).
-//		andExpect(view().name("/shop/home"));
-//	}
+	@WithMockUser(value = "spring")
+    @Test
+    void testAddProductReviewNoEsClient() throws Exception {
+			mockMvc.perform(get("")).
+			andExpect(status().isOk()).
+			andExpect(view().name("/users/createClientForm"));
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testSaveReviewEsClient() throws Exception {
+		if(clientService.esClient()) {
+			mockMvc.perform(post("/shop/products/review/{productId}", 1).
+					with(csrf())).
+			andExpect(status().isOk()).
+			andExpect(view().name("shop/home"));
+		}
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testSaveReviewNoEsClient() throws Exception {
+			mockMvc.perform(post("/shop/products/review/{productId}", 1).
+					with(csrf())).
+			andExpect(status().isOk()).
+			andExpect(view().name("/shop/home"));
+	}
 }

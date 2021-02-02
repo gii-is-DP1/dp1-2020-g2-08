@@ -7,27 +7,19 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Client;
-import org.springframework.samples.petclinic.model.Hotel;
 import org.springframework.samples.petclinic.model.Product;
 import org.springframework.samples.petclinic.model.ProductReview;
 import org.springframework.samples.petclinic.model.ProductoVendido;
-import org.springframework.samples.petclinic.model.Review;
 import org.springframework.samples.petclinic.repository.ProductoVendidoRepository;
 import org.springframework.samples.petclinic.service.ClientService;
-import org.springframework.samples.petclinic.service.HotelService;
-import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.ProductReviewService;
 import org.springframework.samples.petclinic.service.ProductService;
-import org.springframework.samples.petclinic.service.ReviewService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class ProductReviewController {
@@ -97,12 +89,7 @@ public class ProductReviewController {
 //			prodService.addRate(review);
 
 			modelmap.addAttribute("message", "The product review has been created successfully");
-				return "shop/home";
-			
-
-		
-	}
-
-	
+			return "shop/home";
+		}
 	}
 }

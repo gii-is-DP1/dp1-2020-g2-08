@@ -13,7 +13,6 @@ import org.springframework.samples.petclinic.model.Booking;
 import org.springframework.samples.petclinic.model.Hotel;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
-import org.springframework.samples.petclinic.model.Review;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -91,15 +90,12 @@ public class BookingServiceTest {
 	@Test
 	@Transactional
 	public void shouldDeleteByBookingId() {
-//		TODO
 		List<Booking> bookings= (List<Booking>) bookingService.findAll();
 		bookingService.deleteById(1);
 		
 		List<Booking> bookings2= (List<Booking>) bookingService.findAll();
 
 		assertThat(bookings2.size() == bookings.size()-1);
-		
-		
 	}
 	
 	@Test

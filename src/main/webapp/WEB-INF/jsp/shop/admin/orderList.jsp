@@ -11,14 +11,16 @@
 	<table id="productTable" class="table table-striped">
 		<thead>
 			<tr>
-				<th style="width: 150px;">Address</th>
-				<th style="width: 200px;">City</th>
+				<th>Address</th>
+				<th>City</th>
 				<th>Country</th>
 				<th style="width: 120px">Delivery date</th>
 				<th style="width: 120px">Order date</th>
 				<th style="width: 120px">Postal code</th>
 				<th style="width: 120px">State</th>
-				<th style="width: 120px">Products</th>	
+				<th style="width: 120px">Products</th>
+				<th>Offer</th>	
+				<th style="width: 120px">Price</th>
 				<th style="width: 120px">Actions</th>			
 
 			</tr>
@@ -40,6 +42,10 @@
 							<spring:param name="orderId" value="${order.id}" />
 						</spring:url> <a href="${fn:escapeXml(orderId)}"> See products</a></td>
 						
+					<td><c:out value="${order.offer}" /></td>		
+					<td><c:out value="${order.priceOrder}" /></td>
+					
+					
 						<td><spring:url value="/shop/admin/orders/deny/{orderId}"
 							var="orderId">
 							<spring:param name="orderId" value="${order.id}" />
