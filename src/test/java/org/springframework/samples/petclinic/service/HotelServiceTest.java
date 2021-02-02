@@ -12,7 +12,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.petclinic.model.Booking;
 import org.springframework.samples.petclinic.model.Hotel;
 import org.springframework.samples.petclinic.model.Review;
-import org.springframework.samples.petclinic.repository.HotelRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,25 +26,35 @@ class HotelServiceTest {
 	protected BookingService bookingService;
 	
 	@Test
+	void shouldFindAllHotels() {
+		List<Hotel> hotel = (List<Hotel>) this.hotelService.findAll();
+		assertThat(hotel.size()==3);
+	}
+	
+	@Test
 	void shouldFindHotelWithCorrectId() {
-//		TODO
 		Hotel hotel = this.hotelService.findById(2);
 		assertThat(hotel.getCity().startsWith("Cordoba"));
 		assertThat(hotel.getAforo()).isEqualTo(5);
 	}
 	
 	@Test
-	void shouldFindAllHotels() {
-//		TODO
-		List<Hotel> hotel = (List<Hotel>) this.hotelService.findAll();
-		assertThat(hotel.size()==3);
-		
+	@Transactional
+	public void containsReview() {
+		List<Review> reviews = reviewService.findReviewByHotelId(1);
+		assertThat(reviews.size()>0);
+	}
+	
+	@Test
+	@Transactional
+	public void containsBookins() {
+		List<Booking> bookings= bookingService.findBookingsByHotelId(1);
+		assertThat(bookings.size()>0);
 	}
 	
 	@Test
 	@Transactional
 	public void shouldInsertHotelIntoDatabaseAndGenerateId() {
-//		TODO
 		Collection<Hotel>hotels = (Collection<Hotel>) this.hotelService.findAll();
 		int found = hotels.size();
 		
@@ -63,29 +72,10 @@ class HotelServiceTest {
 	
 	@Test
 	@Transactional
-	public void shouldDeleteHotelById() {
-//		TODO
-		Collection<Hotel> hotels = (Collection<Hotel>) this.hotelService.findAll();
-		int found = hotels.size();
-		System.out.println(">>>>>> HOTELES ANTES DE BORRAR: "+hotels.size() );
-		
-		bookingService.eliminarBookingsPorHotel(1);
-		reviewService.eliminarReviewsPorHotel(1);
-		this.hotelService.deleteById(1);
-		Collection<Hotel> hotels2 = (Collection<Hotel>) this.hotelService.findAll();
-		System.out.println(">>>>>> HOTELES DESPUES DE BORRAR: "+hotels2.size() );
-		assertThat(hotels2.size()).isEqualTo(found - 1);
-		
-		
-	}
-	
-	@Test
-	
 	public void shouldDeleteHotel() {
 
 		Collection<Hotel> hotels = (Collection<Hotel>) this.hotelService.findAll();
 		int found = hotels.size();
-		System.out.println("------------------------------------------------------>>>>>> HOTELES ANTES DE BORRAR: "+hotels.size() );
 		Hotel hotel = new Hotel();
 		hotel.setId(1);
 		hotel.setAforo(50);
@@ -97,32 +87,20 @@ class HotelServiceTest {
 		this.hotelService.delete(hotel);
 		
 		Collection<Hotel> hotels2 = (Collection<Hotel>) this.hotelService.findAll();
-		System.out.println("------------------------------------------------------>>>>>> HOTELES despues DE BORRAR: "+hotels2.size() );
 	
 		assertThat(hotels2.size()).isEqualTo(found -1);		
-	
 	}
 	
 	@Test
 	@Transactional
-	public void containsReview() {
-List<Review> reviews = reviewService.findReviewByHotelId(1);
-assertThat(reviews.size()>0);
-
+	public void shouldDeleteHotelById() {
+		Collection<Hotel> hotels = (Collection<Hotel>) this.hotelService.findAll();
+		int found = hotels.size();
+		
+		bookingService.eliminarBookingsPorHotel(1);
+		reviewService.eliminarReviewsPorHotel(1);
+		this.hotelService.deleteById(1);
+		Collection<Hotel> hotels2 = (Collection<Hotel>) this.hotelService.findAll();
+		assertThat(hotels2.size()).isEqualTo(found - 1);
 	}
-	
-	@Test
-	@Transactional
-	public void containsBookins() {
-	
-	
-		List<Booking> bookings= bookingService.findBookingsByHotelId(1);
-		assertThat(bookings.size()>0);
-	}
-	
-	
-	
-	
-	
 }
-

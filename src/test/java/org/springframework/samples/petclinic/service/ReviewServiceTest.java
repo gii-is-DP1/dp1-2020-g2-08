@@ -3,19 +3,13 @@ package org.springframework.samples.petclinic.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
-import org.hamcrest.core.IsNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.petclinic.model.Review;
-import org.springframework.samples.petclinic.model.Hotel;
-import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,11 +23,11 @@ public class ReviewServiceTest {
 	@Autowired
 	protected OwnerService ownerService;
 	
-	
 	@Test
 	@Transactional
 	public void shouldSaveReview() {
-//		Guarda una review
+		//Guarda una review
+		
 		List<Review> reviews = (List<Review>)reviewService.findAll();		
 		System.out.println("--------------------------------------Numero de reviews al inicio: "+reviews.size());
 		int tam = reviews.size();
@@ -55,8 +49,6 @@ public class ReviewServiceTest {
 		assertThat(reviews2.size()).isEqualTo(tam+1);
 	}
 	
-	
-	
 	@Test
 	@Transactional
 	public void shouldFindReviewBylId() {
@@ -65,13 +57,45 @@ public class ReviewServiceTest {
 		
 		assertThat(review1).isNotNull();
 		assertThat(review2).isNull();
+	}
 	
+	@Test
+	@Transactional
+	public void shouldDeleteReview() {
+		//Elimina review
+		
+		List<Review> reviews= (List<Review>) reviewService.findAll();
+		System.out.println("------------------------------------------------------>>>>>> REVIEWS ANTES DE BORRAR: "+reviews.size() );
+		
+		Review review =  reviewService.findReviewByHotelId(1).get(0);
+		reviewService.delete(review);
+		
+		List<Review> reviews2= (List<Review>) reviewService.findAll();
+		System.out.println("------------------------------------------------------>>>>>> REVIEWS DESPUES DE BORRAR: "+reviews2.size());
+		
+		assertThat(reviews2.size()== reviews.size()-1);
+	}
+	
+	@Test
+	@Transactional
+	public void shouldDeleteReviewBylId() {
+		//Elimina review dado su ID
+		
+		List<Review> reviews= (List<Review>) reviewService.findAll();
+		System.out.println("------------------------------------------------------>>>>>> REVIEWS ANTES DE BORRAR: "+reviews.size() );
+		
+		reviewService.deleteById(1);
+		
+		List<Review> reviews2= (List<Review>) reviewService.findAll();
+		System.out.println("------------------------------------------------------>>>>>> REVIEWS DESPUES DE BORRAR: "+reviews2.size());
+		
+		assertThat(reviews2.size()== reviews.size()-1);
 	}
 	
 	@Test
 	@Transactional
 	public void shouldFindReviewsByHotelId() {
-//		Encuentra listado de reviews de un hotel
+		//Encuentra listado de reviews de un hotel
 		
 		int res1=this.reviewService.findReviewByHotelId(1).size();
 		int res2=this.reviewService.findReviewByHotelId(2).size();
@@ -84,70 +108,26 @@ public class ReviewServiceTest {
 		assertThat(res4==0);
 	}
 	
-	
-	@Test
-	@Transactional
-	public void shouldDeleteReviewBylId() {
-//		Elimina review dado su ID
-		
-		
-		List<Review> reviews= (List<Review>) reviewService.findAll();
-		System.out.println("------------------------------------------------------>>>>>> REVIEWS ANTES DE BORRAR: "+reviews.size() );
-		
-		
-		reviewService.deleteById(1);
-		
-		List<Review> reviews2= (List<Review>) reviewService.findAll();
-		System.out.println("------------------------------------------------------>>>>>> REVIEWS DESPUES DE BORRAR: "+reviews2.size());
-		
-		assertThat(reviews2.size()== reviews.size()-1);
-		
-		
-		
-		
-	}
-	
-	@Test
-	@Transactional
-	public void shouldDeleteReview() {
-//		Elimina review
-		
-		List<Review> reviews= (List<Review>) reviewService.findAll();
-		System.out.println("------------------------------------------------------>>>>>> REVIEWS ANTES DE BORRAR: "+reviews.size() );
-		
-		Review review =  reviewService.findReviewByHotelId(1).get(0);
-		reviewService.delete(review);
-		
-		List<Review> reviews2= (List<Review>) reviewService.findAll();
-		System.out.println("------------------------------------------------------>>>>>> REVIEWS DESPUES DE BORRAR: "+reviews2.size());
-		
-		assertThat(reviews2.size()== reviews.size()-1);
-		
-	}
-	
 	@Test
 	@Transactional
 	public void shouldDeleteRevieswByHotellId() {
-//		Elimina las reviews de un hotel
+		//Elimina las reviews de un hotel
+		
 		List<Review> reviews= (List<Review>) reviewService.findReviewByHotelId(1);
 		System.out.println("------------------------------------------------------>>>>>> REVIEWS en el hotel 1 ANTES DE BORRAR: "+reviews.size() );
 		
 		reviewService.eliminarReviewsPorHotel(1);
 		
-		
 		List<Review> reviews2= (List<Review>) reviewService.findReviewByHotelId(1);
 		System.out.println("------------------------------------------------------>>>>>> REVIEWS del hotel 1 DESPUES DE BORRAR: "+reviews2.size());
 		
 		assertThat(reviews2.size()== reviews.size()-1);
-		
-		
 	}
 	
 	@Test
 	@Transactional
 	public void ownerShouldBeAbleToReview() {
-//		Comprueba que el owner tiene permiso para dejar reseñas
-	
+		//Comprueba que el owner tiene permiso para dejar reseñas
 		
 		Review review = new Review();
 		review.setDescription("Prueba");
@@ -158,16 +138,8 @@ public class ReviewServiceTest {
 		review.setTittle("prueba 1");
 		review.setOwner(ownerService.findOwnerById(12));
 		
-	
 		assertThat(reviewService.puedeReseñar(review , 12)==false);
 		assertThat(reviewService.puedeReseñar(review , 13)==true);
-	
 		assertThat(reviewService.puedeReseñar(review , 1)==true);
-		
 	}
-	
-	
-	
-	
-	
 }

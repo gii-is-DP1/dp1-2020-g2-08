@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
-
 import javax.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -24,6 +23,12 @@ class ClientServiceTests {
 	@Autowired
 	protected ClientService clientService;
 	 
+	@Test
+	@Transactional
+	public void findById() {
+		assertThat(this.clientService.findById(1).getFirstName()).isEqualTo("Manuel");
+	}
+	
 	@Test
 	@Transactional
 	public void shouldInsertClientPositivo() {
@@ -90,41 +95,4 @@ class ClientServiceTests {
         	this.clientService.saveClient(client);
         });
 	}
-	
-//	@Test
-//	@Transactional
-//	public void shouldInsertClientNegativo2() {
-//		Client mangarmar = clientService.findById(1);
-//		mangarmar.setFirstName("Usuario10");
-//		mangarmar.setLastName("us1");
-//		mangarmar.setNif("87341935A");
-//		
-//		Client client = new Client();
-//		client.setFirstName("Usuario10");
-//		client.setLastName("us1");
-//		client.setAddress("4, Evans Street");
-//		client.setCity("Wollongong");
-//		client.setTelephone("654789123");
-//		client.setEmail("usuario10@gmail.com");
-//		client.setNif("87341935A");
-//		client.setNameuser("Usuario10");
-//		client.setPass("supersecretpassword");
-//		
-//		HashSet<Coupon> coupons = new HashSet<Coupon>();
-//		Coupon coupon = new Coupon();
-//		coupon.setDiscount(10);
-//		coupon.setExpireDate(LocalDate.now());
-//		coupons.add(coupon);
-//		client.setCoupons(coupons);
-//                User user = new User();
-//                user.setUsername("Usuario10");
-//                user.setPassword("supersecretpassword");
-//                user.setEnabled(true);
-//                client.setUser(user);                
-//                
-//        Assertions.assertThrows(DuplicatedPetNameException.class, ()-> {
-//        	this.clientService.saveClient(client);
-//        });
-//	}
-
 }
