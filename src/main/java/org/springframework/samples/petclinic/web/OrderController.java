@@ -190,6 +190,7 @@ public class OrderController {
 				return "order/newOrderCarrito";
 			} else {
 				double precio=0.0;
+				String offer = "No";
 				int clientId = clientService.devolverClientId();
 				Client client = clientService.findById(clientId);
 				List<ProductoParaVenta> carrito = this.obtenerCarrito(request);
@@ -233,11 +234,22 @@ public class OrderController {
 				}
 				//Se aplica el cupon de descuento
 				if (order.getCoupon()!=null) {
-				precio=(precio*((100)-(order.getCoupon().getDiscount())))/100;
+					precio=(precio*((100)-(order.getCoupon().getDiscount())))/100;
+				}
+				if(order.getCoupon()==null && precio>=100 && precio<250) {
+					precio = precio * 0.95;
+					offer = "5%";
+					
+				}
+				if(order.getCoupon()==null && precio>=250) {
+					precio = precio * 0.90;
+					offer = "10%";
+					
 				}
 			
 				Order orderPrice =orderService.findOrderById(o.getId()).get();
 				orderPrice.setPriceOrder(precio);
+				orderPrice.setOffer(offer);
 				orderRepo.save(orderPrice);
 				// Al final limpiamos el carrito
 				this.limpiarCarrito(request);
