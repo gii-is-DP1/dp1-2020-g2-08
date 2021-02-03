@@ -10,7 +10,8 @@ import org.springframework.samples.petclinic.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import java.util.List;
-
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Controller
 public class WelcomeController {
 	

@@ -40,7 +40,8 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Controller
 @RequestMapping("/shop/admin")
 public class ShopAdminController {
@@ -124,6 +125,8 @@ public class ShopAdminController {
 
 		productService.save(product);
 		modelmap.addAttribute("message", "New product added");	
+		
+		log.info("Se ha añadido el producto "+product.getName());
 		return "redirect:/shop/admin/products";
 		}
 
@@ -136,6 +139,7 @@ public class ShopAdminController {
 		if (product.isPresent()) {
 			productService.delete(product.get());
 			modelmap.addAttribute("message", "Product delete succesfully");
+			log.info("Se ha borrado el producto "+product.get().getName());
 
 		} else {
 			modelmap.addAttribute("message", "Product not found");
@@ -185,6 +189,7 @@ public class ShopAdminController {
 		modelmap.addAttribute("productsNumber", productsNumber);
 		modelmap.addAttribute("category", category);
 
+		log.info("Se muestra el listado de productos de la categoria "+category);
 		return view;
 
 	}
@@ -200,6 +205,7 @@ public class ShopAdminController {
 		modelmap.addAttribute("clientsNumber", clientsNumber);
 		modelmap.addAttribute("clients", clients );
 //		modelmap.addAttribute("clientCoupons", clients.get(0).getCoupons().stream().findFirst().get() );
+		log.info("Se muestra el listado de clientes de la tienda");
 		return view;
 
 	}
@@ -208,6 +214,7 @@ public class ShopAdminController {
 	public String addCoupon(ModelMap modelmap) {
 		String view = "shop/admin/newCoupon";
 		modelmap.addAttribute("coupon", new Coupon());
+	
 		return view;
 	}
 
@@ -227,6 +234,7 @@ public class ShopAdminController {
 			couponRepository.save(coupon);
 		
 		modelmap.addAttribute("message", "New coupon added");	
+		log.info("Se añade un cupon de descuento del"+coupon.getDiscount()+" %");
 		return couponsList(modelmap);
 		}
 
@@ -243,7 +251,7 @@ public class ShopAdminController {
 		
 		couponService.delete(coupon);
 		modelmap.addAttribute("message", "El cupon se ha eliminado correctamente");
-			
+		log.info("Se elimina un cupon de descuento del"+coupon.getDiscount()+" %");
 		return couponsList(modelmap);
 
 	}
@@ -254,6 +262,7 @@ public class ShopAdminController {
 		String view = "shop/admin/couponList";
 		List<Coupon> coupons = (List<Coupon>) couponRepository.findAll();	
 			modelmap.addAttribute("coupons", coupons );
+			log.info("Muestra la lista de cupones de la bd");
 				return view;
 
 	}
@@ -267,6 +276,7 @@ public class ShopAdminController {
 			modelmap.addAttribute("coupons", coupons2 );
 			modelmap.addAttribute("client", client );
 			
+			log.info("Se muestran los cupones del cliente con id: "+clientId);
 				return  "shop/admin/couponListClient";
 
 	}
@@ -280,7 +290,7 @@ public class ShopAdminController {
 		
 		modelmap.addAttribute("ordersNumber", orders.size());
 		modelmap.addAttribute("orders", orders );
-		
+		log.info("Se muestran los pedidos de todos los clientes ");
 		return view;
 
 	}
@@ -294,7 +304,7 @@ public class ShopAdminController {
 		order.setState("Cancelled");
 		orderService.save(order);
 		modelmap.addAttribute("message", "The order is now cancelled");
-			
+		log.info("Se ha modificado ele stado del pedido a denegado");
 		return ordersList(modelmap);
 
 	}
@@ -304,7 +314,7 @@ public class ShopAdminController {
 		order.setState("Confirmed");
 		orderService.save(order);
 		modelmap.addAttribute("message", "The order is now confirm");
-			
+		log.info("Se ha modificado ele stado del pedido a confirmado");
 		return ordersList(modelmap);
 
 	}
@@ -315,7 +325,7 @@ public class ShopAdminController {
 		order.setState("In Progress");
 		orderService.save(order);
 		modelmap.addAttribute("message", "The order is now in progress");
-			
+		log.info("Se ha modificado ele stado del pedido a en progreso");
 		return ordersList(modelmap);
 
 	}
@@ -339,6 +349,7 @@ public class ShopAdminController {
 		client.getCoupons().add(coupon);
 		clientService.saveClient(client);
 		modelmap.addAttribute("message", "El cupon se ha añadido al cliente");
+		log.info("Se ha añadido el cupon a "+client.getNameuser());
 		}	
 		return clientCouponsList(modelmap, clientId); 
 
@@ -352,7 +363,7 @@ public class ShopAdminController {
 		client.getCoupons().remove(coupon);
 		clientService.saveClient(client);
 		modelmap.addAttribute("message", "El cupon se ha eliminado del cliente");
-			
+		log.info("Se ha eliminado el cupon de "+client.getNameuser());
 		return clientCouponsList(modelmap, clientId);
 
 	}
@@ -398,6 +409,7 @@ public class ShopAdminController {
 			modelmap.addAttribute("sales", sales);
 		}
 
+		log.info("Se muestra el resumen de ventas");
 		return view;
 	}
 	

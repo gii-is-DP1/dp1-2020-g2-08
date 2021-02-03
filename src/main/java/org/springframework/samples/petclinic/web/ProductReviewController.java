@@ -20,7 +20,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Controller
 public class ProductReviewController {
 	
@@ -88,6 +89,7 @@ public class ProductReviewController {
 			prodReviewService.save(review);
 //			prodService.addRate(review);
 
+			log.info("Se ha creado la review correctamente");
 			modelmap.addAttribute("message", "The product review has been created successfully");
 			return "shop/home";
 		}

@@ -29,7 +29,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Controller
 @RequestMapping("/hotel/booking/")
 public class BookingController {
@@ -125,6 +126,8 @@ public class BookingController {
 				creaModelMap(hotel, owner, ownerId, pets, booking, modelmap);
 
 				// Redirige al formulario editBooking.jsp
+				log.info("Muestra el formulario para crear un nuevo booking");
+
 				return "hotel/editBooking";
 			} else {
 				modelmap.put("message", "Para poder crear una reserva, tienes que estar logueado como owner");
@@ -156,6 +159,8 @@ public class BookingController {
 
 		} else {
 			
+			log.info("Se valida y se crea el booking");
+
 			return validaBooking(modelmap, booking, ownerId, hotelId);
 
 		}
@@ -194,7 +199,7 @@ public class BookingController {
 		if (result.hasErrors()) {
 			calendario(modelmap, booking.getHotel().getId()); // añade las restricciones de dias al calendario
 			creaModelMap(hotel, owner, ownerId, pets, booking, modelmap);
-			modelmap.put("message", "Hubo un error al crear el booking");
+			modelmap.put("message", "Hubo un error al editar el booking");
 			return "hotel/editBooking";
 		} else {
 			if (bookingService.estaOcupadoEnRango(booking.getStartDate(), booking.getEndDate(),
@@ -210,6 +215,8 @@ public class BookingController {
 
 				this.bookingService.save(bookingToUpdate);
 				modelmap.addAttribute("message", "La reserva se ha editado correctamente");
+				log.info("La reserva se ha editado correctamente");
+
 				return hotelController.listadoMisReservas(modelmap);
 			}
 		}
@@ -226,8 +233,10 @@ public class BookingController {
 
 				bookingService.delete(bookingService.findBookingById(bookingId));
 				modelmap.addAttribute("message", "Booking borrado con éxito!");
+				log.info("La reserva se ha borrado correctamente como owner");
 
 			} else {
+				log.info("La reserva no se ha borrado porque es de otro owner");
 				modelmap.addAttribute("message", "No puedes borrar bookings de otro owner");
 			}
 
@@ -236,6 +245,7 @@ public class BookingController {
 		} else if (ownerService.esAdmin()) {
 			bookingService.deleteById(bookingId);
 			modelmap.addAttribute("message", "Booking borrado con éxito!");
+			log.info("La reserva se ha borrado correctamente como administrador");
 			return hotelController.listadoReservas(modelmap);
 		}
 

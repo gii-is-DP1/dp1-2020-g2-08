@@ -23,7 +23,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Controller
 @RequestMapping("/hotel")
 public class HotelController {
@@ -96,9 +97,12 @@ public class HotelController {
 			modelmap.addAttribute("hotel", hotel);
 			
 			// Manda todos los atributos a la vista listaReservas.jsp
+			
+			log.info("Se muestran todas las reservas, hoteles y reviews");
 			return "hotel/listaReservas";
 
 		} else {
+			log.info("No se muestran hoteles porque no hay ninguno en la bd");
 			modelmap.addAttribute("message", "No hay hoteles disponibles en este momento");
 			return "welcome";
 		}
@@ -125,6 +129,7 @@ public class HotelController {
 			modelmap.addAttribute("hoteles", hoteles);
 			modelmap.addAttribute("numBookings", numBookings);
 			modelmap.addAttribute("numReviews", numReviews);
+			log.info("Se muestran todos los hoteles");
 			return "hotel/listadoHoteles";
 
 		} else {
@@ -142,7 +147,7 @@ public class HotelController {
 
 			// Obtiene el id del owner para redirigir a la vista de reservas de ese owner
 			devolverOwner(modelmap);
-
+			log.info("Se muestran todas las reservas del owner ");
 			return listadoReservasPorOwner((int) modelmap.getAttribute("ownerId"), modelmap);
 
 		} else {
@@ -163,7 +168,7 @@ public class HotelController {
 		modelmap.addAttribute("bookings", bookings);
 		modelmap.addAttribute("owner", ownerService.findOwnerById(ownerId));
 		modelmap.addAttribute("ownerId", ownerId);
-
+		log.info("Se muestran todas las reservas del owner: "+ownerId);
 		// Redirige a misReservas.jsp
 		return "hotel/misReservas";
 
@@ -180,6 +185,7 @@ public class HotelController {
 		modelmap.addAttribute("hotel", hotel);
 
 		// Redirige al formulario editBooking.jsp
+		log.info("Se muestrael formulario de crear hotel");
 		return "hotel/newHotel";
 
 	}
@@ -191,6 +197,7 @@ public class HotelController {
 		hotelService.save(hotel);
 		modelmap.clear();
 		String vista = listadoHoteles(modelmap);
+		log.info("Se crea un nuevo hotel en :"+hotel.getCity()+" con aforo de "+hotel.getAforo());
 		return vista;
 
 	}
@@ -204,7 +211,7 @@ public class HotelController {
 		// reviews y bookings, por lo que procedemos a borrarlo
 		hotelService.deleteById(hotelId);
 		modelmap.addAttribute("message", "Hotel borrado con éxito!");
-
+		log.info("Se borra de la bd el hotel "+hotelId);
 		return listadoHoteles(modelmap);
 	}
 

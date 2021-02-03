@@ -20,7 +20,8 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Controller
 @RequestMapping("hotel/review")
 public class ReviewController {
@@ -64,6 +65,7 @@ public class ReviewController {
 			List<Hotel> hoteles = (List<Hotel>) hotelService.findAll();
 			modelmap.addAttribute("review", review);
 			modelmap.addAttribute("hoteles", hoteles);
+			log.info("Se muestrael formulario de crear reviews");
 			return "reviews/newReview";
 
 		} else {
@@ -97,11 +99,14 @@ public class ReviewController {
 				modelmap.addAttribute("message",
 						"Review creada con éxito en el hotel de " + review.getHotel().getCity());
 
+				log.info("Se ha creado correctamente una review de"+review.getStars()+" estrellas");
 				// Cuando acaba, redirecciona a la lista de reservas, donde esta la review
 				return hotelController.listadoReservas(modelmap);
 			} else {
 				modelmap.addAttribute("message",
 						"No puedes crear otra reserva para el hotel de " + review.getHotel().getCity());
+				
+				log.info("No se puede crear otra review para este hotel porque ya hay una creada");
 				return crearReviewHotel(modelmap);
 			}
 
@@ -120,7 +125,7 @@ public class ReviewController {
 			if ((ownerService.devolverOwnerId().equals(review.getOwner().getId()))) {
 
 				reviewService.deleteById(reviewId);
-
+				log.info("Se ha borrado la review correctamente");
 				modelmap.addAttribute("message", "Review borrada con éxito!! ");
 
 			} else {
@@ -131,7 +136,8 @@ public class ReviewController {
 
 		} else if (ownerService.esAdmin()) {
 			reviewService.deleteById(reviewId);
-			modelmap.addAttribute("message", "Booking borrado con éxito!");
+			modelmap.addAttribute("message", "Review borrada con éxito!");
+			log.info("Se ha borrado la review correctamente por parte del admin");
 
 		} else {
 			modelmap.addAttribute("message", "No puedes borrar reviews de otros owners");
