@@ -1,0 +1,132 @@
+2021-02-03 13:05:49,476 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting PetclinicApplication on DESKTOP-JLVBIMM with PID 4576 (C:\Users\alvar\git\dp1-2020-g2-08\target\classes started by alvar in C:\Users\alvar\git\dp1-2020-g2-08)
+2021-02-03 13:05:49,481 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-02-03 13:05:49,549 INFO org.springframework.boot.logging.DeferredLog [restartedMain] The Class-Path manifest attribute in C:\Users\alvar\.m2\repository\org\glassfish\jaxb\jaxb-runtime\2.3.2\jaxb-runtime-2.3.2.jar referenced one or more files that do not exist: file:/C:/Users/alvar/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/jakarta.xml.bind-api-2.3.2.jar,file:/C:/Users/alvar/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/txw2-2.3.2.jar,file:/C:/Users/alvar/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/istack-commons-runtime-3.0.8.jar,file:/C:/Users/alvar/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/stax-ex-1.8.1.jar,file:/C:/Users/alvar/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/FastInfoset-1.2.16.jar,file:/C:/Users/alvar/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/jakarta.activation-api-1.2.1.jar
+2021-02-03 13:05:49,552 INFO org.springframework.boot.logging.DeferredLog [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2021-02-03 13:05:49,552 INFO org.springframework.boot.logging.DeferredLog [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-02-03 13:05:51,083 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2021-02-03 13:05:51,236 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 141ms. Found 17 JPA repository interfaces.
+2021-02-03 13:05:51,849 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [restartedMain] Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2021-02-03 13:05:52,623 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+2021-02-03 13:05:52,645 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+2021-02-03 13:05:52,646 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting service [Tomcat]
+2021-02-03 13:05:52,647 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.30]
+2021-02-03 13:05:52,995 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2021-02-03 13:05:53,001 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Initializing Spring embedded WebApplicationContext
+2021-02-03 13:05:53,001 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 3449 ms
+2021-02-03 13:05:53,198 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+2021-02-03 13:05:53,575 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+2021-02-03 13:05:53,588 INFO org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration [restartedMain] H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2021-02-03 13:05:54,124 INFO org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+2021-02-03 13:05:54,271 INFO org.hibernate.Version [restartedMain] HHH000412: Hibernate Core {5.4.10.Final}
+2021-02-03 13:05:54,543 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [restartedMain] HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2021-02-03 13:05:54,750 INFO org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2021-02-03 13:05:56,249 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2021-02-03 13:05:56,261 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-02-03 13:05:56,420 INFO org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+2021-02-03 13:05:56,639 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-02-03 13:05:58,362 INFO org.springframework.security.web.DefaultSecurityFilterChain [restartedMain] Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3cc6e946, org.springframework.security.web.context.SecurityContextPersistenceFilter@60046f69, org.springframework.security.web.header.HeaderWriterFilter@2677b1c, org.springframework.security.web.csrf.CsrfFilter@600e11d, org.springframework.security.web.authentication.logout.LogoutFilter@2b887f02, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@14a4cbeb, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@3e814dfb, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@6a0ca4c7, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@ad7db92, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@48b63ace, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@21b37c03, org.springframework.security.web.session.SessionManagementFilter@37f6636e, org.springframework.security.web.access.ExceptionTranslationFilter@2bc4ceb3, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@3a6bc82b]
+2021-02-03 13:05:58,547 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [restartedMain] Initializing ExecutorService 'applicationTaskExecutor'
+2021-02-03 13:05:59,716 INFO org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver [restartedMain] Exposing 13 endpoint(s) beneath base path '/actuator'
+2021-02-03 13:05:59,773 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting ProtocolHandler ["http-nio-8080"]
+2021-02-03 13:05:59,829 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat started on port(s): 8080 (http) with context path ''
+2021-02-03 13:05:59,832 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started PetclinicApplication in 10.846 seconds (JVM running for 11.619)
+2021-02-03 13:05:59,900 INFO org.springframework.samples.petclinic.PetclinicApplication [restartedMain] Se ha lanzado la aplicacion
+2021-02-03 13:05:59,940 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2021-02-03 13:05:59,941 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+2021-02-03 13:05:59,954 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 13 ms
+2021-02-03 13:06:10,173 INFO org.springframework.samples.petclinic.web.ShopClientController [http-nio-8080-exec-10] Se muestran los productos de la categoria Food
+2021-02-03 13:06:13,688 INFO org.springframework.samples.petclinic.web.HotelController [http-nio-8080-exec-2] Se muestran todas las reservas, hoteles y reviews
+2021-02-03 13:06:15,168 INFO org.springframework.samples.petclinic.web.HotelController [http-nio-8080-exec-3] Se muestran todas las reservas del owner 
+2021-02-03 13:06:15,193 INFO org.springframework.samples.petclinic.web.HotelController [http-nio-8080-exec-3] Se muestran todas las reservas del owner: 12
+2021-02-03 13:06:18,086 INFO org.springframework.samples.petclinic.web.BookingController [http-nio-8080-exec-5] Muestra el formulario para crear un nuevo booking
+2021-02-03 13:06:21,780 INFO org.springframework.samples.petclinic.web.BookingController [http-nio-8080-exec-7] Se valida y se crea el booking
+2021-02-03 13:06:21,816 INFO org.springframework.samples.petclinic.web.HotelController [http-nio-8080-exec-7] Se muestran todas las reservas del owner: 12
+2021-02-03 13:06:23,659 INFO org.springframework.samples.petclinic.web.AnimalController [http-nio-8080-exec-8] Se muestra el listado de animales de los refugios
+2021-02-03 13:06:25,133 INFO org.springframework.samples.petclinic.web.AnimalController [http-nio-8080-exec-9] Se muestran los detalles del animal
+2021-02-03 13:07:53,745 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [Thread-5] Shutting down ExecutorService 'applicationTaskExecutor'
+2021-02-03 13:07:53,754 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [Thread-5] Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-02-03 13:07:53,755 INFO org.hibernate.tool.schema.internal.SchemaDropperImpl$DelayedDropActionImpl [Thread-5] HHH000477: Starting delayed evictData of schema as part of SessionFactory shut-down'
+2021-02-03 13:07:53,766 ERROR org.hibernate.tool.schema.internal.SchemaDropperImpl$DelayedDropActionImpl [Thread-5] HHH000478: Unsuccessful: 
+    drop table bookings if exists
+2021-02-03 13:07:53,767 ERROR org.hibernate.tool.schema.internal.SchemaDropperImpl$DelayedDropActionImpl [Thread-5] HHH000478: Unsuccessful: 
+    drop table clients if exists
+2021-02-03 13:07:53,769 ERROR org.hibernate.tool.schema.internal.SchemaDropperImpl$DelayedDropActionImpl [Thread-5] HHH000478: Unsuccessful: 
+    drop table coupons if exists
+2021-02-03 13:07:53,770 ERROR org.hibernate.tool.schema.internal.SchemaDropperImpl$DelayedDropActionImpl [Thread-5] HHH000478: Unsuccessful: 
+    drop table hotel if exists
+2021-02-03 13:07:53,771 ERROR org.hibernate.tool.schema.internal.SchemaDropperImpl$DelayedDropActionImpl [Thread-5] HHH000478: Unsuccessful: 
+    drop table orders if exists
+2021-02-03 13:07:53,773 ERROR org.hibernate.tool.schema.internal.SchemaDropperImpl$DelayedDropActionImpl [Thread-5] HHH000478: Unsuccessful: 
+    drop table owners if exists
+2021-02-03 13:07:53,775 ERROR org.hibernate.tool.schema.internal.SchemaDropperImpl$DelayedDropActionImpl [Thread-5] HHH000478: Unsuccessful: 
+    drop table pets if exists
+2021-02-03 13:07:53,781 ERROR org.hibernate.tool.schema.internal.SchemaDropperImpl$DelayedDropActionImpl [Thread-5] HHH000478: Unsuccessful: 
+    drop table specialties if exists
+2021-02-03 13:07:53,782 ERROR org.hibernate.tool.schema.internal.SchemaDropperImpl$DelayedDropActionImpl [Thread-5] HHH000478: Unsuccessful: 
+    drop table types if exists
+2021-02-03 13:07:53,782 ERROR org.hibernate.tool.schema.internal.SchemaDropperImpl$DelayedDropActionImpl [Thread-5] HHH000478: Unsuccessful: 
+    drop table users if exists
+2021-02-03 13:07:54,004 WARN org.springframework.beans.factory.support.DisposableBeanAdapter [Thread-5] Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: La base de datos ya esta cerrada (para des-habilitar el cerrado automatico durante el shutdown de la VM, agregue ";DB_CLOSE_ON_EXIT=FALSE" a la URL de conexión)
+Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-200]
+2021-02-03 13:07:54,004 INFO com.zaxxer.hikari.HikariDataSource [Thread-5] HikariPool-1 - Shutdown initiated...
+2021-02-03 13:07:54,008 INFO com.zaxxer.hikari.HikariDataSource [Thread-5] HikariPool-1 - Shutdown completed.
+2021-02-03 13:07:54,446 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting PetclinicApplication on DESKTOP-JLVBIMM with PID 4576 (C:\Users\alvar\git\dp1-2020-g2-08\target\classes started by alvar in C:\Users\alvar\git\dp1-2020-g2-08)
+2021-02-03 13:07:54,447 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2021-02-03 13:07:55,125 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2021-02-03 13:07:55,219 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 93ms. Found 17 JPA repository interfaces.
+2021-02-03 13:07:55,371 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [restartedMain] Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2021-02-03 13:07:55,540 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+2021-02-03 13:07:55,541 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+2021-02-03 13:07:55,542 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting service [Tomcat]
+2021-02-03 13:07:55,542 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.30]
+2021-02-03 13:07:55,691 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2021-02-03 13:07:55,694 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Initializing Spring embedded WebApplicationContext
+2021-02-03 13:07:55,694 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 1243 ms
+2021-02-03 13:07:55,741 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-2 - Starting...
+2021-02-03 13:07:55,744 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-2 - Start completed.
+2021-02-03 13:07:55,745 INFO org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration [restartedMain] H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2021-02-03 13:07:55,899 INFO org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+2021-02-03 13:07:55,907 INFO org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2021-02-03 13:07:56,293 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2021-02-03 13:07:56,294 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-02-03 13:07:56,299 INFO org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+2021-02-03 13:07:56,382 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-02-03 13:07:56,831 INFO org.springframework.security.web.DefaultSecurityFilterChain [restartedMain] Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1083ed0c, org.springframework.security.web.context.SecurityContextPersistenceFilter@311877cd, org.springframework.security.web.header.HeaderWriterFilter@2fac94c0, org.springframework.security.web.csrf.CsrfFilter@7e71d56b, org.springframework.security.web.authentication.logout.LogoutFilter@1f36d196, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@5c092793, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@117d7ad7, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@5cd9a867, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@a1ecfb6, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@41df50a1, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3aca3e90, org.springframework.security.web.session.SessionManagementFilter@4132280d, org.springframework.security.web.access.ExceptionTranslationFilter@1e74b4b, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@6cb15894]
+2021-02-03 13:07:56,901 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [restartedMain] Initializing ExecutorService 'applicationTaskExecutor'
+2021-02-03 13:07:57,353 INFO org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver [restartedMain] Exposing 13 endpoint(s) beneath base path '/actuator'
+2021-02-03 13:07:57,376 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting ProtocolHandler ["http-nio-8080"]
+2021-02-03 13:07:57,383 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat started on port(s): 8080 (http) with context path ''
+2021-02-03 13:07:57,384 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started PetclinicApplication in 2.982 seconds (JVM running for 129.171)
+2021-02-03 13:07:57,387 INFO org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener [restartedMain] Condition evaluation unchanged
+2021-02-03 13:07:57,388 INFO org.springframework.samples.petclinic.PetclinicApplication [restartedMain] Se ha lanzado la aplicacion
+2021-02-03 13:08:10,830 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2021-02-03 13:08:10,831 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+2021-02-03 13:08:10,834 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 3 ms
+2021-02-03 13:08:33,274 INFO org.springframework.samples.petclinic.web.ShopClientController [http-nio-8080-exec-1] Se muestran los productos de la categoria Accessories
+2021-02-03 13:09:21,222 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [Thread-10] Shutting down ExecutorService 'applicationTaskExecutor'
+2021-02-03 13:09:21,226 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [Thread-10] Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-02-03 13:09:21,227 INFO org.hibernate.tool.schema.internal.SchemaDropperImpl$DelayedDropActionImpl [Thread-10] HHH000477: Starting delayed evictData of schema as part of SessionFactory shut-down'
+2021-02-03 13:09:21,230 ERROR org.hibernate.tool.schema.internal.SchemaDropperImpl$DelayedDropActionImpl [Thread-10] HHH000478: Unsuccessful: 
+    drop table bookings if exists
+2021-02-03 13:09:21,231 ERROR org.hibernate.tool.schema.internal.SchemaDropperImpl$DelayedDropActionImpl [Thread-10] HHH000478: Unsuccessful: 
+    drop table clients if exists
+2021-02-03 13:09:21,233 ERROR org.hibernate.tool.schema.internal.SchemaDropperImpl$DelayedDropActionImpl [Thread-10] HHH000478: Unsuccessful: 
+    drop table coupons if exists
+2021-02-03 13:09:21,233 ERROR org.hibernate.tool.schema.internal.SchemaDropperImpl$DelayedDropActionImpl [Thread-10] HHH000478: Unsuccessful: 
+    drop table hotel if exists
+2021-02-03 13:09:21,234 ERROR org.hibernate.tool.schema.internal.SchemaDropperImpl$DelayedDropActionImpl [Thread-10] HHH000478: Unsuccessful: 
+    drop table orders if exists
+2021-02-03 13:09:21,235 ERROR org.hibernate.tool.schema.internal.SchemaDropperImpl$DelayedDropActionImpl [Thread-10] HHH000478: Unsuccessful: 
+    drop table owners if exists
+2021-02-03 13:09:21,237 ERROR org.hibernate.tool.schema.internal.SchemaDropperImpl$DelayedDropActionImpl [Thread-10] HHH000478: Unsuccessful: 
+    drop table pets if exists
+2021-02-03 13:09:21,242 ERROR org.hibernate.tool.schema.internal.SchemaDropperImpl$DelayedDropActionImpl [Thread-10] HHH000478: Unsuccessful: 
+    drop table specialties if exists
+2021-02-03 13:09:21,242 ERROR org.hibernate.tool.schema.internal.SchemaDropperImpl$DelayedDropActionImpl [Thread-10] HHH000478: Unsuccessful: 
+    drop table types if exists
+2021-02-03 13:09:21,243 ERROR org.hibernate.tool.schema.internal.SchemaDropperImpl$DelayedDropActionImpl [Thread-10] HHH000478: Unsuccessful: 
+    drop table users if exists
+2021-02-03 13:09:21,451 WARN org.springframework.beans.factory.support.DisposableBeanAdapter [Thread-10] Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: La base de datos ya esta cerrada (para des-habilitar el cerrado automatico durante el shutdown de la VM, agregue ";DB_CLOSE_ON_EXIT=FALSE" a la URL de conexión)
+Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-200]
+2021-02-03 13:09:21,452 INFO com.zaxxer.hikari.HikariDataSource [Thread-10] HikariPool-2 - Shutdown initiated...
+2021-02-03 13:09:21,454 INFO com.zaxxer.hikari.HikariDataSource [Thread-10] HikariPool-2 - Shutdown completed.

@@ -39,6 +39,8 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Arjen Poutsma
  * @author Michael Isvy
  */
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Controller
 public class OwnerController {
 

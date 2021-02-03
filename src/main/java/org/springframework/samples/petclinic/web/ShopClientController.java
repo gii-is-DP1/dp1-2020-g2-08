@@ -15,7 +15,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Controller
 @RequestMapping("/shop")
 public class ShopClientController {
@@ -58,7 +59,7 @@ public class ShopClientController {
 		modelmap.addAttribute("product", productsByCategory);
 		modelmap.addAttribute("productsNumber", productsNumber);
 		modelmap.addAttribute("category", category);
-
+		log.info("Se muestran los productos de la categoria "+category);
 		return view;
 
 	}
@@ -72,7 +73,9 @@ public class ShopClientController {
 			List<Product> products = (List<Product>) productService.findAll();
 			modelmap.addAttribute("review", review);
 			modelmap.addAttribute("product", products);
+			log.info("Se muestra el formulario de valorar producto");
 			return "reviews/newProductReview";
+			
 		}
 		
 		else {
