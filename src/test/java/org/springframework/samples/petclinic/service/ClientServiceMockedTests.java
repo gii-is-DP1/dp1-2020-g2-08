@@ -1,6 +1,7 @@
 package org.springframework.samples.petclinic.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
@@ -17,6 +18,7 @@ import org.springframework.samples.petclinic.model.Client;
 import org.springframework.samples.petclinic.model.Coupon;
 import org.springframework.samples.petclinic.model.User;
 import org.springframework.samples.petclinic.repository.ClientRepository;
+
 
 @ExtendWith(MockitoExtension.class)
 class ClientServiceMockedTests {
@@ -106,5 +108,10 @@ class ClientServiceMockedTests {
         Client client = clients.iterator().next();
                 
         assertThat(client.getPass()).isEqualTo(null);
+        assertThrows(NullPointerException.class, () -> {
+        	client.getPass();
+        	this.clientService.saveClient(client);
+        });
+        		
 	}
 }

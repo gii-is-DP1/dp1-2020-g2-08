@@ -24,6 +24,14 @@ public class CouponService {
 	@Autowired
 	private CouponRepository couponRepo;
  
+	public CouponService(CouponRepository couponRepository) {
+		this.couponRepo = couponRepository;
+	}
+
+	public Iterable<Coupon> findAll() {
+		return couponRepo.findAll();
+	}
+	
 	@Transactional
 	public Set<Coupon> findCouponByClientId(int clientId) {
 		Client client = clientRepo.findById(clientId).get();
