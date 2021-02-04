@@ -16,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.petclinic.model.Order;
 import org.springframework.samples.petclinic.model.ProductoVendido;
+import org.springframework.samples.petclinic.repository.ProductoVendidoRepository;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
@@ -27,6 +28,8 @@ public class OrderServiceTest {
 	protected ClientService clientService;
 	@Autowired
 	protected CouponService couponService;
+	@Autowired
+	protected ProductoVendidoRepository productoVendidoRepository;
 	
 	@Test
 	@Transactional
@@ -55,8 +58,11 @@ public class OrderServiceTest {
 	@Test
 	@Transactional
 	public void deleteById() {
+		Order order = new Order();
+		this.orderService.save(order);
 		Collection<Order> pedidos = (Collection<Order>) this.orderService.findAll();
-		this.orderService.deleteById(2);
+		
+		this.orderService.deleteById(6);
 		Collection<Order> pedidos2 = (Collection<Order>) this.orderService.findAll();
 		assertThat(pedidos.size()-1).isEqualTo(pedidos2.size());
 	}
@@ -64,9 +70,12 @@ public class OrderServiceTest {
 	@Test
 	@Transactional
 	public void delete() {
+		Order order = new Order();
+		this.orderService.save(order);
 		Collection<Order> pedidos = (Collection<Order>) this.orderService.findAll();
-		Order order = this.orderService.findOrderById(2).get();
+	
 		this.orderService.delete(order);
+		
 		Collection<Order> pedidos2 = (Collection<Order>) this.orderService.findAll();
 		assertThat(pedidos.size()-1).isEqualTo(pedidos2.size());
 	}
@@ -95,19 +104,5 @@ public class OrderServiceTest {
 	
 		assertThat(pedidos2.size()).isEqualTo(pedidos.size()+1);
 	}
-	
-//	@Test
-//	@Transactional
-//	public void saveOrderError() {
-//		
-//		Order order = new Order();
-//		
-//		this.orderService.save(order);
-//		
-//		Assertions.assertThrows(ConstraintViolationException.class, ()-> {
-//        	order.getAddress();
-//        	this.orderService.save(order);
-//        });
-//	}
 	
 }

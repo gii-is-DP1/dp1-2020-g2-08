@@ -40,8 +40,10 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
+
 @Controller
 @RequestMapping("/shop/admin")
 public class ShopAdminController {
@@ -150,7 +152,7 @@ public class ShopAdminController {
 
 	@GetMapping(path = "/products/edit/{productId}")
 	public String edit(@PathVariable("productId") int productId, ModelMap modelmap) {
-		Optional<Product> product = this.productService.findProductById(productId);
+		Product product = this.productService.findProductById(productId).get();
 		modelmap.put("product", product);
 		modelmap.addAttribute("categories", categoryList);
 		modelmap.addAttribute("offers", offerOptions);
@@ -160,7 +162,7 @@ public class ShopAdminController {
 
 	@PostMapping(value = "/products/edit/{productId}")
 	public String processUpdateForm(@Valid Product product, BindingResult result,
-			@PathVariable("productId") int productId, ModelMap modelmap) throws DuplicatedPetNameException {
+			@PathVariable("productId") int productId, ModelMap modelmap, @RequestParam(value = "version", required=false) Integer version) {
 		if (result.hasErrors()) {
 			modelmap.put("product", product);
 			modelmap.addAttribute("categories", categoryList);
@@ -168,6 +170,10 @@ public class ShopAdminController {
 			return "shop/admin/editProduct";
 		} else {
 			Product productToUpdate = this.productService.findProductById(productId).get();
+			if(productToUpdate.getVersion()!=version) {
+				modelmap.put("message","Concurrent modification of product! Try again!");
+				return edit(productId,modelmap);
+				}
 			productToUpdate.setCategory(product.getCategory());
 			productToUpdate.setName(product.getName());
 			productToUpdate.setPrice(product.getPrice());

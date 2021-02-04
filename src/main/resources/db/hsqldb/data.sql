@@ -34,7 +34,7 @@ INSERT INTO authorities(id,username,authority) VALUES (6,'isamunval','owner');
 INSERT INTO users(username,password,enabled) VALUES ('mangarmar17','mangarmar17',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (7,'mangarmar17','owner');
 
-INSERT INTO vets VALUES (1, 'James', 'Carter');
+INSERT INTO vets VALUES (1,'James', 'Carter');
 INSERT INTO vets VALUES (2, 'Helen', 'Leary');
 INSERT INTO vets VALUES (3, 'Linda', 'Douglas');
 INSERT INTO vets VALUES (4, 'Rafael', 'Ortega');
@@ -98,22 +98,22 @@ INSERT INTO hotel(id,aforo,ocupadas,city) VALUES (1, 4, 0, 'Sevilla');
 INSERT INTO hotel(id,aforo,ocupadas,city) VALUES (2, 5, 0, 'Cordoba');
 INSERT INTO hotel(id,aforo,ocupadas,city) VALUES (3, 10, 0, 'Malaga');
 
-INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (1, '2020-12-10', '2020-12-11',1,1,1);
-INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (2, '2020-12-10', '2020-12-12',1,2,2);
-INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (3, '2020-12-10', '2020-12-13',1,3,3);
-INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (4, '2020-12-10', '2020-12-14',1,3,3);
-INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (5, '2020-12-10', '2020-12-15',1,3,3);
-INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (6, '2020-12-10', '2020-12-16',1,3,3);
-INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (7, '2020-12-10', '2020-12-17',1,3,3);
-INSERT INTO bookings(id,start_date,end_date,hotel_id,pet_id,owner_id) VALUES (8, '2020-12-10', '2020-12-17',1,3,3);
+INSERT INTO bookings(id, version, start_date,end_date,hotel_id,pet_id,owner_id) VALUES (1, 0, '2020-12-10', '2020-12-11',1,1,1);
+INSERT INTO bookings(id, version, start_date,end_date,hotel_id,pet_id,owner_id) VALUES (2, 0, '2020-12-10', '2020-12-12',1,2,2);
+INSERT INTO bookings(id, version, start_date,end_date,hotel_id,pet_id,owner_id) VALUES (3, 0, '2020-12-10', '2020-12-13',1,3,3);
+INSERT INTO bookings(id, version, start_date,end_date,hotel_id,pet_id,owner_id) VALUES (4, 0,'2020-12-10', '2020-12-14',1,3,3);
+INSERT INTO bookings(id, version, start_date,end_date,hotel_id,pet_id,owner_id) VALUES (5, 0,'2020-12-10', '2020-12-15',1,3,3);
+INSERT INTO bookings(id, version, start_date,end_date,hotel_id,pet_id,owner_id) VALUES (6, 0,'2020-12-10', '2020-12-16',1,3,3);
+INSERT INTO bookings(id, version, start_date,end_date,hotel_id,pet_id,owner_id) VALUES (7, 0,'2020-12-10', '2020-12-17',1,3,3);
+INSERT INTO bookings(id, version, start_date,end_date,hotel_id,pet_id,owner_id) VALUES (8, 0,'2020-12-10', '2020-12-17',1,3,3);
 
 
 
 
-INSERT INTO products(id, category, in_offer, name, price) VALUES (1, 'Pets', 'No', 'Clown Fish', '6.0');
-INSERT INTO products(id, category, in_offer, name, price) VALUES (2, 'Toys', 'Yes', 'Dog´s Ball', '8.75');
-INSERT INTO products(id, category, in_offer, name, price) VALUES (3, 'Food', 'Yes', 'Pipes for birds', '5.0');
-INSERT INTO products(id, category, in_offer, name, price) VALUES (4, 'Accessories', 'No', 'Dog´s belt', '12.0');
+INSERT INTO products(id, version, category, in_offer, name, price) VALUES (1, 0, 'Pets', 'No', 'Clown Fish', '6.0');
+INSERT INTO products(id, version, category, in_offer, name, price) VALUES (2, 0, 'Toys', 'Yes', 'Dog´s Ball', '8.75');
+INSERT INTO products(id, version, category, in_offer, name, price) VALUES (3, 0, 'Food', 'Yes', 'Pipes for birds', '5.0');
+INSERT INTO products(id, version, category, in_offer, name, price) VALUES (4, 0, 'Accessories', 'No', 'Dog´s belt', '12.0');
 
 
 

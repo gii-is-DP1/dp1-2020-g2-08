@@ -14,6 +14,7 @@
         
 
             <form:form modelAttribute="product" class="form-horizontal">
+            <input type="hidden" name="version" value="${product.version}"/>       
             <div class="form-group has-feedback">
                 <petclinic:inputField label="Name" name="name"/>
                 <petclinic:inputField label="Price" name="price"/>

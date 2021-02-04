@@ -1,9 +1,12 @@
 package org.springframework.samples.petclinic.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Collection;
 import java.util.List;
+
+import javax.validation.ConstraintViolationException;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +71,24 @@ class HotelServiceTest {
 		assertThat(hotels.size()).isEqualTo(found+1);
 		this.hotelService.save(nuevoHotel);
 		assertThat(nuevoHotel.getId()).isNotNull();
+	}
+	
+	@Transactional
+	public void shouldInsertHotelIntoDatabaseAndGenerateIdError() {
+		Collection<Hotel>hotels = (Collection<Hotel>) this.hotelService.findAll();
+		int found = hotels.size();
+		
+		Hotel nuevoHotel = new Hotel();
+		nuevoHotel.setId(found+1);
+		nuevoHotel.setAforo(50);
+		nuevoHotel.setCity("");
+		nuevoHotel.setOcupadas(5);
+		hotels.add(nuevoHotel);
+		
+		assertThrows(ConstraintViolationException.class, () -> {
+			nuevoHotel.getCity();
+			this.hotelService.save(nuevoHotel);
+		});
 	}
 	
 	@Test

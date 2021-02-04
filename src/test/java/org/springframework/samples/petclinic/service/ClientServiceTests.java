@@ -1,10 +1,14 @@
 package org.springframework.samples.petclinic.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.NoSuchElementException;
+
 import javax.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -27,6 +31,15 @@ class ClientServiceTests {
 	@Transactional
 	public void findById() {
 		assertThat(this.clientService.findById(1).getFirstName()).isEqualTo("Manuel");
+	}
+	
+	@Test
+	@Transactional
+	public void findByIdError() {
+		assertThrows(NoSuchElementException.class, () -> {
+			this.clientService.findById(6);
+		});
+				
 	}
 	
 	@Test

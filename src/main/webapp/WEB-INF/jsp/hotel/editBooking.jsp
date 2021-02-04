@@ -62,6 +62,7 @@
         <form:form modelAttribute="booking" class="form-horizontal">
 			 <input type="hidden" name="ownerId" value="${owner.id}" />
 			 <input type="hidden" name="hotel" value="${hotel.id}" />
+			 <input type="hidden" name="version" value="${booking.version}"/>   
             <div class="form-group has-feedback">
                 <petclinic:inputField label="Start Date"
 					name="startDate" />
