@@ -23,14 +23,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.*;
+
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
+
 @Controller
 @RequestMapping("/hotel/booking/")
 public class BookingController {
@@ -191,7 +192,7 @@ public class BookingController {
 
 	@PostMapping(value = "/edit/{bookingId}")
 	public String processUpdateForm(@Valid Booking booking, BindingResult result,
-			@PathVariable("bookingId") int bookingId, ModelMap modelmap) {
+			@PathVariable("bookingId") int bookingId, ModelMap modelmap, @RequestParam(value = "version", required=false) Integer version) {
 		Integer ownerId = ownerService.devolverOwnerId();
 		List<Pet> pets = ownerService.findOwnerById(ownerId).getPets();
 		Owner owner = ownerService.findOwnerById(ownerId);
@@ -212,7 +213,10 @@ public class BookingController {
 			} else {
 				Booking bookingToUpdate = this.bookingService.findBookingById(bookingId);
 				BeanUtils.copyProperties(booking, bookingToUpdate, "id", "owner", "pet", "hotel");
-
+				if(bookingToUpdate.getVersion()!=version) {
+					modelmap.put("message","Concurrent modification of product! Try again!");
+					return edit(bookingId,modelmap);
+					}
 				this.bookingService.save(bookingToUpdate);
 				modelmap.addAttribute("message", "La reserva se ha editado correctamente");
 				log.info("La reserva se ha editado correctamente");
