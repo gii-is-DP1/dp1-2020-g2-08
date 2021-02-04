@@ -8,6 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -26,6 +27,8 @@ public class Booking extends BaseEntity {
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
     private LocalDate startDate;
  
+    @Version
+    private Integer version;
     
     //Fecha de fin de la reserva en el hotel.
    
@@ -85,6 +88,14 @@ public class Booking extends BaseEntity {
 
 	public void setHotel(Hotel hotel) {
 		this.hotel = hotel;
+	}
+
+	public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
     
     
