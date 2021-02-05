@@ -2,6 +2,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!-- %@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %-->  
 
 <petclinic:layout pageName="Animal details">
@@ -21,6 +22,17 @@
         
    <br>
     <button class="button-success">Adopt</button>
+    
+    
+                
+                <spring:url value="/shelter/adoption/new"
+							var="verAdopcion">
+							
+						</spring:url> <a href="${fn:escapeXml(verAdopcion)}"> ${animal.name}</a>
+                
+                    
+                
+    
   </div>
 </div>
 
@@ -33,7 +45,7 @@
        <li>Date of admission: ${animal.shelterDate}</li> 
 </div>
     
-    
+   
     
 </petclinic:layout>
 

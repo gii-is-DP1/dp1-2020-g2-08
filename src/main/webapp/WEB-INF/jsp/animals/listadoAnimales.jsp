@@ -42,7 +42,7 @@
         
         <td>
                 
-                <spring:url value="/shelter/animals/${shelter.id}/animal/${animal.name}"
+                <spring:url value="/animals/${shelter.id}/animal/${animal.name}"
 							var="verAnimal">
 							
 						</spring:url> <a href="${fn:escapeXml(verAnimal)}"> ${animal.name}</a>
@@ -59,6 +59,11 @@
                  <td>
                     <c:out value="${animal.diasEnRefugio}"/>
                 </td>
+                
+                <td><spring:url value="/shelter/adoption/new"
+                            var="initAdoptionForm">
+
+                        </spring:url> <a href="${fn:escapeXml(initAdoptionForm)}"> Adopt</a></td>
         </tr>
         
         
