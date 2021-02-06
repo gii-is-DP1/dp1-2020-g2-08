@@ -1,5 +1,9 @@
 package org.springframework.samples.petclinic.web;
 
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.Period;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -16,7 +20,9 @@ import org.springframework.samples.petclinic.model.Client;
 import org.springframework.samples.petclinic.model.Coupon;
 import org.springframework.samples.petclinic.model.Order;
 import org.springframework.samples.petclinic.model.Product;
+import org.springframework.samples.petclinic.model.ProductoVendido;
 import org.springframework.samples.petclinic.repository.CouponRepository;
+import org.springframework.samples.petclinic.repository.ProductoVendidoRepository;
 import org.springframework.samples.petclinic.service.AuthoritiesService;
 import org.springframework.samples.petclinic.service.ClientService;
 import org.springframework.samples.petclinic.service.CouponService;
@@ -34,6 +40,9 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 
 @Controller
 @RequestMapping("/shop/admin")
@@ -49,7 +58,7 @@ public class ShopAdminController {
 	private CouponService couponService;
 	@Autowired
 	private CouponRepository couponRepository;
-	
+
 	@Autowired
 	private ClientService clientService;
 	@Autowired
@@ -87,6 +96,12 @@ public class ShopAdminController {
 		dataBinder.setValidator(new ProductValidator());
 
 	}
+
+	@InitBinder("coupon")
+	public void initCouponBinder(WebDataBinder dataBinder) {
+		dataBinder.setValidator(new CouponValidator());
+
+}
 	
 	@GetMapping(path = "/products/add")
 	public String addProduct(ModelMap modelmap) {
@@ -118,6 +133,8 @@ public class ShopAdminController {
 
 		productService.save(product);
 		modelmap.addAttribute("message", "New product added");	
+		
+		log.info("Se ha añadido el producto "+product.getName());
 		return "redirect:/shop/admin/products";
 		}
 
@@ -130,6 +147,7 @@ public class ShopAdminController {
 		if (product.isPresent()) {
 			productService.delete(product.get());
 			modelmap.addAttribute("message", "Product delete succesfully");
+			log.info("Se ha borrado el producto "+product.get().getName());
 
 		} else {
 			modelmap.addAttribute("message", "Product not found");
@@ -140,7 +158,7 @@ public class ShopAdminController {
 
 	@GetMapping(path = "/products/edit/{productId}")
 	public String edit(@PathVariable("productId") int productId, ModelMap modelmap) {
-		Optional<Product> product = this.productService.findProductById(productId);
+		Product product = this.productService.findProductById(productId).get();
 		modelmap.put("product", product);
 		modelmap.addAttribute("categories", categoryList);
 		modelmap.addAttribute("offers", offerOptions);
@@ -150,7 +168,7 @@ public class ShopAdminController {
 
 	@PostMapping(value = "/products/edit/{productId}")
 	public String processUpdateForm(@Valid Product product, BindingResult result,
-			@PathVariable("productId") int productId, ModelMap modelmap) throws DuplicatedPetNameException {
+			@PathVariable("productId") int productId, ModelMap modelmap, @RequestParam(value = "version", required=false) Integer version) {
 		if (result.hasErrors()) {
 			modelmap.put("product", product);
 			modelmap.addAttribute("categories", categoryList);
@@ -158,6 +176,10 @@ public class ShopAdminController {
 			return "shop/admin/editProduct";
 		} else {
 			Product productToUpdate = this.productService.findProductById(productId).get();
+			if(productToUpdate.getVersion()!=version) {
+				modelmap.put("message","Concurrent modification of product! Try again!");
+				return edit(productId,modelmap);
+				}
 			productToUpdate.setCategory(product.getCategory());
 			productToUpdate.setName(product.getName());
 			productToUpdate.setPrice(product.getPrice());
@@ -179,6 +201,7 @@ public class ShopAdminController {
 		modelmap.addAttribute("productsNumber", productsNumber);
 		modelmap.addAttribute("category", category);
 
+		log.info("Se muestra el listado de productos de la categoria "+category);
 		return view;
 
 	}
@@ -194,6 +217,7 @@ public class ShopAdminController {
 		modelmap.addAttribute("clientsNumber", clientsNumber);
 		modelmap.addAttribute("clients", clients );
 //		modelmap.addAttribute("clientCoupons", clients.get(0).getCoupons().stream().findFirst().get() );
+		log.info("Se muestra el listado de clientes de la tienda");
 		return view;
 
 	}
@@ -202,6 +226,7 @@ public class ShopAdminController {
 	public String addCoupon(ModelMap modelmap) {
 		String view = "shop/admin/newCoupon";
 		modelmap.addAttribute("coupon", new Coupon());
+	
 		return view;
 	}
 
@@ -210,9 +235,9 @@ public class ShopAdminController {
 		
 		if (result.hasErrors()) {
 			modelmap.addAttribute("coupon", coupon);
-			modelmap.addAttribute("message", result.getAllErrors().stream().map(x->x.getDefaultMessage()).collect(Collectors.toList()));
+			//modelmap.addAttribute("message", result.getAllErrors().stream().map(x->x.getDefaultMessage()).collect(Collectors.toList()));
 			
-			return addCoupon(modelmap);
+			return "shop/admin/newCoupon";
 			
 
 		}else {
@@ -221,6 +246,7 @@ public class ShopAdminController {
 			couponRepository.save(coupon);
 		
 		modelmap.addAttribute("message", "New coupon added");	
+		log.info("Se añade un cupon de descuento del"+coupon.getDiscount()+" %");
 		return couponsList(modelmap);
 		}
 
@@ -237,7 +263,7 @@ public class ShopAdminController {
 		
 		couponService.delete(coupon);
 		modelmap.addAttribute("message", "El cupon se ha eliminado correctamente");
-			
+		log.info("Se elimina un cupon de descuento del"+coupon.getDiscount()+" %");
 		return couponsList(modelmap);
 
 	}
@@ -248,6 +274,7 @@ public class ShopAdminController {
 		String view = "shop/admin/couponList";
 		List<Coupon> coupons = (List<Coupon>) couponRepository.findAll();	
 			modelmap.addAttribute("coupons", coupons );
+			log.info("Muestra la lista de cupones de la bd");
 				return view;
 
 	}
@@ -261,6 +288,7 @@ public class ShopAdminController {
 			modelmap.addAttribute("coupons", coupons2 );
 			modelmap.addAttribute("client", client );
 			
+			log.info("Se muestran los cupones del cliente con id: "+clientId);
 				return  "shop/admin/couponListClient";
 
 	}
@@ -274,7 +302,7 @@ public class ShopAdminController {
 		
 		modelmap.addAttribute("ordersNumber", orders.size());
 		modelmap.addAttribute("orders", orders );
-		
+		log.info("Se muestran los pedidos de todos los clientes ");
 		return view;
 
 	}
@@ -288,7 +316,7 @@ public class ShopAdminController {
 		order.setState("Cancelled");
 		orderService.save(order);
 		modelmap.addAttribute("message", "The order is now cancelled");
-			
+		log.info("Se ha modificado ele stado del pedido a denegado");
 		return ordersList(modelmap);
 
 	}
@@ -298,7 +326,7 @@ public class ShopAdminController {
 		order.setState("Confirmed");
 		orderService.save(order);
 		modelmap.addAttribute("message", "The order is now confirm");
-			
+		log.info("Se ha modificado ele stado del pedido a confirmado");
 		return ordersList(modelmap);
 
 	}
@@ -309,7 +337,7 @@ public class ShopAdminController {
 		order.setState("In Progress");
 		orderService.save(order);
 		modelmap.addAttribute("message", "The order is now in progress");
-			
+		log.info("Se ha modificado ele stado del pedido a en progreso");
 		return ordersList(modelmap);
 
 	}
@@ -333,6 +361,7 @@ public class ShopAdminController {
 		client.getCoupons().add(coupon);
 		clientService.saveClient(client);
 		modelmap.addAttribute("message", "El cupon se ha añadido al cliente");
+		log.info("Se ha añadido el cupon a "+client.getNameuser());
 		}	
 		return clientCouponsList(modelmap, clientId); 
 
@@ -346,9 +375,56 @@ public class ShopAdminController {
 		client.getCoupons().remove(coupon);
 		clientService.saveClient(client);
 		modelmap.addAttribute("message", "El cupon se ha eliminado del cliente");
-			
+		log.info("Se ha eliminado el cupon de "+client.getNameuser());
 		return clientCouponsList(modelmap, clientId);
 
 	}
 
+	@GetMapping(path = "/sales/{date}" )
+	public String salesByDate(ModelMap modelmap, @PathVariable("date") String date) {
+		String view = "shop/admin/sales";
+		List<Order> orderList = (List<Order>) orderService.findAll();
+		Double sales = 0.0;
+		Month month = LocalDate.now().getMonth().minus(1); 
+
+		int year = LocalDate.now().getYear();
+		if(date.equals("total")) {
+			sales = orderList.stream().mapToDouble(x->x.getPriceOrder()).sum();
+			List<ProductoVendido> products = new ArrayList<>();
+			for (int i = 0; i < orderList.size(); i++) {
+			 Integer orderId = orderList.get(i).getId();
+			 products.addAll(orderService.findProductsByOrder(orderId));
+			}
+			modelmap.addAttribute("products", products);
+			modelmap.addAttribute("sales", sales);
+		}
+		if(date.equals("today")) {
+			List<Order> todayList = orderList.stream().filter(x->x.getOrderDate().equals(LocalDate.now())).collect(Collectors.toList());
+			sales = orderList.stream().filter(x->x.getOrderDate().equals(LocalDate.now())).mapToDouble(x->x.getPriceOrder()).sum();
+			List<ProductoVendido> products = new ArrayList<>();
+			for (int i = 0; i < todayList.size(); i++) {
+			 Integer orderId = todayList.get(i).getId();
+			 products.addAll(orderService.findProductsByOrder(orderId));
+			}
+			modelmap.addAttribute("products", products);
+			modelmap.addAttribute("sales", sales);			
+		}
+		if(date.equals("lastMonth")) {
+			List<Order> lastMonthList = orderList.stream().filter(x->x.getOrderDate().getMonth().equals(month) && x.getOrderDate().getYear()==year).collect(Collectors.toList());
+			sales = orderList.stream().filter(x->x.getOrderDate().getMonth().equals(month) && x.getOrderDate().getYear()==year).mapToDouble(x->x.getPriceOrder()).sum();
+			List<ProductoVendido> products = new ArrayList<>();
+			for (int i = 0; i < lastMonthList.size(); i++) {
+			 Integer orderId = lastMonthList.get(i).getId();
+			 products.addAll(orderService.findProductsByOrder(orderId));
+			}
+			modelmap.addAttribute("products", products);
+			modelmap.addAttribute("sales", sales);
+		}
+
+		log.info("Se muestra el resumen de ventas");
+		return view;
+	}
+	
+
+	
 }

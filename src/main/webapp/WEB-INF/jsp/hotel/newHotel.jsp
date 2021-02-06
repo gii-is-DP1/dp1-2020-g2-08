@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <petclinic:layout pageName="new Hotel">
 
@@ -14,12 +14,13 @@
 <!--  Hay que enviar los datos de aforo,ocupadas, city-->
         
 
-        <form:form modelAttribute="hotel" class="form-horizontal" action="/hotel/save">
+        <form:form modelAttribute="hotel" class="form-horizontal">
 			
             <div class="form-group has-feedback">
                 <petclinic:inputField label="Aforo" name="aforo" />
                 <petclinic:inputField label="Ocupadas" name="ocupadas" />
-                 <petclinic:inputField label="City" name="city" />          
+                 <petclinic:inputField label="City" name="city" />  
+                         
             </div>
 
             <div class="form-group">

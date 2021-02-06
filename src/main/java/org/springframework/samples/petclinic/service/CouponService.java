@@ -10,31 +10,27 @@ import org.springframework.samples.petclinic.model.Client;
 import org.springframework.samples.petclinic.model.Coupon;
 import org.springframework.samples.petclinic.repository.ClientRepository;
 import org.springframework.samples.petclinic.repository.CouponRepository;
-import org.springframework.samples.petclinic.repository.OrderRepository;
-import org.springframework.samples.petclinic.repository.ProductRepository;
-import org.springframework.samples.petclinic.repository.ProductoVendidoRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CouponService {
 
 	@Autowired
-	private OrderRepository orderRepo;
-	@Autowired
 	private ClientRepository clientRepo;
 	
 	@Autowired
 	private ClientService clientService;
-	@Autowired
-	private ProductRepository productRepo;
-	@Autowired
-	private ProductoVendidoRepository productVendRepo;
 	
 	@Autowired
 	private CouponRepository couponRepo;
  
+	public CouponService(CouponRepository couponRepository) {
+		this.couponRepo = couponRepository;
+	}
 
-	
+	public Iterable<Coupon> findAll() {
+		return couponRepo.findAll();
+	}
 	
 	@Transactional
 	public Set<Coupon> findCouponByClientId(int clientId) {

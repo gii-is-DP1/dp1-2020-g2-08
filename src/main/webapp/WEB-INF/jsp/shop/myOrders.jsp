@@ -19,7 +19,8 @@
 				<th style="width: 120px">Postal code</th>
 				<th style="width: 120px">State</th>
 				<th style="width: 120px">Coupon</th>
-				<th style="width: 120px">Total(euros)</th>
+				<th>Offer</th>
+				<th style="width: 120px">Total (euros)</th>
 				<th style="width: 120px">Products</th>
 			</tr>
 		</thead>
@@ -36,6 +37,7 @@
 					<td><c:out value="${order.postalCode}" /></td>
 					<td><c:out value="${order.state}" /></td>
 					<td><c:out value="${order.coupon.discount}%" /></td>
+					<td><c:out value="${order.offer}" /></td>
 					<td><c:out value="${order.priceOrder}" /></td>
 					<td><spring:url value="/shop/view/products/{orderId}"
 							var="orderId">

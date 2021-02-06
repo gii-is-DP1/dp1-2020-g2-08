@@ -35,7 +35,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import net.bytebuddy.description.modifier.Ownership;
-
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Controller
 @RequestMapping("/shelter/animals")
 public class AnimalController {
@@ -103,6 +104,8 @@ public class AnimalController {
 				else {
 				modelmap.addAttribute("masViejo", animalService.masTiempoEnRefugio());
 				}
+				
+				log.info("Se muestra el listado de animales de los refugios");
 				// Manda todos los atributos a la vista listaReservas.jsp
 				return "animals/listadoAnimales";
 
@@ -119,6 +122,7 @@ public class AnimalController {
 		public String animalDetails(@PathVariable("shelterId") Integer shelterId, ModelMap model,@PathVariable("animalName") String animalName) {
 			Animal animal = shelterService.findAnimalByName(animalName, shelterId);
 			model.put("animal", animal);
+			log.info("Se muestran los detalles del animal");
 			return "animals/animalDetails";
 		}
 		
@@ -145,6 +149,7 @@ public class AnimalController {
 			}
 			else {
                     try{ 
+                    	log.info("Se ha añadido el animal al refugio");
                     	this.animalService.saveAnimal(animal);
                     }catch(DuplicatedAnimalNameException ex){
                         result.rejectValue("name", "duplicate", "already exists");

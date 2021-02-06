@@ -2,7 +2,11 @@ package org.springframework.samples.petclinic.web;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,7 +17,6 @@ import org.springframework.samples.petclinic.model.Order;
 import org.springframework.samples.petclinic.model.Product;
 import org.springframework.samples.petclinic.model.ProductoParaVenta;
 import org.springframework.samples.petclinic.model.ProductoVendido;
-import org.springframework.samples.petclinic.repository.CouponRepository;
 import org.springframework.samples.petclinic.repository.OrderRepository;
 import org.springframework.samples.petclinic.repository.ProductoVendidoRepository;
 import org.springframework.samples.petclinic.service.ClientService;
@@ -28,21 +31,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Controller
 
 public class OrderController {
 
 	@Autowired
-	private ProductoVendidoRepository productoVendidoRepository;
-	
-	@Autowired
-	private CouponRepository couponRepository;
-	@Autowired
 	private OrderService orderService;
 
 	@Autowired
 	private OrderRepository orderRepo;
+	
 	@Autowired
 	private ProductoVendidoRepository productoVendidoRepo;
 
@@ -52,6 +52,9 @@ public class OrderController {
 	@Autowired
 	private CouponService couponService;
 
+	@Autowired
+	private ShopAdminController sac;
+	
 	@Autowired
 	private ClientService clientService;
 
@@ -104,6 +107,8 @@ public class OrderController {
 			total += p.getTotal();
 		model.addAttribute("total", total);
 		model.addAttribute("carrito", carrito);
+		log.info("Se añade el producto con id: "+productId+" al carrito");
+
 		return "shop/carrito/carrito";
 			
 		}
@@ -127,6 +132,7 @@ public class OrderController {
 		for (ProductoParaVenta p : carrito)
 			total += p.getTotal();
 		model.addAttribute("total", total);
+		log.info("Se muestra el carrito de compra");
 
 		return "shop/carrito/carrito";}
 		else {
@@ -177,9 +183,12 @@ public class OrderController {
 		Order order = new Order();
 		modelmap.put("order",order);
 		modelmap.put("coupons",coupons);
+		log.info("Se procede a completar el pedido del carrito, mostrando formulario de finalizar compra");
+
 		return "order/newOrderCarrito";
 	}
 		else {
+			log.info("Error al intentar acceder al carrito por no ser cliente");
 			modelmap.addAttribute("message", "Para hacer eso tienes que estar logueado como cliente de la tienda");
 			return "shop/home";
 		}
@@ -190,11 +199,14 @@ public class OrderController {
 		if (clientService.esClient()) {	
 		
 			if (result.hasErrors()) {
+				log.info("Error al terminar la compra por errores en el formulario de finalizar compra");
+
 				modelmap.put("message", "No se ha podido procesar el pedido");
 				modelmap.put("order",order);
 				return "order/newOrderCarrito";
 			} else {
 				double precio=0.0;
+				String offer = "No";
 				int clientId = clientService.devolverClientId();
 				Client client = clientService.findById(clientId);
 				List<ProductoParaVenta> carrito = this.obtenerCarrito(request);
@@ -238,17 +250,34 @@ public class OrderController {
 				}
 				//Se aplica el cupon de descuento
 				if (order.getCoupon()!=null) {
-				precio=(precio*((100)-(order.getCoupon().getDiscount())))/100;
+					precio=(precio*((100)-(order.getCoupon().getDiscount())))/100;
 				}
+				if(order.getCoupon()==null && precio>=100 && precio<250) {
+					precio = precio * 0.95;
+					offer = "5%";
+					
+				}
+				if(order.getCoupon()==null && precio>=250) {
+					precio = precio * 0.90;
+					offer = "10%";
+					
+				}
+					
+				
 			
 				Order orderPrice =orderService.findOrderById(o.getId()).get();
 				orderPrice.setPriceOrder(precio);
+			
+				orderPrice.setOffer(offer);
 				orderRepo.save(orderPrice);
 				// Al final limpiamos el carrito
 				this.limpiarCarrito(request);
 				// e indicamos una venta exitosa
 				modelmap.put("message", "Pedido realizado con exito");
-				return "shop/home";
+				
+				log.info("Se ha completado la compra correctamente");
+
+				return sac.productList(modelmap);
 			}
 		
 		} else {
@@ -325,12 +354,12 @@ public class OrderController {
 			productoVendidoRepo.save(p);
 			modelmap.put("message", "Su pedido se ha completado con exito");
 	
-			return "shop/home";
+			return "";
 		}
 
 	}
 	@GetMapping(path = "/shop/myOrders")
-	private String myOrderList(ModelMap modelmap) {
+	public String myOrderList(ModelMap modelmap) {
 		
 		if (clientService.esClient()) {
 		String view = "shop/myOrders";
@@ -340,7 +369,8 @@ public class OrderController {
 		modelmap.addAttribute("orders", ordersByClientId);
 		modelmap.addAttribute("ordersNumber",ordersNumber);
 
-		
+		log.info("Se muestra listado de pedidos del cliente");
+
 		return view;
 	}
 		
@@ -359,6 +389,8 @@ public class OrderController {
 		Integer productsNumber = productsByOrder.size();
 		modelmap.addAttribute("products", productsByOrder);
 		modelmap.addAttribute("productsNumber",productsNumber);
+		log.info("Se muestra un resumen con los productos del pedido");
+
 		return view;}
 		else {
 			modelmap.addAttribute("message", "No tienes permiso para hacer eso");
@@ -373,6 +405,8 @@ public class OrderController {
 			this.limpiarCarrito(request);
 			modelmap.addAttribute("message", "Se han eliminado todos los productos del carrito");
 	            
+			log.info("Se han eliminado todos los productos del carrito");
+
 			return mostrarCarrito(modelmap, request);
 	    } else {
 	    	modelmap.addAttribute("message", "Para hacer eso tienes que estar logueado como cliente de la tienda");
@@ -389,6 +423,9 @@ public class OrderController {
 				this.guardarCarrito(carrito, request);
 				modelmap.addAttribute("message", "Se ha eliminado el producto del carrito");
 			}
+			
+			log.info("Se ha eliminado el producto "+indice+" del carrito");
+
 			return mostrarCarrito(modelmap, request);
     
 		} else {
@@ -396,4 +433,9 @@ public class OrderController {
 			return "shop/home";
 		}
 	}
+	
+	
+	
+	
+
 }

@@ -2,7 +2,6 @@ package org.springframework.samples.petclinic.web;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -20,44 +19,42 @@ import org.springframework.samples.petclinic.model.Review;
 import org.springframework.samples.petclinic.service.BookingService;
 import org.springframework.samples.petclinic.service.HotelService;
 import org.springframework.samples.petclinic.service.OwnerService;
-import org.springframework.samples.petclinic.service.PetService;
-import org.springframework.samples.petclinic.service.exceptions.DuplicatedPetNameException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.*;
+
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 
 @Controller
 @RequestMapping("/hotel/booking/")
 public class BookingController {
 
 	@Autowired
-	HotelController hotelController;
+	private HotelController hotelController;
 
 	@Autowired
 	private OwnerService ownerService;
-	@Autowired
-	private PetService petService;
-	@Autowired
-	private BookingService bookingService;
-	@Autowired
-	HotelService hotelService;
 
 	@Autowired
-	public BookingController(PetService petService, OwnerService ownerService, BookingService bookingService,
+	private BookingService bookingService;
+	
+	@Autowired
+	private HotelService hotelService;
+
+	@Autowired
+	public BookingController(OwnerService ownerService, BookingService bookingService,
 			HotelService hotelService) {
 
 		this.ownerService = ownerService;
-		this.petService = petService;
 		this.bookingService = bookingService;
 		this.hotelService = hotelService;
-
 	}
 
 	@ModelAttribute("hoteles")
@@ -130,6 +127,8 @@ public class BookingController {
 				creaModelMap(hotel, owner, ownerId, pets, booking, modelmap);
 
 				// Redirige al formulario editBooking.jsp
+				log.info("Muestra el formulario para crear un nuevo booking");
+
 				return "hotel/editBooking";
 			} else {
 				modelmap.put("message", "Para poder crear una reserva, tienes que estar logueado como owner");
@@ -161,6 +160,8 @@ public class BookingController {
 
 		} else {
 			
+			log.info("Se valida y se crea el booking");
+
 			return validaBooking(modelmap, booking, ownerId, hotelId);
 
 		}
@@ -191,7 +192,7 @@ public class BookingController {
 
 	@PostMapping(value = "/edit/{bookingId}")
 	public String processUpdateForm(@Valid Booking booking, BindingResult result,
-			@PathVariable("bookingId") int bookingId, ModelMap modelmap) {
+			@PathVariable("bookingId") int bookingId, ModelMap modelmap, @RequestParam(value = "version", required=false) Integer version) {
 		Integer ownerId = ownerService.devolverOwnerId();
 		List<Pet> pets = ownerService.findOwnerById(ownerId).getPets();
 		Owner owner = ownerService.findOwnerById(ownerId);
@@ -199,7 +200,7 @@ public class BookingController {
 		if (result.hasErrors()) {
 			calendario(modelmap, booking.getHotel().getId()); // añade las restricciones de dias al calendario
 			creaModelMap(hotel, owner, ownerId, pets, booking, modelmap);
-			modelmap.put("message", "Hubo un error al crear el booking");
+			modelmap.put("message", "Hubo un error al editar el booking");
 			return "hotel/editBooking";
 		} else {
 			if (bookingService.estaOcupadoEnRango(booking.getStartDate(), booking.getEndDate(),
@@ -212,9 +213,14 @@ public class BookingController {
 			} else {
 				Booking bookingToUpdate = this.bookingService.findBookingById(bookingId);
 				BeanUtils.copyProperties(booking, bookingToUpdate, "id", "owner", "pet", "hotel");
-
+				if(bookingToUpdate.getVersion()!=version) {
+					modelmap.put("message","Concurrent modification of product! Try again!");
+					return edit(bookingId,modelmap);
+					}
 				this.bookingService.save(bookingToUpdate);
 				modelmap.addAttribute("message", "La reserva se ha editado correctamente");
+				log.info("La reserva se ha editado correctamente");
+
 				return hotelController.listadoMisReservas(modelmap);
 			}
 		}
@@ -231,8 +237,10 @@ public class BookingController {
 
 				bookingService.delete(bookingService.findBookingById(bookingId));
 				modelmap.addAttribute("message", "Booking borrado con éxito!");
+				log.info("La reserva se ha borrado correctamente como owner");
 
 			} else {
+				log.info("La reserva no se ha borrado porque es de otro owner");
 				modelmap.addAttribute("message", "No puedes borrar bookings de otro owner");
 			}
 
@@ -241,6 +249,7 @@ public class BookingController {
 		} else if (ownerService.esAdmin()) {
 			bookingService.deleteById(bookingId);
 			modelmap.addAttribute("message", "Booking borrado con éxito!");
+			log.info("La reserva se ha borrado correctamente como administrador");
 			return hotelController.listadoReservas(modelmap);
 		}
 

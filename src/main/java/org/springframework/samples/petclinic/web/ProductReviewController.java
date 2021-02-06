@@ -20,7 +20,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Controller
 public class ProductReviewController {
 	
@@ -32,8 +33,9 @@ public class ProductReviewController {
 	private ProductService prodService;
 	@Autowired
 	private ProductoVendidoRepository prodVendService;
-
 	@Autowired
+	private OrderController oc;
+ 	@Autowired
 	private ProductReviewService prodReviewService;
 
 	public ProductReviewController(ProductService prodService, ProductoVendidoRepository prodVendService,
@@ -58,7 +60,6 @@ public class ProductReviewController {
 
 		} else {
 			modelmap.clear();
-			modelmap.addAttribute("message", "Solo los owners pueden hacer reviews del hotel");
 			return "/users/createClientForm";
 		}
 
@@ -73,7 +74,7 @@ public class ProductReviewController {
 			modelmap.addAttribute("message",
 					result.getAllErrors().stream().map(x -> x.getDefaultMessage()).collect(Collectors.toList()));
 
-			return "/shop/home";
+			return addProductReview(modelmap);
 
 		} else {
 
@@ -88,8 +89,9 @@ public class ProductReviewController {
 			prodReviewService.save(review);
 //			prodService.addRate(review);
 
+			log.info("Se ha creado la review correctamente");
 			modelmap.addAttribute("message", "The product review has been created successfully");
-			return "shop/home";
+			return oc.myOrderList(modelmap);
 		}
 	}
 }

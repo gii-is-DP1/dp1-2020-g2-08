@@ -51,7 +51,8 @@ public class Order extends BaseEntity{
 		 @Column(name = "postalCode")
 		 private Integer postalCode;
 		 
-		
+		 @Column(name = "Offer")
+		 private String offer;
 		 
 		 @Column(name = "country")
 		 private String country;
@@ -120,7 +121,7 @@ public class Order extends BaseEntity{
 		public void setState(String state) {
 			this.state = state;
 		}
-
+		
 		public String coupon() {
 			return address;
 		}
@@ -188,6 +189,16 @@ public class Order extends BaseEntity{
 		public String getAddress() {
 			return address;
 		}
+
+		public String getOffer() {
+			return offer;
+		}
+
+		public void setOffer(String offer) {
+			this.offer = offer;
+		}
+
+		
 		 
 		 
 		 

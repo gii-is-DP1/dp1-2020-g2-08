@@ -20,7 +20,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Controller
 @RequestMapping("/shelter")
 public class ShelterController {
@@ -70,6 +71,7 @@ public class ShelterController {
 		
 		if(refugios.iterator().hasNext()) {
 			modelmap.addAttribute("refugios", refugios);
+			log.info("Se muestra el listado de refugios");
 			return "shelter/listadoRefugios";
 		} else {
 			modelmap.addAttribute("message",
@@ -100,6 +102,7 @@ public class ShelterController {
 	public String borrarShelter(@PathVariable("shelterId") Integer shelterId, ModelMap modelmap) {
 		shelterService.deleteById(shelterId);
 		modelmap.addAttribute("message", "Refugio borrado con éxito");
+		log.info("Se crea correctamente un nuevo refugio con id: "+shelterId);
 		return listadoRefugios(modelmap);
 	}
 

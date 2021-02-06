@@ -2,8 +2,11 @@ package org.springframework.samples.petclinic.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
+
+import javax.validation.ConstraintViolationException;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,16 +54,16 @@ public class ProductReviewServiceTest {
 	
 	@Test
 	@Transactional
-	public void shouldDeleteProductReview() {
+	public void shouldSaveProductReviewError() {
+		ProductReview productReview = new ProductReview();
+		productReview.setClient(clientService.findById(1));
+		productReview.setId(10);
+		productReview.setProductoVendido(productoVendidoRepository.findById(1).get());
 		
-		List<ProductReview> productReviews= (List<ProductReview>) productReviewService.findAll();
-		
-		ProductReview productReview =  (ProductReview) productReviewService.findProductReviewById(1).get();
-		productReviewService.delete(productReview);
-		
-		List<ProductReview> productReviews2= (List<ProductReview>) productReviewService.findAll();
-		
-		assertThat(productReviews2.size()== productReviews.size()-1);
+		assertThrows(ConstraintViolationException.class, () -> {
+			productReview.getStars();
+			this.productReviewService.save(productReview);
+		});
 	}
 	
 	@Test
@@ -77,9 +80,29 @@ public class ProductReviewServiceTest {
 	
 	@Test
 	@Transactional
+	public void shouldDeleteProductReview() {
+		
+		List<ProductReview> productReviews= (List<ProductReview>) productReviewService.findAll();
+		
+		ProductReview productReview =  (ProductReview) productReviewService.findProductReviewById(1).get();
+		productReviewService.delete(productReview);
+		
+		List<ProductReview> productReviews2= (List<ProductReview>) productReviewService.findAll();
+		
+		assertThat(productReviews2.size()== productReviews.size()-1);
+	}
+	
+	@Test
+	@Transactional
+	public void shouldFindProductReviewByProductName() {
+		List<Integer> review = this.productReviewService.findProductReviewByProductName("Dog");
+		assertNotNull(review);
+	}
+	
+	@Test
+	@Transactional
 	public void average() {
 		Product product = this.productService.findProductById(1).get();
-		
 		assertNotNull(this.productReviewService.average(product));
 		
 	}

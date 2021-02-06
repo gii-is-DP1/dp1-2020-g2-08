@@ -45,6 +45,8 @@ import org.springframework.web.bind.annotation.*;
  * @author Arjen Poutsma
  * @author Michael Isvy
  */
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Controller
 public class UserController {
 
@@ -113,9 +115,12 @@ public class UserController {
 			return "users/createClientForm";
 		}
 		else {
-
+			if(!userService.findUser(client.getNameuser()).get().getUsername().isEmpty()) {
+				modelmap.addAttribute("message", "This user is already exists");
+				return "users/createClientForm";
+			}
 			this.clientService.saveClient(client);
-			
+			log.info("Se ha creado el usuario correctamente");
 
 			return "redirect:/";
 		}

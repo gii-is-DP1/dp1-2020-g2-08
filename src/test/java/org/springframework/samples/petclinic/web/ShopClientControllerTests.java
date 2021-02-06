@@ -61,15 +61,19 @@ public class ShopClientControllerTests {
 	
 	@WithMockUser(value = "spring", authorities = "client")
     @Test
-    void testProductReview() throws Exception {
+    void testProductReviewEsClient() throws Exception {
 		if(clientService.esClient()) {
 			mockMvc.perform(get("/shop/products/review/{productId}", 1)).
 			andExpect(status().isOk()).
 			andExpect(view().name("reviews/newProductReview"));
-		} else {
+		}
+	}
+	
+	@WithMockUser(value = "spring", authorities = "client")
+    @Test
+    void testProductReviewNoEsClient() throws Exception {
 		mockMvc.perform(get("/shop/products/review/{productId}", 1)).
 			andExpect(status().isOk()).
 			andExpect(view().name("shop/home"));
-		}
 	}
 }

@@ -14,8 +14,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
+
 
 import org.springframework.samples.petclinic.service.ProductService;
 
@@ -32,7 +35,6 @@ public class Product extends BaseEntity {
 	@NotNull
 	@Column(name = "category")
 	private String category;
-
 	
 	@NotNull
 	@Digits(fraction = 0, integer = 10000)
@@ -43,8 +45,11 @@ public class Product extends BaseEntity {
 	@Column(name = "inOffer")
 	private String inOffer;
 	
-	@Column(name = "average")
+	@Transient
 	private Double average;
+	
+	@Version
+	private Integer version;
 	
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "product", fetch = FetchType.LAZY)	
@@ -104,34 +109,13 @@ public class Product extends BaseEntity {
 		this.average = average;
 	}
 
-	
-	
-	
-	
-//	public Double getAverageRate() {
-//	
-//		List<Integer> res = this.getRateList();
-//		
-//		if(this.averageRate == null) {
-//			return 0.0;
-//		}else {
-//			Double sum = 0.0;
-//			Double average = 0.0;
-//			for (int i = 0; i < res.size(); i++) {
-//				sum += res.get(i);
-//			}
-//			 average = sum/res.size();
-//			 return average;
-//		}
-//	}
+	public Integer getVersion() {
+		return version;
+	}
 
-//	public void setAverageRate(Double averageRate) {
-//		this.averageRate = averageRate;
-//	}
-//
-//	
-	
-
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
 	
 
 }

@@ -5,25 +5,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
-import static java.time.temporal.ChronoUnit.DAYS;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Booking;
 import org.springframework.samples.petclinic.repository.BookingRepository;
-import org.springframework.samples.petclinic.repository.HotelRepository;
 import org.springframework.stereotype.Service;
-
-import javassist.expr.NewArray;
 
 @Service
 public class BookingService {
@@ -31,8 +24,9 @@ public class BookingService {
 	@Autowired
 	private BookingRepository bookingRepo;
 
-	@Autowired
-	private HotelRepository hotelRepo;
+	public BookingService(BookingRepository bookingRepository) {
+		this.bookingRepo = bookingRepository;
+	}
 
 	@Transactional
 	public int bookingCount() {

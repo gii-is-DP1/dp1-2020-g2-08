@@ -1,49 +1,38 @@
 package org.springframework.samples.petclinic.service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.model.Booking;
 import org.springframework.samples.petclinic.model.Hotel;
 import org.springframework.samples.petclinic.model.Review;
-import org.springframework.samples.petclinic.repository.BookingRepository;
 import org.springframework.samples.petclinic.repository.HotelRepository;
-import org.springframework.samples.petclinic.repository.ReviewRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class HotelService {
+	 
 	 @Autowired
 	 private HotelRepository hotelRepo;
 	 @Autowired
-	 private BookingRepository bookingRepo;
-	 @Autowired
-	 private ReviewRepository reviewRepo;
-	 
-	 @Autowired
 	 private ReviewService reviewService;
-	 
 	 @Autowired
 	 private BookingService bookingService;
-	 @Transactional
+	 
+	 public HotelService(HotelRepository hotelRepository) {
+		 this.hotelRepo = hotelRepository;
+	}
+
+	@Transactional
 	 public int hotelCount() {
-		 
 		 return (int) hotelRepo.count();
 	 }
+	 
 	 @Transactional
 	 public Iterable<Hotel> findAll(){
 		 return hotelRepo.findAll();
 	 }
-	 
-// ------------------------------------------------------------------------------------
-	 
 	 
 	 @Transactional
 	 public Hotel findById(Integer hotelId){
@@ -58,33 +47,27 @@ public class HotelService {
 	 public boolean tieneReviews(Integer hotelId){
 		 boolean res =(hotelRepo.findById(hotelId).get().getReviews().size())>0;
 		 return res;
-		 }	
+	 }	
+	 
 	 @Transactional
 	 public boolean tieneBookings(Integer hotelId){
 		 boolean res =(hotelRepo.findById(hotelId).get().getBookings().size())>0;
 		 return res;
-		 }	
+	 }	
 
-
-	@Transactional
-	public void save(Hotel hotel) {
-		hotelRepo.save(hotel);
-		
-	}
+	 @Transactional
+	 public void save(Hotel hotel) {
+		 hotelRepo.save(hotel);
+	 }
 	
-	@Transactional
-	public void delete(Hotel hotel) {	
-			hotelRepo.delete(hotel);	
-	}
+	 @Transactional
+	 public void delete(Hotel hotel) {	
+		 hotelRepo.delete(hotel);	
+	 }
 	
-	
-	public void deleteById(Integer hotelId) {
-		
-		bookingService.eliminarBookingsPorHotel(hotelId);
-		reviewService.eliminarReviewsPorHotel(hotelId);
-		hotelRepo.deleteById(hotelId);
-		
-	}
-	
-	
+	 public void deleteById(Integer hotelId) {
+		 bookingService.eliminarBookingsPorHotel(hotelId);
+		 reviewService.eliminarReviewsPorHotel(hotelId);
+		 hotelRepo.deleteById(hotelId);
+	 }
 }

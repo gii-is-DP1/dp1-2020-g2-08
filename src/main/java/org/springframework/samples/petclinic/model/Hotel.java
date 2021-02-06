@@ -16,7 +16,9 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
+
 import lombok.Data;
+
 
 @Data
 @Entity
@@ -34,7 +36,6 @@ public class Hotel extends BaseEntity {
 	@NotNull
 	@Column(name = "city")
 	private String city;
-	
 	
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "hotel", fetch = FetchType.LAZY)	
@@ -71,6 +72,8 @@ public class Hotel extends BaseEntity {
 	public boolean removeReview(Review review) {
 		return getReviewsInternal().remove(review);
 	}
+
+	
 	
 	
 }
