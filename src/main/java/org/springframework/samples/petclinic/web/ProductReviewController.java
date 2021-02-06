@@ -33,8 +33,9 @@ public class ProductReviewController {
 	private ProductService prodService;
 	@Autowired
 	private ProductoVendidoRepository prodVendService;
-
 	@Autowired
+	private OrderController oc;
+ 	@Autowired
 	private ProductReviewService prodReviewService;
 
 	public ProductReviewController(ProductService prodService, ProductoVendidoRepository prodVendService,
@@ -59,7 +60,6 @@ public class ProductReviewController {
 
 		} else {
 			modelmap.clear();
-			modelmap.addAttribute("message", "Solo los owners pueden hacer reviews del hotel");
 			return "/users/createClientForm";
 		}
 
@@ -74,7 +74,7 @@ public class ProductReviewController {
 			modelmap.addAttribute("message",
 					result.getAllErrors().stream().map(x -> x.getDefaultMessage()).collect(Collectors.toList()));
 
-			return "/shop/home";
+			return addProductReview(modelmap);
 
 		} else {
 
@@ -91,7 +91,7 @@ public class ProductReviewController {
 
 			log.info("Se ha creado la review correctamente");
 			modelmap.addAttribute("message", "The product review has been created successfully");
-			return "shop/home";
+			return oc.myOrderList(modelmap);
 		}
 	}
 }

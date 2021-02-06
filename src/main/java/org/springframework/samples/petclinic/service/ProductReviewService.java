@@ -77,7 +77,7 @@ public class ProductReviewService {
 			return 0.0;
 		}else {
 			Double average = product.getReviews().stream().mapToDouble(x->x.getStars()).average().getAsDouble();
-			return average;
+			return (double) Math.round(average);
 		}
 	}	
 

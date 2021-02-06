@@ -20,7 +20,7 @@
 				<th style="width: 120px">State</th>
 				<th style="width: 120px">Coupon</th>
 				<th>Offer</th>
-				<th style="width: 120px">Total(euros)</th>
+				<th style="width: 120px">Total (euros)</th>
 				<th style="width: 120px">Products</th>
 			</tr>
 		</thead>

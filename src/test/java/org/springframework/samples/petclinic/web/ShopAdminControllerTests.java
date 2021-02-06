@@ -97,11 +97,12 @@ public class ShopAdminControllerTests {
     @WithMockUser(value = "spring")
     @Test
     void testEdit() throws Exception {
+    	if(clientService.esAdminShop()) {
     	mockMvc.perform(get("/shop/admin/products/edit/{productId}", 1)).
 			andExpect(status().isOk()).
 			andExpect(view().name("shop/admin/editProduct"));
+    	}
     }
-    
     @WithMockUser(value = "spring")
     @Test
     void testProcessUpdateForm() throws Exception {

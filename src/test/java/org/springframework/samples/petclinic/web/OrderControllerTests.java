@@ -40,6 +40,8 @@ public class OrderControllerTests {
 	private OrderRepository orderRepo;
 	@MockBean
 	private CouponRepository couponRepo;
+	@MockBean
+	private ShopAdminController sac;
 
 	
 	@MockBean
