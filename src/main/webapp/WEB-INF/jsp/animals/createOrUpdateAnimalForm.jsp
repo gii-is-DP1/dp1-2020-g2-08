@@ -11,6 +11,11 @@
                 $("#birthDate").datepicker({dateFormat: 'yy/mm/dd'});
             });
         </script>
+        <script>
+            $(function () {
+                $("#shelterDate").datepicker({dateFormat: 'yy/mm/dd'});
+            });
+        </script>
     </jsp:attribute>
     <jsp:body>
         <h2>
@@ -25,6 +30,19 @@
                 <div class="control-group">
                     <petclinic:selectField name="type" label="Type " names="${types}" size="5"/>
                 </div>
+               <div class="control-group">
+                    <petclinic:selectField name="sex" label="Sex " names="${sexes}" size="2"/>
+                </div>
+                <petclinic:inputField label="ShelterDate" name="shelterDate"/>
+                <input type="hidden" name="state" value="avaible"/>
+                <petclinic:inputField label="Description" name="description"/>
+                <petclinic:inputField label="ImageUrl" name="imageUrl"/>
+                 <c:if test="${animal['new']}">
+                <petclinic:inputField label="Shelter" name="shelter"/>
+                </c:if>
+                <c:if test = "${!animal['new']}">
+                 <input type="hidden" id="shelter" name="shelter" value="${animal.shelter.id}"/>
+                </c:if>
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">

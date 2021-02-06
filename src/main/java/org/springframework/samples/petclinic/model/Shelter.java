@@ -10,6 +10,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -18,11 +20,13 @@ import javax.persistence.Transient;
 
 import com.sun.istack.NotNull;
 
+import lombok.Data;
+
 
 
 @Entity
 @Table(name = "shelter")
-public class Shelter extends BaseEntity {
+public class Shelter extends NamedEntity {
 
 	@Transient
 	private String animalMasViejo;

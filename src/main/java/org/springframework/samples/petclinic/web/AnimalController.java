@@ -1,11 +1,13 @@
 package org.springframework.samples.petclinic.web;
 
+import java.time.LocalDate;
 import java.util.Collection;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters.LocalDateConverter;
 import org.springframework.samples.petclinic.model.Animal;
 import org.springframework.samples.petclinic.model.Booking;
 import org.springframework.samples.petclinic.model.Hotel;
@@ -13,11 +15,13 @@ import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.model.Review;
+import org.springframework.samples.petclinic.model.SexType;
 import org.springframework.samples.petclinic.model.Shelter;
 import org.springframework.samples.petclinic.repository.AnimalRepository;
 import org.springframework.samples.petclinic.service.AnimalService;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.ShelterService;
+import org.springframework.samples.petclinic.service.exceptions.DuplicatedAnimalNameException;
 import org.springframework.samples.petclinic.service.exceptions.DuplicatedPetNameException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -60,6 +64,11 @@ public class AnimalController {
 		return this.animalService.findPetTypes();
 	}
 	
+	@ModelAttribute("sexes")
+	public Collection<SexType> populateSexTypes() {
+		return this.animalService.findSexTypes();
+	}
+	
 //	@ModelAttribute("owner")
 //	public Owner findShelter(@PathVariable("shelterId") int ownerId) {
 //		return this.ownerService.findOwnerById(ownerId);
@@ -70,14 +79,14 @@ public class AnimalController {
 		dataBinder.setDisallowedFields("id");
 	}
 	
-//	@InitBinder("animal")
-//	public void initPetBinder(WebDataBinder dataBinder) {
-//		dataBinder.setValidator(new AnimalValidator());
-//	}
+	@InitBinder("animal")
+	public void initAnimalBinder(WebDataBinder dataBinder) {
+		dataBinder.setValidator(new AnimalValidator());
+	}
 	
 	
 	// LISTADO DE TODOS LOS ANIMALES
-		@GetMapping()
+		@GetMapping("")
 		public String listadoAnimales(ModelMap modelmap) {
 
 			
@@ -119,27 +128,35 @@ public class AnimalController {
 		
 		
 	@GetMapping(value = "/new")
-	public String initCreationForm(Owner owner, ModelMap model) {
+	public String initCreationForm(ModelMap model) {
 		Animal animal = new Animal();
 		model.put("animal", animal);
 		return VIEW_ANIMALS_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping(value = "/new")
-	public String processCreationForm(Owner owner, @Valid Animal animal, BindingResult result, ModelMap model) {		
+	public String processCreationForm(@Valid Animal animal, BindingResult result, ModelMap model) {		
 		if (result.hasErrors()) {
 			model.put("animal", animal);
 			return VIEW_ANIMALS_CREATE_OR_UPDATE_FORM;
 		}
 		else {
+			Integer aforoDisponible = animal.getShelter().getAforo() - animal.getShelter().getAnimals().size();
+			if(aforoDisponible <=0) {
+				model.put("animal", animal);
+				model.addAttribute("message", "El aforo del refugio en el que intenta registrar al animal se encuentra completo");
+				return VIEW_ANIMALS_CREATE_OR_UPDATE_FORM;
+			}
+			else {
                     try{ 
                     	log.info("Se ha añadido el animal al refugio");
                     	this.animalService.saveAnimal(animal);
-                    }catch(DuplicatedPetNameException ex){
+                    }catch(DuplicatedAnimalNameException ex){
                         result.rejectValue("name", "duplicate", "already exists");
                         return VIEW_ANIMALS_CREATE_OR_UPDATE_FORM;
                     }
-                    return "redirect:/owners/{ownerId}";
+                    return "redirect:/shelter/animals";
+			}
 		}
 	}
 
@@ -150,34 +167,33 @@ public class AnimalController {
 		return VIEW_ANIMALS_CREATE_OR_UPDATE_FORM;
 	}
 
-    /**
-     *
-     * @param pet
-     * @param result
-     * @param petId
-     * @param model
-     * @param owner
-     * @param model
-     * @return
-     */
         @PostMapping(value = "/{animalId}/edit")
-	public String processUpdateForm(@Valid Animal animal, BindingResult result, Owner owner,@PathVariable("animalId") int animalId, ModelMap model) {
+	public String processUpdateForm(@Valid Animal animal, BindingResult result,@PathVariable("animalId") Integer animalId, 
+			ModelMap model) {
 		if (result.hasErrors()) {
 			model.put("animal", animal);
 			return VIEW_ANIMALS_CREATE_OR_UPDATE_FORM;
 		}
 		else {
                         Animal animalToUpdate=this.animalService.findAnimalById(animalId);
-			BeanUtils.copyProperties(animal, animalToUpdate, "id");                                                                                  
+			BeanUtils.copyProperties(animal, animalToUpdate, "id", "state", "shelter", "diasEnRefugio");                                                                                  
                     try {                    
                         this.animalService.saveAnimal(animalToUpdate);                    
-                    } catch (DuplicatedPetNameException ex) {
+                    } catch (DuplicatedAnimalNameException ex) {
                         result.rejectValue("name", "duplicate", "already exists");
                         return VIEW_ANIMALS_CREATE_OR_UPDATE_FORM;
                     }
-			return "redirect:/owners/{ownerId}";
+			return "redirect:/shelter/animals";
 		}
 	}
+        
+        @GetMapping(path = "{animalId}/delete")
+    	public String borrarAnimal(@PathVariable("animalId") Integer animalId, ModelMap modelmap) {
+    		animalService.deleteById(animalId);
+    		modelmap.addAttribute("message", "Animal borrado con éxito");
+    		return listadoAnimales(modelmap);
+    	}
+
 
 
 }

@@ -17,6 +17,11 @@
 
     <h2>All our animals for adoptions</h2><br>
     
+    <td><spring:url value="/shelter/animals/new"
+							var="initCreationForm">
+							
+						</spring:url> <a href="${fn:escapeXml(initCreationForm)}"> New animal</a></td>
+    
 <c:forEach items="${shelters}" var="shelter" varStatus="i">
 <h2> ${shelter.city}'s shelter</h2>
     
@@ -27,6 +32,8 @@
             <th style="width: 200px;">Type</th>
             <th style="width: 200px;">Birthdate</th>
             <th style="width: 200px;">Days at shelter</th>
+            <th style="width: 200px;">Actions</th>
+            <th style="width: 200px;"></th>
         </tr>
         </thead>
         <tbody>
@@ -59,6 +66,16 @@
                  <td>
                     <c:out value="${animal.diasEnRefugio}"/>
                 </td>
+                
+                <td><spring:url value="/shelter/animals/${animal.id}/delete/"
+							var="borrarAnimal">
+							
+						</spring:url> <a href="${fn:escapeXml(borrarAnimal)}"> Delete</a></td>
+				
+				<td><spring:url value="/shelter/animals/${animal.id}/edit/"
+							var="initUpdateForm">
+							
+						</spring:url> <a href="${fn:escapeXml(initUpdateForm)}"> Edit</a></td>
         </tr>
         
         
