@@ -22,12 +22,15 @@ import java.time.temporal.ChronoUnit;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.sun.istack.NotNull;
+
 @Entity
 @Table(name = "animals")
 public class Animal extends NamedEntity{
 	
-	@Column(name = "sex")        
-	private String sex;
+	@ManyToOne
+	@JoinColumn(name = "sex")       
+	private SexType sex;
 	
 	@Column(name = "state")        
 	private String state;
@@ -69,8 +72,10 @@ public class Animal extends NamedEntity{
 		return this.type;
 	}
 	
+	
 	public Shelter getShelter() {
 		return this.shelter;
+		
 	}
 
 	public void setType(PetType type) {
@@ -113,12 +118,12 @@ public class Animal extends NamedEntity{
 	public void setDiasEnRefugio(int diasEnRefugio) {
 		this.diasEnRefugio = diasEnRefugio;
 	}
-
-	public String getSex() {
+	
+	public SexType getSex() {
 		return sex;
 	}
 
-	public void setSex(String sex) {
+	public void setSex(SexType sex) {
 		this.sex = sex;
 	}
 
