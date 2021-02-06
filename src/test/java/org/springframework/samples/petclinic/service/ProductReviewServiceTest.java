@@ -103,7 +103,6 @@ public class ProductReviewServiceTest {
 	@Transactional
 	public void average() {
 		Product product = this.productService.findProductById(1).get();
-		
 		assertNotNull(this.productReviewService.average(product));
 		
 	}

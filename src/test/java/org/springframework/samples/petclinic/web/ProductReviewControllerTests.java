@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ public class ProductReviewControllerTests {
 
 	@Autowired
 	private ProductReviewController productReviewController;
+	
+	@MockBean
+	private OrderController orderController;
 	
 	@MockBean
 	private UserController userController;
@@ -78,16 +82,20 @@ public class ProductReviewControllerTests {
 			mockMvc.perform(post("/shop/products/review/{productId}", 1).
 					with(csrf())).
 			andExpect(status().isOk()).
-			andExpect(view().name("shop/home"));
+			andExpect(view().name("shop/myOrders"));
 		}
 	}
 	
 	@WithMockUser(value = "spring")
     @Test
     void testSaveReviewNoEsClient() throws Exception {
+		if(clientService.esClient()) {
+			
 			mockMvc.perform(post("/shop/products/review/{productId}", 1).
 					with(csrf())).
+			andExpect(model().attributeHasErrors("review")).
 			andExpect(status().isOk()).
-			andExpect(view().name("/shop/home"));
+			andExpect(view().name("reviews/newProductReview"));
+		}
 	}
 }

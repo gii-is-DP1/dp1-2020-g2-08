@@ -64,8 +64,8 @@ private static final String REQUIRED = "required";
 		if(username.length()<3) {
 			errors.rejectValue("nameuser", "Username is empty","Username is empty");
 		}
-		if(password.length()<3) {
-			errors.rejectValue("pass", "Password is empty","Password is empty");
+		if(!password.matches("((?=.*\\d)(?=.*[a-zA-Z])(?=.*[~\"!@#$%?\\\\/&*\\]|\\[=()}\"{+_:;,.><\"-])).{8,}")) {
+			errors.rejectValue("pass", "8 characters, mayus, minus, number and special character","8 characters, mayus, minus, number and special character");
 		}
 		
 		
