@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Animal;
 import org.springframework.samples.petclinic.model.Hotel;
@@ -16,7 +18,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +36,15 @@ public class ShelterController {
 	
 	@Autowired
 	private OwnerService ownerService; 
+	
+	@InitBinder("shelter")
+	public void initShelterBinder(WebDataBinder dataBinder) {
+		dataBinder.setValidator(new ShelterValidator());
+	}
+	@InitBinder
+	public void setAllowedFields(WebDataBinder dataBinder) {
+		dataBinder.setDisallowedFields("id");
+	}
 	
 	@Autowired
 	public ShelterController(ShelterService shelterService, OwnerService ownerService) {
@@ -87,9 +101,12 @@ public class ShelterController {
 		return "shelter/newShelter";
 	}
 	
-	@PostMapping(path = "/save")
-	public String guardarShelter(Shelter shelter, ModelMap modelmap) {
+	@PostMapping(path = "/new")
+	public String guardarShelter(@Valid Shelter shelter, BindingResult result, ModelMap modelmap) {
 
+		if(result.hasErrors()) {
+			return "shelter/newShelter";
+		}
 		modelmap.addAttribute("message", "Refugio creado con éxito!");
 		shelterService.save(shelter);
 		modelmap.clear();
