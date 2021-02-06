@@ -90,8 +90,11 @@ public class Shelter extends NamedEntity {
 		Integer res = 0;
 		Integer dias;
 		Integer indiceAnimal = 0;
+		if(this.animals == null) {
+			return "-";
+		}
 		List<Animal> animales = (List<Animal>) this.animals.stream().collect(Collectors.toList());
-		if (animales.isEmpty()) {
+		if (animales.isEmpty() || this.animals == null) {
 			return "-";
 		} else {
 			for (int i = 0; i < animales.size(); i++) {
