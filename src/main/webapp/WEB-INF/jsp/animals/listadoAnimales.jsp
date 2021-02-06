@@ -17,11 +17,6 @@
 
 
     <h2>All our animals for adoptions</h2><br>
-    <sec:authorize access="hasAuthority('adminShelter')">
-    <td><spring:url value="/shelter/animals/new"
-							var="initCreationForm">
-							
-						</spring:url> <a href="${fn:escapeXml(initCreationForm)}"> New animal</a></td></sec:authorize>
     
 <c:forEach items="${shelters}" var="shelter" varStatus="i">
 <h2> ${shelter.city}'s shelter</h2>

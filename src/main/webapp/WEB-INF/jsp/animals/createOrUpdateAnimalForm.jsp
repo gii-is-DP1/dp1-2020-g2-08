@@ -37,12 +37,9 @@
                 <input type="hidden" name="state" value="avaible"/>
                 <petclinic:inputField label="Description" name="description"/>
                 <petclinic:inputField label="ImageUrl" name="imageUrl"/>
-                 <c:if test="${animal['new']}">
-                <petclinic:inputField label="Shelter" name="shelter"/>
-                </c:if>
-                <c:if test = "${!animal['new']}">
+                 
                  <input type="hidden" id="shelter" name="shelter" value="${animal.shelter.id}"/>
-                </c:if>
+            
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">

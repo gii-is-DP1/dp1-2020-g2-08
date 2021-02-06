@@ -127,15 +127,17 @@ public class AnimalController {
 		}
 		
 		
-	@GetMapping(value = "/new")
-	public String initCreationForm(ModelMap model) {
+	@GetMapping(value = "{shelterId}/animal/new")
+	public String initCreationForm(ModelMap model,@PathVariable("shelterId") Integer shelterId) {
 		Animal animal = new Animal();
+		animal.setShelter(this.shelterService.findById(shelterId));
 		model.put("animal", animal);
 		return VIEW_ANIMALS_CREATE_OR_UPDATE_FORM;
 	}
 
-	@PostMapping(value = "/new")
-	public String processCreationForm(@Valid Animal animal, BindingResult result, ModelMap model) {		
+	@PostMapping(value = "{shelterId}/animal/new")
+	public String processCreationForm(@Valid Animal animal, BindingResult result, ModelMap model, @PathVariable("shelterId") Integer shelterId) {
+		animal.setShelter(this.shelterService.findById(shelterId));
 		if (result.hasErrors()) {
 			model.put("animal", animal);
 			return VIEW_ANIMALS_CREATE_OR_UPDATE_FORM;
@@ -155,7 +157,7 @@ public class AnimalController {
                         result.rejectValue("name", "duplicate", "already exists");
                         return VIEW_ANIMALS_CREATE_OR_UPDATE_FORM;
                     }
-                    return "redirect:/shelter/animals";
+                    return "redirect:/shelter/listadoRefugios";
 			}
 		}
 	}
