@@ -115,7 +115,7 @@ public class UserController {
 			return "users/createClientForm";
 		}
 		else {
-			if(!userService.findUser(client.getNameuser()).isEmpty()) {
+			if(!userService.findUser(client.getNameuser()).get().getUsername().isEmpty()) {
 				modelmap.addAttribute("message", "This user is already exists");
 				return "users/createClientForm";
 			}

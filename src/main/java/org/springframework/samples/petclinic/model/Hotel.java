@@ -9,16 +9,16 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
-import lombok.Data;
 
-@Data
+
+
 @Entity
 @Table(name = "hotel")
 public class Hotel extends BaseEntity {
@@ -37,11 +37,11 @@ public class Hotel extends BaseEntity {
 	
 	
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "hotel", fetch = FetchType.LAZY)	
+	@OneToMany(cascade = CascadeType.ALL)	
 	private Set<Booking> bookings;
 
 	// lista de reviews del hotel
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "hotel", fetch = FetchType.LAZY)	
+	@OneToMany(cascade = CascadeType.ALL)	
 	private Set<Review> reviews;
 	
 	
@@ -70,6 +70,46 @@ public class Hotel extends BaseEntity {
 }
 	public boolean removeReview(Review review) {
 		return getReviewsInternal().remove(review);
+	}
+
+	public Integer getAforo() {
+		return aforo;
+	}
+
+	public void setAforo(Integer aforo) {
+		this.aforo = aforo;
+	}
+
+	public Integer getOcupadas() {
+		return ocupadas;
+	}
+
+	public void setOcupadas(Integer ocupadas) {
+		this.ocupadas = ocupadas;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public Set<Booking> getBookings() {
+		return bookings;
+	}
+
+	public void setBookings(Set<Booking> bookings) {
+		this.bookings = bookings;
+	}
+
+	public Set<Review> getReviews() {
+		return reviews;
+	}
+
+	public void setReviews(Set<Review> reviews) {
+		this.reviews = reviews;
 	}
 	
 	

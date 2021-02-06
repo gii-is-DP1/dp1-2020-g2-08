@@ -96,6 +96,12 @@ public class ShopAdminController {
 		dataBinder.setValidator(new ProductValidator());
 
 	}
+
+	@InitBinder("coupon")
+	public void initCouponBinder(WebDataBinder dataBinder) {
+		dataBinder.setValidator(new CouponValidator());
+
+}
 	
 	@GetMapping(path = "/products/add")
 	public String addProduct(ModelMap modelmap) {
@@ -229,9 +235,9 @@ public class ShopAdminController {
 		
 		if (result.hasErrors()) {
 			modelmap.addAttribute("coupon", coupon);
-			modelmap.addAttribute("message", result.getAllErrors().stream().map(x->x.getDefaultMessage()).collect(Collectors.toList()));
+			//modelmap.addAttribute("message", result.getAllErrors().stream().map(x->x.getDefaultMessage()).collect(Collectors.toList()));
 			
-			return addCoupon(modelmap);
+			return "shop/admin/newCoupon";
 			
 
 		}else {
