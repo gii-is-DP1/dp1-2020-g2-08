@@ -115,7 +115,10 @@ public class UserController {
 			return "users/createClientForm";
 		}
 		else {
-
+			if(!userService.findUser(client.getNameuser()).isEmpty()) {
+				modelmap.addAttribute("message", "This user is already exists");
+				return "users/createClientForm";
+			}
 			this.clientService.saveClient(client);
 			log.info("Se ha creado el usuario correctamente");
 

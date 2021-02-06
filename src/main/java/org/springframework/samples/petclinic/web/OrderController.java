@@ -53,6 +53,9 @@ public class OrderController {
 	private CouponService couponService;
 
 	@Autowired
+	private ShopAdminController sac;
+	
+	@Autowired
 	private ClientService clientService;
 
 	@Autowired
@@ -274,7 +277,7 @@ public class OrderController {
 				
 				log.info("Se ha completado la compra correctamente");
 
-				return "shop/home";
+				return sac.productList(modelmap);
 			}
 		
 		} else {
@@ -351,12 +354,12 @@ public class OrderController {
 			productoVendidoRepo.save(p);
 			modelmap.put("message", "Su pedido se ha completado con exito");
 	
-			return "shop/home";
+			return "";
 		}
 
 	}
 	@GetMapping(path = "/shop/myOrders")
-	private String myOrderList(ModelMap modelmap) {
+	public String myOrderList(ModelMap modelmap) {
 		
 		if (clientService.esClient()) {
 		String view = "shop/myOrders";
