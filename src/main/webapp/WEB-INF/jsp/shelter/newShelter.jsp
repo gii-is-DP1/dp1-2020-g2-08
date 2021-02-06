@@ -14,7 +14,7 @@
 <!--  Hay que enviar los datos de aforo,ocupadas, city-->
         
 
-        <form:form modelAttribute="shelter" class="form-horizontal" action="/shelter/save">
+        <form:form modelAttribute="shelter" class="form-horizontal" action="/shelter/new">
 			
             <div class="form-group has-feedback">
                 <petclinic:inputField label="Aforo" name="aforo" />
