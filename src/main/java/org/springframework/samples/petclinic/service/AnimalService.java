@@ -15,7 +15,9 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.model.Animal;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
+import org.springframework.samples.petclinic.model.SexType;
 import org.springframework.samples.petclinic.repository.AnimalRepository;
+import org.springframework.samples.petclinic.service.exceptions.DuplicatedAnimalNameException;
 import org.springframework.samples.petclinic.service.exceptions.DuplicatedPetNameException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +26,7 @@ import org.springframework.util.StringUtils;
 @Service
 public class AnimalService {
 
+	@Autowired
 	private AnimalRepository animalRepository;
 
 	@Autowired
@@ -34,6 +37,11 @@ public class AnimalService {
 	@Transactional(readOnly = true)
 	public Collection<PetType> findPetTypes() throws DataAccessException {
 		return animalRepository.findPetTypes();
+	}
+	
+	@Transactional(readOnly = true)
+	public Collection<SexType> findSexTypes() throws DataAccessException {
+		return animalRepository.findSexTypes();
 	}
 
 	@Transactional(readOnly = true)
@@ -47,11 +55,11 @@ public class AnimalService {
 		 animalRepository.save(animal);
 	}
 	
-	@Transactional(rollbackFor = DuplicatedPetNameException.class)
-	public void saveAnimal(Animal animal) throws DataAccessException, DuplicatedPetNameException {
+	@Transactional(rollbackFor = DuplicatedAnimalNameException.class)
+	public void saveAnimal(Animal animal) throws DataAccessException, DuplicatedAnimalNameException {
 			Animal otherAnimal=animal.getShelter().getAnimalwithIdDifferent(animal.getName(), animal.getId());
             if (StringUtils.hasLength(animal.getName()) &&  (otherAnimal!= null && otherAnimal.getId()!=animal.getId())) {            	
-            	throw new DuplicatedPetNameException();
+            	throw new DuplicatedAnimalNameException();
             }else
                animalRepository.save(animal);                
 	}
@@ -77,6 +85,12 @@ public class AnimalService {
 		
 	
 		return res;
+	}
+
+	public void deleteById(Integer animalId) {
+		
+		animalRepository.deleteById(animalId);
+		
 	}
 	
 

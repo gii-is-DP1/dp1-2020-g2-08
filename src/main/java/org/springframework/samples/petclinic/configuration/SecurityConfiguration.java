@@ -60,8 +60,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				
 				.antMatchers("/shelter/new").hasAnyAuthority("adminShelter")
 				.antMatchers("/shelter/save").hasAnyAuthority("adminShelter")
-				.antMatchers("/shelter/animals").hasAnyAuthority("admin","adminShop","adminShelter","owner")
-				.antMatchers("/shelter/animals/**").hasAnyAuthority("admin","adminShop","adminShelter","owner")
+				.antMatchers("/shelter/animals").hasAnyAuthority("admin","adminShelter","owner")
+				.antMatchers("/shelter/animals/**").hasAnyAuthority("admin","adminShelter","owner")
+				.antMatchers("/shelter/delete/**").hasAnyAuthority("admin","adminShelter","owner")
 				
 				.antMatchers("/admin/**").hasAnyAuthority("admin")
 				.antMatchers("/owners/**").hasAnyAuthority("owner","admin")				

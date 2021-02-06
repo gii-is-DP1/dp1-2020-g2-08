@@ -1,9 +1,12 @@
 package org.springframework.samples.petclinic.web;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.model.Animal;
+import org.springframework.samples.petclinic.model.Hotel;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Shelter;
 import org.springframework.samples.petclinic.service.OwnerService;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -79,6 +83,17 @@ public class ShelterController {
 		Shelter shelter = new Shelter();
 		modelmap.addAttribute("shelter", shelter);
 		return "shelter/newShelter";
+	}
+	
+	@PostMapping(path = "/save")
+	public String guardarShelter(Shelter shelter, ModelMap modelmap) {
+
+		modelmap.addAttribute("message", "Refugio creado con éxito!");
+		shelterService.save(shelter);
+		modelmap.clear();
+		String vista = listadoRefugios(modelmap);
+		return vista;
+
 	}
 	
 	@GetMapping(path = "/delete/{shelterId}")
