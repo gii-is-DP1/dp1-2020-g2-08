@@ -92,6 +92,11 @@ public class AnimalService {
 		animalRepository.deleteById(animalId);
 		
 	}
+
+	public List<Animal> findAnimalsByShelterId(Integer shelterId) {
+		List<Animal> animals = animalRepository.findAllAnimals();
+		return animals.stream().filter(x->x.getShelter().getId().equals(shelterId)).collect(Collectors.toList());
+	}
 	
 
 }
