@@ -49,10 +49,10 @@ public class AnimalValidator implements Validator {
 //		if(animal.isNew() && (animal.getImageUrl() == null )) {
 //			errors.rejectValue("imageUrl", REQUIRED, REQUIRED);
 //		}
-		
-		if(animal.getShelter() == null || animal.getShelter().getId() == null) {
-			errors.rejectValue("shelter", REQUIRED, REQUIRED);
-		}
+//		
+//		if(animal.getShelter() == null || animal.getShelter().getId() == null) {
+//			errors.rejectValue("shelter", REQUIRED, REQUIRED);
+//		}
 	}
 	
 	@Override

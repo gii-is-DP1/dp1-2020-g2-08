@@ -4,6 +4,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 
 <petclinic:layout pageName="refugios">
     <h2>Shelters</h2>
@@ -19,6 +21,7 @@
             
             
             <th>Actions</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -33,7 +36,6 @@
                 <td>
                     <c:out value="${shelter.aforo}"/>
                 </td>
-               
                
                 
                 <td>
@@ -54,6 +56,13 @@
 							var="borrarShelter">
 							
 						</spring:url> <a href="${fn:escapeXml(borrarShelter)}"> Delete</a></td>
+				
+				<sec:authorize access="hasAuthority('adminShelter')">
+    <td><spring:url value="/shelter/animals/${shelter.id}/animal/new"
+							var="initCreationForm">
+							
+						</spring:url> <a href="${fn:escapeXml(initCreationForm)}"> New animal</a></td></sec:authorize>
+               
       
 
                 

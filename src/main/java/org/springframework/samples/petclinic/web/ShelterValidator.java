@@ -16,11 +16,11 @@ private static final String REQUIRED = "required";
 		Integer aforo= shelter.getAforo();
 		String city = shelter.getCity();
 		
-				
+	
 
 		
 		if (aforo == null || aforo<=3) {
-			errors.rejectValue("aforo",  "Aforo required and the value must be at least 4","Aforo required and the value must be at least 3");
+			errors.rejectValue("aforo",  "Aforo required and the value must be at least 4","Aforo required and the value must be at least 4");
 		}
 		if (city == null || city.length()<1 || city == "" ) {
 			errors.rejectValue("city",  "City is required ", "City is required ");
