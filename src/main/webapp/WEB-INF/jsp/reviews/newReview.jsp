@@ -1,4 +1,4 @@
-<%@ page session="false" trimDirectiveWhitespaces="true"%>
+<%@ page session="true" trimDirectiveWhitespaces="false"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
@@ -18,6 +18,8 @@
         <h2>
             New Review
         </h2>
+        
+       
         <form:form modelAttribute="review" class="form-horizontal"
 			action="/hotel/review/saveReview/${ownerId}">
              
@@ -44,15 +46,15 @@
     </select>   
                 <div class="control-group"><br> 	
                              <div class="rate"><h3> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Stars</h3>
-    <input type="radio" id="star5" name="stars" value="5" />
+    <input type="radio" id="star5" name="stars" value="5" required="required"/>
     <label for="star5" title="text">5 stars</label>
-    <input type="radio" id="star4" name="stars" value="4" />
+    <input type="radio" id="star4" name="stars" value="4"required="required" />
     <label for="star4" title="text">4 stars</label>
-    <input type="radio" id="star3" name="stars" value="3" />
+    <input type="radio" id="star3" name="stars" value="3"required="required" />
     <label for="star3" title="text">3 stars</label>
-    <input type="radio" id="star2" name="stars" value="2" />
+    <input type="radio" id="star2" name="stars" value="2" required="required"/>
     <label for="star2" title="text">2 stars</label>
-    <input type="radio" id="star1" name="stars" value="1" />
+    <input type="radio" id="star1" name="stars" value="1" required="required"/>
     <label for="star1" title="text">1 star</label>
   </div>  
                 </div>

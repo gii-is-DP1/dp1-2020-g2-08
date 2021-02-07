@@ -4,7 +4,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
-
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <petclinic:layout pageName="products">
 	<h2>Pets List</h2>
 
@@ -13,10 +14,10 @@
 			<tr>
 				<th style="width: 150px;">Name</th>
 				<th style="width: 200px;">Category</th>
-				<th>Price</th>
+				<th style="width: 200px;">Price</th>
 				<th style="width: 120px">In Offer</th>
 				
-				<sec:authorize access="hasAuthority('admin')">
+				<sec:authorize access="hasAuthority('client')">
 					<th>Actions</th>
 				</sec:authorize>
 				
@@ -34,12 +35,12 @@
 					<td><c:out value="${product.price}" /></td>
 					<td><c:out value="${product.inOffer}" /></td>
 
-						<td><spring:url value="/shop/add/{productId}"
+					<sec:authorize access="hasAuthority('client')">	<td><spring:url value="/shop/add/{productId}"
 								var="productId">
 								<spring:param name="productId" value="${product.id}" />
 							</spring:url> <a href="${fn:escapeXml(productId)}"> Add to cart</a>
 											
-						</td>		
+						</td>		</sec:authorize>	
 
 				</tr>
 				
