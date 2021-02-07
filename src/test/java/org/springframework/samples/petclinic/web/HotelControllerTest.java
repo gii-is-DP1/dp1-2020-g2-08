@@ -151,7 +151,7 @@ public class HotelControllerTest {
     @Test
     void testGuardarBookingNoHotel() throws Exception {
 		if(!hotelService.findAll().iterator().hasNext()) {
-			mockMvc.perform(post("/hotel/save").
+			mockMvc.perform(post("/hotel/new").
 					with(csrf())).
 			andExpect(status().isOk()).
 			andExpect(view().name("hotel/newHotel"));

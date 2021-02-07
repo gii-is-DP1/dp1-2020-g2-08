@@ -164,7 +164,7 @@ INSERT INTO product_reviews VALUES(7, 5, 1, 4, 7);
 INSERT INTO product_reviews VALUES(8, 5, 1, 4, 8);
 
 
-INSERT INTO shelter(id,aforo,city) VALUES (1, 4,  'Sevilla');
+INSERT INTO shelter(id,aforo,city) VALUES (1, 5,  'Sevilla');
 INSERT INTO shelter(id,aforo,city) VALUES (2, 4,  'Malaga');
 INSERT INTO shelter(id,aforo,city) VALUES (3, 4,  'Cordoba');
 
