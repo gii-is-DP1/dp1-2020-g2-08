@@ -60,6 +60,20 @@ public class Shelter extends NamedEntity {
 		}
 		return null;
 	}
+	
+	public Animal getAnimal(String name, boolean ignoreNew) {
+		name = name.toLowerCase();
+		for (Animal animal : getAnimalsInternal()) {
+			if (!ignoreNew || !animal.isNew()) {
+				String compName = animal.getName();
+				compName = compName.toLowerCase();
+				if (compName.equals(name)) {
+					return animal;
+				}
+			}
+		}
+		return null;
+	}
 
 	public Integer getAforo() {
 		return aforo;
@@ -83,6 +97,10 @@ public class Shelter extends NamedEntity {
 
 	public void setAnimals(Set<Animal> animals) {
 		this.animals = animals;
+	}
+	
+	public void addAnimal(Animal animal) {
+		getAnimalsInternal().add(animal);
 	}
 
 	public String getAnimalMasViejo() throws ParseException {

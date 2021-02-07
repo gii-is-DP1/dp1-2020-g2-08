@@ -34,8 +34,6 @@ public class ShelterController {
 	@Autowired
 	private ShelterService shelterService;
 	
-	@Autowired
-	private OwnerService ownerService; 
 	
 	@InitBinder("shelter")
 	public void initShelterBinder(WebDataBinder dataBinder) {
@@ -47,36 +45,10 @@ public class ShelterController {
 	}
 	
 	@Autowired
-	public ShelterController(ShelterService shelterService, OwnerService ownerService) {
+	public ShelterController(ShelterService shelterService) {
 		this.shelterService = shelterService;
-		this.ownerService = ownerService;
 	}
 	
-	public void devolverOwner(ModelMap modelmap) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Object sesion = auth.getPrincipal();
-		UserDetails us = null;
-		if (sesion instanceof UserDetails) {
-			us = (UserDetails) sesion;
-		}
-
-		String res = us.getUsername();
-
-		if (us.getAuthorities().iterator().next().getAuthority().equals("owner")) {
-
-			Owner o = (ownerService.findAllOwners().stream().filter(x -> x.getUser().getUsername().equals(res)))
-					.collect(Collectors.toList()).get(0);
-			Integer id = o.getId();
-
-			modelmap.addAttribute("ownerId", id);
-			modelmap.addAttribute("owner", o);
-
-		} else {
-			modelmap.addAttribute("message", "No estas logueado como owner");
-
-		}
-
-	}
 	
 	
 	@GetMapping(path = "/listadoRefugios")

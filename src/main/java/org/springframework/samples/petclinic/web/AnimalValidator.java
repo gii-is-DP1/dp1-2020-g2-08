@@ -13,7 +13,7 @@ import org.springframework.validation.Validator;
 public class AnimalValidator implements Validator {
 	
 	private static final String REQUIRED = "required";
-	private final ShelterService shelterService = new ShelterService();
+	
 	
 	@Override
 	public void validate(Object obj, Errors errors) {

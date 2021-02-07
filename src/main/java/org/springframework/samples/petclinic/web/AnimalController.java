@@ -44,7 +44,7 @@ public class AnimalController {
 	private static final String VIEW_ANIMALS_CREATE_OR_UPDATE_FORM = "animals/createOrUpdateAnimalForm";
 	@Autowired
 	private final AnimalService animalService;
-	private final OwnerService ownerService;
+
 	@Autowired
 	private final ShelterService shelterService;
 	@Autowired
@@ -52,11 +52,10 @@ public class AnimalController {
 	
 	
 	@Autowired
-	public AnimalController(AnimalService animalService, OwnerService ownerService, AnimalRepository animalRepo) {
+	public AnimalController(AnimalService animalService,ShelterService shelterService, AnimalRepository animalRepo) {
 		this.animalRepo = animalRepo;
-		this.shelterService = new ShelterService();
+		this.shelterService = shelterService;
 		this.animalService = animalService;
-		this.ownerService = ownerService;
 	}
 	
 	@ModelAttribute("types")
