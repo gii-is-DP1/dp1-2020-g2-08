@@ -26,9 +26,9 @@
     
                 
                 <spring:url value="/shelter/adoption/new"
-							var="verAdopcion">
+							var="initAdoptionForm">
 							
-						</spring:url> <a href="${fn:escapeXml(verAdopcion)}"> ${animal.name}</a>
+						</spring:url> <a href="${fn:escapeXml(initAdoptionForm)}"> ${animal.name}</a>
                 
                     
                 

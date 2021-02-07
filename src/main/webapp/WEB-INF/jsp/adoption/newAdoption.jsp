@@ -22,17 +22,11 @@
                    class="form-horizontal">
             <input type="hidden" name="id" value="${animal.id}"/>
             <div class="form-group has-feedback">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Owner</label>
-                    <div class="col-sm-10">
-                        <c:out value="${owner.firstName} ${owner.lastName}"/>
-                    </div>
-                </div>
                 <petclinic:inputField label="Name" name="name"/>
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                            <button class="btn btn-default" type="submit">Update Pet</button>
+                            <button class="btn btn-default" type="submit">Adopt</button>
                 </div>
             </div>
         </form:form>

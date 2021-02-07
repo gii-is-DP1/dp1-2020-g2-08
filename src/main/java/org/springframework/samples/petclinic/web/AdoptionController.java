@@ -1,12 +1,16 @@
 package org.springframework.samples.petclinic.web;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +21,7 @@ import org.springframework.samples.petclinic.model.Booking;
 import org.springframework.samples.petclinic.model.Hotel;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
+import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.model.Review;
 import org.springframework.samples.petclinic.model.Shelter;
 import org.springframework.samples.petclinic.model.Visit;
@@ -39,12 +44,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/shelter/adoption/")
+@RequestMapping("/shelter/animals/adoption")
 public class AdoptionController {
 	@Autowired
 	ShelterController shelterController;
 
-	
+	@Autowired
 	private OwnerService ownerService;
 	@Autowired
 	private PetService petService;
@@ -122,100 +127,13 @@ public class AdoptionController {
 		//return "animals/listadoAnimales";
 		return "adoption/listadoAdopciones";
 	}
-/*	
-	@GetMapping(value = "/new")
-	public String initCreationForm(Owner owner, ModelMap model) {
-		//Animal animal = this.animalService.findAnimalById(animalId);
-		//this.animalService.save(animal);
 
-		Pet pet = new Pet();
-		model.put("pet", pet);
-		//model.put("animal", animal);
-		
-		return "adoption/newAdoption";
-	}
-
-	@PostMapping(value = "/new")
-	public String processCreationForm(Owner owner, @Valid Pet pet, BindingResult result,
-			ModelMap model) {		
-		if (result.hasErrors()) {
-			//model.put("animal", animal);
-			model.put("pet", pet);
-			return "redirect:/animals"; 
-		}
-		else {
-                    try{ 
-                    	//Pet pet = new Pet();
-                    	//BeanUtils.copyProperties(animal, pet,"birthDate","type");
-                		//pet.setName(animal.getName());
-                		//pet.setBirthDate(animal.getBirthDate());
-                		//pet.setId(animal.getId());
-                		//pet.setType(animal.getType());
-                		//animal.setState("Not avaiable");
-                		Adoption adoption = new Adoption();
-                		adoption.setPet(pet);
-                		//adoption.setshelter(animal.getShelter());
-                		adoption.setOwner(owner);
-                		adoption.setStartDate(LocalDate.now());
-                		//adoption.setId(1);
-                		owner.addPet(pet);
-                		//model.put("pet", pet);
-                    	this.petService.savePet(pet);
-                    }catch(DuplicatedPetNameException ex){
-                        result.rejectValue("name", "duplicate", "already exists");
-                        return "adoption/newAdoption";
-                    }
-                    return "redirect:/owners/{ownerId}";
-		}
-	}
-
-	@GetMapping(value = "/new")
-	public String initCreationForm(Owner owner, ModelMap model) {
-		Pet pet = new Pet();
-		model.put("pet", pet);
-		return "adoption/newAdoption";
-	}
-	@GetMapping(value = "/new")
-	public String initCreationForm(Owner owner,ModelMap model) {
-		Animal animal = new Animal();
-		model.put("animal", animal);
-		return "adoption/newAdoption";
-
-	
-	@GetMapping(value = "/new")
-	public String initCreationForm(@PathVariable("petId") int petId,Owner owner, ModelMap model) {
-		//Pet pet = this.petService.findPetById(petId)
-		//Animal animal = this.animalService.findAnimalById(petId);
-		//Animal animal = new Animal();
-		//model.put("animal", animal);
-		Pet pet = new Pet();
-		model.put("pet", pet);
-		return "adoption/newAdoption";
-	}
-/*
- * 
- */
-	public List<Visit> cogevisit(ModelMap model) {
-		List<Visit> v = petService.findPetById(0).getVisits();
-		return v;
-	}
-	/* Version ultima
-	@GetMapping(value = "/new")
-	public String initCreationForm(Owner owner,ModelMap model) {
-		
-		Animal animal = this.animalService.findAnimalById(1);
-		//Animal animal = new Animal();
-		model.put("animal", animal);
-		return "adoption/newAdoption";
-	}
-	*/
-	@GetMapping(value = "/new")
-    public String initAdoptionForm(@PathVariable("animalId") int animalId, ModelMap model) {
+	@GetMapping(value = "/{animalId}/new")
+    public String initAdoptionForm(@PathVariable("animalId") int animalId,ModelMap model,Owner owner) {
         Animal animal = this.animalService.findAnimalById(animalId);
         model.put("animal", animal);
         return "adoption/newAdoption";
     }
-	
 	
 
     /**
@@ -227,42 +145,50 @@ public class AdoptionController {
      * @param owner
      * @param model
      * @return
+     * @throws DuplicatedPetNameException 
+     * @throws DataAccessException 
      */
-    @PostMapping(value = "/new")
-	public String processUpdateForm(Owner owner, @Valid Animal animal, BindingResult result, ModelMap model) {
-        	//Animal animal = new Animal();
-        	//BeanUtils.copyProperties(animal, pet,"birthDate","type");
-    		Pet pet = new Pet();
-			animal = this.animalService.findAnimalById(animal.getId());
-			owner = this.ownerService.findOwnerById(owner.getId());
-    		//model.put("pet", pet);
-    		
-    		List<Visit> v = animal.getVisits();
-    		//Collection<Visit> v1 = petService.findVisitsByPetId(1);
-    		owner.addPet(pet);
-    		pet.setBookings(owner.getBookings());
-    		pet.setVisits(animal.getVisitsInternal());
-//    		for(Visit x:v1) {
-//    			pet.addVisit(x);
-//    		}
-    		//pet.setVisitsInternal(v);
-    		if (animal.visits == null) {
-    			pet.visits = new HashSet<>();
-    		}
-    		BeanUtils.copyProperties(animal, pet,"descripcion","imageUrl"
-    				,"diasEnRefugio","sex","shelter","shelterDate","state");
-    		pet.setId(18);
-    		try {
-				this.petService.savePet2(pet);
-    			//PetRepository.save()
-			} catch(DuplicatedPetNameException ex) {
-				result.rejectValue("name", "duplicate", "already exists");
-                return "adoption/newAdoption";
-				
-			}
-			return "redirect:/animals";
-		
-	}
+
+	@PostMapping(value = "/{animalId}/new")
+    public String processUpdateForm(@Valid Animal animal, BindingResult result,@PathVariable("animalId") Integer animalId, 
+            ModelMap model,@PathParam("ownerId") Integer ownerId,Adoption adoption) {
+        if (result.hasErrors()) {
+            model.put("animal", animal);
+            return "adoption/newAdoption";
+        }
+        else {
+        				Pet pet = new Pet();
+        				Owner owner;
+        				owner = this.ownerService.findOwnerById(ownerId);
+                        animal=this.animalService.findAnimalById(animalId);
+            BeanUtils.copyProperties(animal, pet,"id", "sex", "state", "description", "imageUrl", "shelter",
+                    "shelterDate", "diasEnRefugio");
+            			owner.addPet(pet);
+            			pet.setBookings(null);
+            			pet.setVisits(null);
+            			animal.setState("Not available");
+            			//Adoption adoption = new Adoption();
+//            			adoption.setPet(pet);
+//            			//Integer id = adoption.getPet().getId();
+//            			adoption.setAnimal(this.animalService.findAnimalById(animalId));
+//            			adoption.setOwner(owner);
+//            			adoption.setdate(LocalDate.now());
+            			
+            			
+            			adoption.setPet(pet);
+            			animal.setDiasEnRefugio(null);
+            			//Integer id = adoption.getPet().getId();
+            			adoption.setAnimal(animal);
+            			adoption.setOwner(owner);
+            			adoption.setdate(LocalDate.now());
+            			
+            			
+            			
+                    //this.petService.savePet(pet);
+					adoptionService.save(adoption);
+            return "redirect:/animals";
+        }
+    }
 
 	
 	public void creaModelMap(Hotel hotel, Owner owner, int ownerId, List<Pet> pets, Booking booking,

@@ -25,9 +25,6 @@ public class AdoptionService {
 	@Autowired
 	private static AdoptionRepository adoptionRepo;
 
-	@Autowired
-	private ShelterRepository shelterRepo;
-
 	@Transactional
 	public int AdoptionCount() {
 
@@ -45,11 +42,26 @@ public class AdoptionService {
 	}
 
 	@Transactional
+	public List<Adoption> findAdoptionsByPetId(int petId) {
+		List<Adoption> lista = new ArrayList<Adoption>();
+		lista = (List<Adoption>) adoptionRepo.findAll();
+		return lista.stream().filter(x -> x.getOwner().getId().equals(petId)).collect(Collectors.toList());
+	}
+	
+	@Transactional
+	public List<Adoption> findAdoptionsByAnimalId(int animalId) {
+		List<Adoption> lista = new ArrayList<Adoption>();
+		lista = (List<Adoption>) adoptionRepo.findAll();
+		return lista.stream().filter(x -> x.getOwner().getId().equals(animalId)).collect(Collectors.toList());
+	}
+	
+	@Transactional
 	public List<Adoption> findAdoptionsByOwnerId(int ownerId) {
 		List<Adoption> lista = new ArrayList<Adoption>();
 		lista = (List<Adoption>) adoptionRepo.findAll();
 		return lista.stream().filter(x -> x.getOwner().getId().equals(ownerId)).collect(Collectors.toList());
 	}
+	
 	@Transactional
 	public Integer numeroAdoptionsPorOwner(int ownerId) {
 		List<Adoption> lista = new ArrayList<Adoption>();
@@ -59,50 +71,11 @@ public class AdoptionService {
 
 
 	@Transactional
-	public List<Adoption> findAdoptionsByShelterId(int shelterId) {
-		List<Adoption> lista = new ArrayList<Adoption>();
-		lista = (List<Adoption>) adoptionRepo.findAll();
-		return lista.stream().filter(x -> x.getShelter().getId().equals(shelterId)).collect(Collectors.toList());
-	}
-
-	@Transactional
-	public void deleteById(int AdoptionId) {
-		adoptionRepo.deleteById(AdoptionId);
-
-	}
-
-	@Transactional
-	public void delete(Adoption Adoption) {
-		adoptionRepo.delete(Adoption);
-
-	}
-
-	@Transactional
-	public void delete(Integer AdoptionId) {
-		adoptionRepo.deleteById(AdoptionId);
-
-	}
-
-	@Transactional
 	public void save(Adoption Adoption) {
 		adoptionRepo.save(Adoption);
 
 	}
 
-	@Transactional
-	public void eliminarAdoptionsPorShelter(Integer shelterId) {
-		List<Adoption> Adoptions = (List<Adoption>) findAll();
-		List<Integer> idAdoption = Adoptions.stream().filter(x -> x.getShelter().getId().equals(shelterId))
-				.map(x -> x.getId()).collect(Collectors.toList()); // Lista con los id de los Adoptions a borrar
-
-		if (idAdoption.size() > 0) {
-			// Borrado de todos los Adoptions asociados al refugio seleccionado
-			for (int i = 0; i < idAdoption.size(); i++) {
-				deleteById(idAdoption.get(i));
-
-			}
-		}
-	}
 //
 //	public boolean numeroDiasValido(Adoption Adoption) {
 //

@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -17,45 +18,33 @@ import org.springframework.format.annotation.DateTimeFormat;
 		
 		//Fecha de inicio de la adopcion 
 	   
-	    @Column(name = "start_date")
+	    @Column(name = "date")
 		@DateTimeFormat(pattern = "yyyy/MM/dd")
-	    private LocalDate startDate;
+	    private LocalDate date;
 	 
-	    
-	    //Fecha de fin de la adopcion 
-	   
-	    @Column(name = "end_date")
-		@DateTimeFormat(pattern = "yyyy/MM/dd")
-	    private LocalDate endDate;
 		
 	    //Animal
-	    @ManyToOne
+	    @OneToOne
 		@JoinColumn(name = "animal_id")
+		private Animal animal;
+	    
+	  //Pet
+	    @OneToOne
+		@JoinColumn(name = "pet_id")
 		private Pet pet;
 	    
-	  //Administrador
+	    //Owner
 	    @ManyToOne
 	    @JoinColumn(name = "owner_id")
 	    private Owner owner;
-	    
-	    @ManyToOne
-	    @JoinColumn(name = "shelder_id")
-	    private Shelter shelter;
+	   
 
-		public LocalDate getStartDate() {
-			return this.startDate;
+		public LocalDate getdate() {
+			return this.date;
 		}
 
-		public void setStartDate(LocalDate startDate) {
-			this.startDate = startDate;
-		}
-
-		public LocalDate getEndDate() {
-			return endDate;
-		}
-
-		public void setEndDate(LocalDate endDate) {
-			this.endDate = endDate;
+		public void setdate(LocalDate date) {
+			this.date = date;
 		}
 
 		public Pet getPet() {
@@ -66,6 +55,14 @@ import org.springframework.format.annotation.DateTimeFormat;
 			this.pet = pet;
 		}
 
+		public Animal getAnimal() {
+			return animal;
+		}
+
+		public void setAnimal(Animal animal) {
+			this.animal = animal;
+		}
+		
 		public Owner getOwner() {
 			return owner;
 		}
@@ -74,13 +71,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 			this.owner = owner;
 		}
 
-		public Shelter getShelter() {
-			return shelter;
-		}
-
-		public void setshelter(Shelter shelter) {
-			this.shelter = shelter;
-		}
 	    
 	    
 	    
