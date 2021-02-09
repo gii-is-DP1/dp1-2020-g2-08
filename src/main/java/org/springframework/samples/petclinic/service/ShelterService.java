@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class ShelterService {
 	@Autowired
 	private ShelterRepository shelterRepo;
+	@Autowired
+	private AnimalService animalService;
 	@Transactional
 	public int shelterCount() {
 		return (int) shelterRepo.count();
@@ -35,12 +37,14 @@ public class ShelterService {
 	
 	@Transactional
 	public void delete(Shelter shelter) {	
+		animalService.eliminarAminalesPorRefugio(shelter.getId());
 			shelterRepo.delete(shelter);	
 	}
 	
 	
 	public void deleteById(Integer shelterId) {
 		
+		animalService.eliminarAminalesPorRefugio(shelterId);
 		shelterRepo.deleteById(shelterId);
 		
 	}

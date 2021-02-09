@@ -14,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -57,6 +58,9 @@ public class Animal extends NamedEntity{
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	private LocalDate shelterDate;
 	
+	@OneToOne
+	private Adoption adoption;
+	
 	 @Transient
 	 private Integer diasEnRefugio;
 	
@@ -76,6 +80,10 @@ public class Animal extends NamedEntity{
 	public Shelter getShelter() {
 		return this.shelter;
 		
+	}
+	
+	public Adoption getAdoption() {
+		return this.adoption;
 	}
 
 	public void setType(PetType type) {
