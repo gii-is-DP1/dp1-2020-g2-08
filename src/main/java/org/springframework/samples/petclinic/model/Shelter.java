@@ -38,6 +38,9 @@ public class Shelter extends NamedEntity {
 	@NotNull
 	@Column(name = "city")
 	private String city;
+	
+	boolean adopted;
+	
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "shelter", fetch = FetchType.LAZY)
 	private Set<Animal> animals;
@@ -86,6 +89,9 @@ public class Shelter extends NamedEntity {
 	public String getCity() {
 		return city;
 	}
+	public boolean getAdopted() {
+		return adopted;
+	}
 
 	public void setCity(String city) {
 		this.city = city;
@@ -111,7 +117,7 @@ public class Shelter extends NamedEntity {
 		if(this.animals == null) {
 			return "-";
 		}
-		List<Animal> animales = (List<Animal>) this.animals.stream().collect(Collectors.toList());
+		List<Animal> animales = (List<Animal>) this.animals.stream().filter(x->x.getState().equals("avaible")).collect(Collectors.toList());
 		if (animales.isEmpty() || this.animals == null) {
 			return "-";
 		} else {

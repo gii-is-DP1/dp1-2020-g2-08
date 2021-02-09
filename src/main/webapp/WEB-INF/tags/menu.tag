@@ -89,7 +89,7 @@
 							<ul class="dropdown-menu">
 							<sec:authorize access="hasAuthority('adminShelter')">	<li><a href="/shelter/listadoRefugios">All shelters</a></li>
 								<li><a href="/shelter/new">New Shelter</a></li>
-								<li><a href="/shelter/adoptionsList">Adoptions list</a></li></sec:authorize>
+								<li><a href="/shelter/animals/adoption/">Adoptions list</a></li></sec:authorize>
 								<li><a href="/shelter/animals">Animals</a></li>
 								
 									

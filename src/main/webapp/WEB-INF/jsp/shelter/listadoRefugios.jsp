@@ -25,7 +25,9 @@
         </tr>
         </thead>
         <tbody>
+
         <c:forEach items="${refugios}" var="shelter" varStatus="i">
+                <c:if test="${shelter.adopted=='false'}">
             <tr>
              <td>
                     <c:out value="${shelter.city}"/>
@@ -67,7 +69,9 @@
 
                 
             </tr>
+             </c:if>
         </c:forEach>
+        
         </tbody>
     </table>
 </petclinic:layout>
