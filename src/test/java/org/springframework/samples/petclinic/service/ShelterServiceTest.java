@@ -25,6 +25,9 @@ class ShelterServiceTest {
 	@Autowired
 	protected ShelterService shelterService;
 	
+	@Autowired 
+	protected AnimalService animalService;
+	
 	@Test
 	void shouldFindAllShelters() {
 		List<Shelter> shelter = (List<Shelter>) this.shelterService.findAll();
@@ -78,7 +81,7 @@ class ShelterServiceTest {
 	@Transactional
 	public void shouldDeleteShelter() {
 
-		Collection<Shelter> shelters = (Collection<Shelter>) this.shelterService.findAll();
+		List<Shelter> shelters = (List<Shelter>) this.shelterService.findAll();
 		int found = shelters.size();
 		Shelter shelter = new Shelter();
 		shelter.setId(3);
@@ -87,7 +90,7 @@ class ShelterServiceTest {
 		
 		this.shelterService.delete(shelter);
 		
-		Collection<Shelter> shelters2 = (Collection<Shelter>) this.shelterService.findAll();
+		List<Shelter> shelters2 = (List<Shelter>) this.shelterService.findAll();
 	
 		assertThat(shelters2.size()).isEqualTo(found -1);		
 	}

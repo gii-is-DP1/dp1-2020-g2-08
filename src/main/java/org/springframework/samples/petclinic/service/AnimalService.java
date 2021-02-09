@@ -97,6 +97,23 @@ public class AnimalService {
 		List<Animal> animals = animalRepository.findAllAnimals();
 		return animals.stream().filter(x->x.getShelter().getId().equals(shelterId)).collect(Collectors.toList());
 	}
+
+	public void eliminarAminalesPorRefugio(Integer shelterId) {
+		List<Animal> animals = (List<Animal>) findAll();
+		List<Integer> idAnimal = animals.stream().filter(x->x.getShelter().getId().equals(shelterId))
+				.map(x->x.getId()).collect(Collectors.toList());
+		
+		if(idAnimal.size() > 0) {
+			for(int i = 0; i< idAnimal.size(); i++) {
+				deleteById(idAnimal.get(i));
+			}
+		}
+		
+	}
+
+	public Iterable<Animal> findAll() {
+		return animalRepository.findAllAnimals();
+	}
 	
 
 }

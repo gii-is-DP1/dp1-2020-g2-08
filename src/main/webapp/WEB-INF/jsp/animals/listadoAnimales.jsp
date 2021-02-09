@@ -19,6 +19,7 @@
     <h2>All our animals for adoptions</h2><br>
     
 <c:forEach items="${shelters}" var="shelter" varStatus="i">
+<c:if test="${shelter.adopted=='false'}">
 <h2> ${shelter.city}'s shelter</h2>
     
 							<table id="sheltersTable" class="table table-striped">
@@ -89,7 +90,7 @@
     </table>
 							
 							
-							
+							</c:if>
 						</c:forEach><br><br>
 						
 </petclinic:layout>

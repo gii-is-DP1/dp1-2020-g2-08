@@ -55,7 +55,7 @@ public class ShelterController {
 	public String listadoRefugios(ModelMap modelmap) {
 		List<Shelter> refugios = (List<Shelter>) shelterService.findAll();
 		
-		if(refugios.iterator().hasNext()) {
+		if(refugios.size() >1) {
 			modelmap.addAttribute("refugios", refugios);
 			log.info("Se muestra el listado de refugios");
 			return "shelter/listadoRefugios";
@@ -91,7 +91,7 @@ public class ShelterController {
 	public String borrarShelter(@PathVariable("shelterId") Integer shelterId, ModelMap modelmap) {
 		shelterService.deleteById(shelterId);
 		modelmap.addAttribute("message", "Refugio borrado con éxito");
-		log.info("Se crea correctamente un nuevo refugio con id: "+shelterId);
+		log.info("Se borra de la bd el refugio con id: "+shelterId);
 		return listadoRefugios(modelmap);
 	}
 
